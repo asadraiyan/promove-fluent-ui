@@ -1,9 +1,22 @@
-import React from 'react'
+import React from 'react';
+import {
+  Button as FluentButton,
+  ButtonProps as FluentButtonProps,
+} from '@fluentui/react-components';
 
-const Button = () => {
+export type ButtonProps = FluentButtonProps & {
+  children: React.ReactNode;
+};
+
+const Button: React.FC<ButtonProps> = ({
+  children,
+  ...props
+}) => {
   return (
-    <div>Button</div>
-  )
-}
+    <FluentButton {...props}>
+      {children}
+    </FluentButton>
+  );
+};
 
-export default Button
+export default Button;

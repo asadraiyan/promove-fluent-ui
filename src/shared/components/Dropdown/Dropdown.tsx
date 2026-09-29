@@ -1,9 +1,37 @@
-import React from 'react'
+import React from 'react';
 
-const Dropdown = () => {
-  return (
-    <div>Dropdown</div>
-  )
+import {
+  Dropdown as FluentDropdown,
+  Option,
+  DropdownProps as FluentDropdownProps,
+} from '@fluentui/react-components';
+
+export interface DropdownOption {
+  value: string;
+  label: string;
 }
 
-export default Dropdown
+export interface DropdownProps
+  extends Omit<FluentDropdownProps, 'children'> {
+  options: DropdownOption[];
+}
+
+const Dropdown: React.FC<DropdownProps> = ({
+  options,
+  ...props
+}) => {
+  return (
+    <FluentDropdown {...props}>
+      {options.map((option) => (
+        <Option
+          key={option.value}
+          value={option.value}
+        >
+          {option.label}
+        </Option>
+      ))}
+    </FluentDropdown>
+  );
+};
+
+export default Dropdown;

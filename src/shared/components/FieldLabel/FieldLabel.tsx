@@ -1,9 +1,28 @@
-import React from 'react'
+import React from 'react';
 
-const FieldLabel = () => {
-  return (
-    <div>FieldLabel</div>
-  )
+import {
+  Label,
+  LabelProps,
+} from '@fluentui/react-components';
+
+export interface FieldLabelProps extends LabelProps {
+  children: React.ReactNode;
+  required?: boolean;
 }
 
-export default FieldLabel
+const FieldLabel: React.FC<FieldLabelProps> = ({
+  children,
+  required = false,
+  ...props
+}) => {
+  return (
+    <Label
+      required={required}
+      {...props}
+    >
+      {children}
+    </Label>
+  );
+};
+
+export default FieldLabel;

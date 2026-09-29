@@ -1,9 +1,23 @@
-import React from 'react'
+import React from 'react';
+import {
+  Checkbox as FluentCheckbox,
+  CheckboxProps as FluentCheckboxProps,
+} from '@fluentui/react-components';
 
-const Checkbox = () => {
-  return (
-    <div>Checkbox</div>
-  )
+export interface CheckboxProps extends FluentCheckboxProps {
+  label?: string;
 }
 
-export default Checkbox
+const Checkbox: React.FC<CheckboxProps> = ({
+  label,
+  ...props
+}) => {
+  return (
+    <FluentCheckbox
+      label={label}
+      {...props}
+    />
+  );
+};
+
+export default Checkbox;

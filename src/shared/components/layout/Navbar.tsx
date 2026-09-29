@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles, Text } from "@fluentui/react-components";
-import { APP_NAME } from "@/global/constant/app";
-import { APP_ROUTES } from "@/global/constant/routes";
+import { APP_NAME } from "@/global/constants/app";
+import { APP_ROUTES } from "@/global/constants/routes";
 
 const useStyles = makeStyles({
   root: {

@@ -1,9 +1,4 @@
-import React from 'react'
+import React from "react";
+import { Text, TextProps } from "@fluentui/react-components";
 
-const Typography = () => {
-  return (
-    <div>Typography</div>
-  )
-}
-
-export default Typography
+export const Typography: React.FC<TextProps> = (props) => <Text {...props} />;

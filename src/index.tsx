@@ -1,12 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-// @ts-expect-error CSS is loaded by the bundler and has no TypeScript declarations.
-import "./index.css";
+import { FluentProvider, webLightTheme } from "@fluentui/react-components";
+import { Provider } from "react-redux";
+// import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <Provider > */}
+      <FluentProvider theme={webLightTheme}>
+        <App />
+      </FluentProvider>
+    {/* </Provider> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

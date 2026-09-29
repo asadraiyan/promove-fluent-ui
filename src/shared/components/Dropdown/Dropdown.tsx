@@ -16,7 +16,7 @@ export interface DropdownProps
   options: DropdownOption[];
 }
 
-const Dropdown: React.FC<DropdownProps> = ({
+export const Dropdown: React.FC<DropdownProps> = ({
   options,
   ...props
 }) => {
@@ -33,5 +33,3 @@ const Dropdown: React.FC<DropdownProps> = ({
     </FluentDropdown>
   );
 };
-
-export default Dropdown;

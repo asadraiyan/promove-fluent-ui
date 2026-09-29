@@ -8,7 +8,7 @@ export interface CheckboxProps extends FluentCheckboxProps {
   label?: string;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({
+export const Checkbox: React.FC<CheckboxProps> = ({
   label,
   ...props
 }) => {
@@ -19,5 +19,3 @@ const Checkbox: React.FC<CheckboxProps> = ({
     />
   );
 };
-
-export default Checkbox;

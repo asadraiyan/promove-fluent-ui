@@ -10,7 +10,7 @@ export interface FieldLabelProps extends LabelProps {
   required?: boolean;
 }
 
-const FieldLabel: React.FC<FieldLabelProps> = ({
+export const FieldLabel: React.FC<FieldLabelProps> = ({
   children,
   required = false,
   ...props
@@ -25,4 +25,3 @@ const FieldLabel: React.FC<FieldLabelProps> = ({
   );
 };
 
-export default FieldLabel;

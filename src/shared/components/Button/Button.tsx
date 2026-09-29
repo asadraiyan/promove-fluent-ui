@@ -8,7 +8,7 @@ export type ButtonProps = FluentButtonProps & {
   children: React.ReactNode;
 };
 
-const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
@@ -18,5 +18,3 @@ const Button: React.FC<ButtonProps> = ({
     </FluentButton>
   );
 };
-
-export default Button;

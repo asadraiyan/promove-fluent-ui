@@ -1,8 +1,14 @@
 import React from 'react'
+import ShipperDeclaration from './ShipperDeclaration'
+import ContactDetails from './ContactDetails'
 
 const AddressPage = () => {
   return (
-    <div>AddressPage</div>
+    <div>AddressPage
+
+      <ShipperDeclaration />
+      <ContactDetails/>
+    </div>
   )
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Checkbox, Dropdown, FieldLabel } from './shared';
+import AddressPage from './features/address/components/AddressPage';
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
       <Button appearance="primary">
         Save
       </Button>
+
+      <AddressPage/>
     </div>
 
   );

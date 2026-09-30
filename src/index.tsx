@@ -3,15 +3,16 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import { Provider } from "react-redux";
+import { store } from "./app/store";
 // import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <Provider > */}
+    <Provider store={store} >
       <FluentProvider theme={webLightTheme}>
         <App />
       </FluentProvider>
-    {/* </Provider> */}
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

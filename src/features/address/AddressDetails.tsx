@@ -1,0 +1,103 @@
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { makeStyles, tokens } from "@fluentui/react-components";
+import { AddressDetailsFormValues } from "./AddressDetails.types";
+import NameSection from "./components/NameSection";
+import AddressSection from "./components/AddressSection";
+import { ADDRESS_DETAILS_DEFAULT_VALUES } from "./constants";
+import ContactDetails from "./components/ContactDetails";
+import ShipperDeclaration from "./components/ShipperDeclaration";
+
+const useStyles = makeStyles({
+  root: {
+    boxSizing: "border-box",
+    width: "min(100% - 32px, 900px)",
+    margin: "24px auto",
+    padding: tokens.spacingVerticalM,
+    border: `1px solid ${tokens.colorNeutralStroke1}`,
+    borderRadius: tokens.borderRadiusSmall,
+    backgroundColor: tokens.colorNeutralBackground1,
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: tokens.spacingHorizontalM,
+    paddingBottom: tokens.spacingVerticalS,
+    marginBottom: tokens.spacingVerticalM,
+    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+  },
+  heading: {
+    margin: 0,
+    fontSize: tokens.fontSizeBase400,
+    fontWeight: tokens.fontWeightSemibold,
+    lineHeight: tokens.lineHeightBase400,
+  },
+  close: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "28px",
+    height: "28px",
+    flexShrink: 0,
+    padding: 0,
+    border: 0,
+    borderRadius: tokens.borderRadiusSmall,
+    backgroundColor: "transparent",
+    color: tokens.colorNeutralForeground2,
+    fontSize: tokens.fontSizeBase500,
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: tokens.colorNeutralBackground1Hover,
+    },
+  },
+  main: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalM,
+  },
+});
+
+const AddressDetails: React.FC = () => {
+  const styles = useStyles();
+  const methods = useForm<AddressDetailsFormValues>({
+    defaultValues: ADDRESS_DETAILS_DEFAULT_VALUES,
+  });
+
+  const onSubmit = (data: AddressDetailsFormValues) => {
+    console.log("Address Details:", data);
+  };
+
+  return (
+    <FormProvider {...methods}>
+      <form
+        className={styles.root}
+        onSubmit={methods.handleSubmit(onSubmit)}
+      >
+        <div className={styles.header}>
+          <h2 className={styles.heading}>Address details</h2>
+
+          <button
+            type="button"
+            className={styles.close}
+            aria-label="Close address details"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className={styles.main}>
+          <NameSection />
+          <hr />
+          <AddressSection />
+          <hr />
+          <ShipperDeclaration />
+          <hr />
+          <ContactDetails />
+        </div>
+      </form>
+    </FormProvider>
+  );
+};
+
+export default AddressDetails;

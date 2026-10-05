@@ -3,24 +3,21 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 
 import { FieldLabel, FormInput, FormDropdown } from "../../../shared";
-
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 import { ADDRESS_TYPE_OPTIONS } from "../constants";
 import locationData from "../locationData.json";
 
 const useStyles = makeStyles({
-  fieldSet: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "nowrap",
+  gridContainer: {
+    display: "grid",
+    gridTemplateColumns: "110px 1.5fr 80px 1fr",
+    rowGap: tokens.spacingVerticalS,
+    columnGap: tokens.spacingHorizontalM,
     alignItems: "center",
-    gap: tokens.spacingHorizontalS,
   },
-  finalRow: {
-    display: "flex",
-    alignItems: "center",
-    flexWrap: "wrap",
-    gap: tokens.spacingHorizontalXXL,
+  labelCell: {
+    justifySelf: "end",
+    textAlign: "right",
   },
 });
 
@@ -32,7 +29,7 @@ const AddressSection: React.FC = () => {
 
   const stateOptions = useMemo(() => {
     const country = locationData.countries.find(
-      (option) => option.value === selectedCountry
+      (option) => option.value === selectedCountry,
     );
 
     return country?.states.map(({ value, label }) => ({ value, label })) ?? [];
@@ -40,10 +37,10 @@ const AddressSection: React.FC = () => {
 
   const cityOptions = useMemo(() => {
     const country = locationData.countries.find(
-      (option) => option.value === selectedCountry
+      (option) => option.value === selectedCountry,
     );
     const state = country?.states.find(
-      (option) => option.value === selectedState
+      (option) => option.value === selectedState,
     );
 
     return state?.cities ?? [];
@@ -60,80 +57,88 @@ const AddressSection: React.FC = () => {
 
   return (
     <section>
-      <div>
-
-        {/* Address Type */}
-        <div className={styles.fieldSet}>
+      <div className={styles.gridContainer}>
+        <div className={styles.labelCell}>
           <FieldLabel>Address Type</FieldLabel>
-          <FormDropdown
-            name="addressType"
-            control={control}
-            placeholder="Delivery Address"
-            options={ADDRESS_TYPE_OPTIONS}
-          />
         </div>
-
-        {/* Country */}
-        <div className={styles.fieldSet}>
+        <FormDropdown
+          name="addressType"
+          control={control}
+          placeholder="Delivery Address"
+          options={ADDRESS_TYPE_OPTIONS}
+        />
+        <div /> <div />
+        <div className={styles.labelCell}>
           <FieldLabel>Country</FieldLabel>
-          <FormDropdown
-            name="country"
-            control={control}
-            placeholder="Select country"
-            options={locationData.countries.map(({ value, label }) => ({ value, label }))}
-            onChange={handleCountryChange}
-          />
         </div>
-
-        {/* Address 1 */}
-        <div className={styles.fieldSet}>
+        <FormDropdown
+          name="country"
+          control={control}
+          placeholder="Select Country"
+          options={locationData.countries.map(({ value, label }) => ({
+            value,
+            label,
+          }))}
+          onChange={handleCountryChange}
+        />
+        <div /> <div />
+        <div className={styles.labelCell}>
           <FieldLabel>Address 1</FieldLabel>
-          <FormInput name="address1" control={control} placeholder="Enter address" />
         </div>
-
-        {/* Address 2 */}
-        <div className={styles.fieldSet}>
+        <FormInput
+          name="address1"
+          control={control}
+          placeholder="Enter address"
+        />
+        <div /> <div />
+        <div className={styles.labelCell}>
           <FieldLabel>Address 2</FieldLabel>
-          <FormInput name="address2" control={control} placeholder="Enter address" />
         </div>
-
-        {/* Address 3 */}
-        <div className={styles.fieldSet}>
+        <FormInput
+          name="address2"
+          control={control}
+          placeholder="Enter address"
+        />
+        <div /> <div />
+        <div className={styles.labelCell}>
           <FieldLabel>Address 3</FieldLabel>
-          <FormInput name="address3" control={control} placeholder="Enter address" />
         </div>
-
-        {/* City/Town */}
-        <div className={styles.fieldSet}>
+        <FormInput
+          name="address3"
+          control={control}
+          placeholder="Enter address"
+        />
+        <div /> <div />
+        <div className={styles.labelCell}>
+          <FieldLabel>State/Country</FieldLabel>
+        </div>
+        <FormDropdown
+          name="state"
+          control={control}
+          placeholder={
+            selectedCountry ? "Select state" : "Select country first"
+          }
+          options={stateOptions}
+          onChange={handleStateChange}
+        />
+        <div /> <div />
+        <div className={styles.labelCell}>
           <FieldLabel>City/Town</FieldLabel>
-          <FormDropdown
-            name="city"
-            control={control}
-            placeholder={selectedState ? "Select city" : "Select state first"}
-            options={cityOptions}
-          />
         </div>
-
-        <div className={styles.finalRow}>
-          {/* State/Country */}
-          <div className={styles.fieldSet}>
-            <FieldLabel>State/Country</FieldLabel>
-            <FormDropdown
-              name="state"
-              control={control}
-              placeholder={selectedCountry ? "Select state" : "Select country first"}
-              options={stateOptions}
-              onChange={handleStateChange}
-            />
-          </div>
-
-          {/* Postcode */}
-          <div className={styles.fieldSet}>
-            <FieldLabel>Postcode</FieldLabel>
-            <FormInput name="postcode" control={control} placeholder="Enter postcode" />
-          </div>
+        <FormDropdown
+          name="city"
+          control={control}
+          placeholder={selectedState ? "Select city" : "Select state first"}
+          options={cityOptions}
+        />
+        <div className={styles.labelCell}>
+          <FieldLabel>Postcode</FieldLabel>
         </div>
-
+        <FormInput
+          name="postcode"
+          control={control}
+          placeholder="Enter postcode"
+        />
       </div>
     </section>
   );

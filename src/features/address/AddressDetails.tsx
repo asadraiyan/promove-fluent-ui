@@ -7,11 +7,13 @@ import AddressSection from "./components/AddressSection";
 import { ADDRESS_DETAILS_DEFAULT_VALUES } from "./constants";
 import ContactDetails from "./components/ContactDetails";
 import ShipperDeclaration from "./components/ShipperDeclaration";
+import AccessInfo from "./components/AccessInfo";
+import { Button, Typography } from "@/shared";
 
 const useStyles = makeStyles({
   root: {
     boxSizing: "border-box",
-    width: "min(100% - 32px, 900px)",
+    width: "min(100% - 32px, 1200px)",
     margin: "24px auto",
     padding: tokens.spacingVerticalM,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
@@ -51,10 +53,38 @@ const useStyles = makeStyles({
       backgroundColor: tokens.colorNeutralBackground1Hover,
     },
   },
-  main: {
+  formBody: {
+    display: "grid",
+    gridTemplateColumns: "2fr 1fr",
+    gap: tokens.spacingHorizontalL,
+  },
+  leftColumn: {
     display: "flex",
     flexDirection: "column",
     gap: tokens.spacingVerticalM,
+  },
+  rightColumn: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalM,
+  },
+  divider: {
+    border: "none",
+    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+    margin: `${tokens.spacingVerticalS} 0`,
+  },
+  footer: {
+    display: "flex",
+    flexDirection: "column",
+    marginTop: tokens.spacingVerticalL,
+  },
+  actionSection: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    gap: tokens.spacingHorizontalM,
+    paddingTop: tokens.spacingVerticalS,
   },
 });
 
@@ -70,13 +100,9 @@ const AddressDetails: React.FC = () => {
 
   return (
     <FormProvider {...methods}>
-      <form
-        className={styles.root}
-        onSubmit={methods.handleSubmit(onSubmit)}
-      >
+      <form className={styles.root} onSubmit={methods.handleSubmit(onSubmit)}>
         <div className={styles.header}>
           <h2 className={styles.heading}>Address details</h2>
-
           <button
             type="button"
             className={styles.close}
@@ -86,14 +112,28 @@ const AddressDetails: React.FC = () => {
           </button>
         </div>
 
-        <div className={styles.main}>
-          <NameSection />
-          <hr />
-          <AddressSection />
-          <hr />
-          <ShipperDeclaration />
-          <hr />
-          <ContactDetails />
+        <div className={styles.formBody}>
+          <div className={styles.leftColumn}>
+            <NameSection />
+            <hr className={styles.divider} />
+            <AddressSection />
+            <hr className={styles.divider} />
+            <ShipperDeclaration />
+          </div>
+
+          <div className={styles.rightColumn}>
+            <ContactDetails />
+            <hr className={styles.divider} />
+            <AccessInfo />
+          </div>
+        </div>
+
+        <div className={styles.footer}>
+          <hr className={styles.divider} />
+          <div className={styles.actionSection}>
+            <Typography>Modification Date : 07/08/2026 10:14:10 EST</Typography>
+            <Button>Close</Button>
+          </div>
         </div>
       </form>
     </FormProvider>

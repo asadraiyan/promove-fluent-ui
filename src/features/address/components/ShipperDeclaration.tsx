@@ -1,24 +1,25 @@
 import { Button, Dropdown, FieldLabel, FormInput } from "@/shared";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import React from "react";
-import { useForm, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 
 const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "space-around",
-    gap: tokens.spacingVerticalXL,
+  title: {
+    color: tokens.colorNeutralForeground4,
+    fontSize: tokens.fontSizeBase300,
+    marginBottom: tokens.spacingVerticalM,
   },
-  fieldSet: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "nowrap",
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "140px 1fr 160px 1fr auto",
+    rowGap: tokens.spacingVerticalM,
+    columnGap: tokens.spacingHorizontalM,
     alignItems: "center",
-    gap: tokens.spacingHorizontalS,
+  },
+  labelCell: {
+    justifySelf: "end",
+    textAlign: "right",
   },
 });
 
@@ -41,33 +42,32 @@ function ShipperDeclaration() {
   const { control } = useFormContext<AddressDetailsFormValues>();
   const styles = useStyles();
   return (
-    <>
-      <section className={styles.root}>
-        <div className={styles.fieldSet}>
+    <section>
+      <div className={styles.title}>Shipper Declaration :</div>
+      <div className={styles.grid}>
+        <div className={styles.labelCell}>
           <FieldLabel>Identification Indicator</FieldLabel>
-          <Dropdown
-            placeholder="Select Indicator"
-            options={identificationIndicatorOptions}
-          />
         </div>
-        <div className={styles.fieldSet}>
+        <Dropdown
+          placeholder="Select Indicator"
+          options={identificationIndicatorOptions}
+        />
+        <div className={styles.labelCell}>
           <FieldLabel>Customer Date of Birth</FieldLabel>
-          <Dropdown
-            placeholder="Select a date"
-            options={birthDateDigitOptions}
-          />
-          <Button>Edit</Button>
         </div>
-        <div className={styles.fieldSet}>
+        <Dropdown placeholder="Select a date" options={birthDateDigitOptions} />
+        <Button>Edit</Button>
+        <div className={styles.labelCell}>
           <FieldLabel>Foreign Id/EIN</FieldLabel>
-          <FormInput name="foreignId" control={control} />
         </div>
-        <div className={styles.fieldSet}>
+        <FormInput name="foreignId" control={control} />
+        <div className={styles.labelCell}>
           <FieldLabel>Country of Issue</FieldLabel>
-          <Dropdown placeholder="Select a Issue" options={issueOptions} />
         </div>
-      </section>
-    </>
+        <Dropdown placeholder="Select a Issue" options={issueOptions} />
+        <div />{" "}
+      </div>
+    </section>
   );
 }
 

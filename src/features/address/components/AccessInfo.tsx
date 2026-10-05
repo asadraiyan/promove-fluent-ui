@@ -1,16 +1,25 @@
-import { Dropdown, FieldLabel, FormInput } from "@/shared";
+import { FieldLabel, FormInput } from "@/shared";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import React from "react";
-import { useForm, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 
 const useStyles = makeStyles({
-  fieldSet: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "nowrap",
+  title: {
+    color: tokens.colorNeutralForeground4,
+    fontSize: tokens.fontSizeBase300,
+    marginBottom: tokens.spacingVerticalM,
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "100px 1fr",
+    rowGap: tokens.spacingVerticalS,
+    columnGap: tokens.spacingHorizontalS,
     alignItems: "center",
-    gap: tokens.spacingHorizontalS,
+  },
+  labelCell: {
+    justifySelf: "end",
+    textAlign: "right",
   },
 });
 
@@ -19,19 +28,20 @@ function AccessInfo() {
   const { control } = useFormContext<AddressDetailsFormValues>();
 
   return (
-    <div>
-      Access Info
-      <div>
-        <div className={styles.fieldSet}>
+    <section>
+      <div className={styles.title}>Access Info</div>
+      <div className={styles.grid}>
+        <div className={styles.labelCell}>
           <FieldLabel>Access info</FieldLabel>
-          <FormInput name="access-info" control={control} />
         </div>
-        <div className={styles.fieldSet}>
+        <FormInput name="accessInfo" control={control} />
+
+        <div className={styles.labelCell}>
           <FieldLabel>Directions</FieldLabel>
-          <FormInput name="directions" control={control} />
         </div>
+        <FormInput name="directions" control={control} />
       </div>
-    </div>
+    </section>
   );
 }
 

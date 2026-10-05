@@ -1,0 +1,142 @@
+{
+  "countries": [
+    {
+      "value": "india",
+      "label": "India",
+      "states": [
+        {
+          "value": "uttar-pradesh",
+          "label": "Uttar Pradesh",
+          "cities": [
+            {
+              "value": "lucknow",
+              "label": "Lucknow"
+            },
+            {
+              "value": "kanpur",
+              "label": "Kanpur"
+            },
+            {
+              "value": "noida",
+              "label": "Noida"
+            },
+            {
+              "value": "varanasi",
+              "label": "Varanasi"
+            }
+          ]
+        },
+        {
+          "value": "delhi",
+          "label": "Delhi",
+          "cities": [
+            {
+              "value": "new-delhi",
+              "label": "New Delhi"
+            }
+          ]
+        },
+        {
+          "value": "maharashtra",
+          "label": "Maharashtra",
+          "cities": [
+            {
+              "value": "mumbai",
+              "label": "Mumbai"
+            },
+            {
+              "value": "pune",
+              "label": "Pune"
+            },
+            {
+              "value": "nagpur",
+              "label": "Nagpur"
+            }
+          ]
+        },
+        {
+          "value": "karnataka",
+          "label": "Karnataka",
+          "cities": [
+            {
+              "value": "bangalore",
+              "label": "Bangalore"
+            },
+            {
+              "value": "mysore",
+              "label": "Mysore"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "value": "usa",
+      "label": "United States",
+      "states": [
+        {
+          "value": "california",
+          "label": "California",
+          "cities": [
+            {
+              "value": "los-angeles",
+              "label": "Los Angeles"
+            },
+            {
+              "value": "san-francisco",
+              "label": "San Francisco"
+            }
+          ]
+        },
+        {
+          "value": "texas",
+          "label": "Texas",
+          "cities": [
+            {
+              "value": "houston",
+              "label": "Houston"
+            },
+            {
+              "value": "dallas",
+              "label": "Dallas"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "value": "uk",
+      "label": "United Kingdom",
+      "states": [
+        {
+          "value": "england",
+          "label": "England",
+          "cities": [
+            {
+              "value": "london",
+              "label": "London"
+            },
+            {
+              "value": "manchester",
+              "label": "Manchester"
+            }
+          ]
+        },
+        {
+          "value": "scotland",
+          "label": "Scotland",
+          "cities": [
+            {
+              "value": "edinburgh",
+              "label": "Edinburgh"
+            },
+            {
+              "value": "glasgow",
+              "label": "Glasgow"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

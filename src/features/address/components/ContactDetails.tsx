@@ -63,16 +63,6 @@ function ContactDetails() {
         <FieldLabel>Alternate Email</FieldLabel>
         <FormInput name="alt-email" control={control} />
       </div>
-      <div>
-        <div className={styles.fieldSet}>
-          <FieldLabel>Access info</FieldLabel>
-          <FormInput name="access-info" control={control} />
-        </div>
-        <div className={styles.fieldSet}>
-          <FieldLabel>Directions</FieldLabel>
-          <FormInput name="directions" control={control} />
-        </div>
-      </div>
     </div>
   );
 }

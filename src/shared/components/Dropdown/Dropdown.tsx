@@ -97,6 +97,7 @@ type FormDropdownProps = {
   options: Option[];
   defaultValue?: string;
   placeholder?: string;
+  onChange?: (value: string) => void;
 };
 
 export const FormDropdown: React.FC<FormDropdownProps> = ({
@@ -106,6 +107,7 @@ export const FormDropdown: React.FC<FormDropdownProps> = ({
   options,
   defaultValue,
   placeholder,
+  onChange,
 }) => {
   const { field, fieldState } = useController({
     name,
@@ -125,7 +127,10 @@ export const FormDropdown: React.FC<FormDropdownProps> = ({
         label={label}
         options={options}
         value={field.value}
-        onChange={(value) => field.onChange(value)}
+        onChange={(value) => {
+          field.onChange(value);
+          onChange?.(value);
+        }}
         placeholder={placeholder}
         id={name}
       />

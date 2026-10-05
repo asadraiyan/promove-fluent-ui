@@ -1,14 +1,11 @@
-import React from "react";
-import { useFormContext } from "react-hook-form";
+import React, { useMemo } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 
 import { FieldLabel, FormInput, FormDropdown } from "../../../shared";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
-import {
-  ADDRESS_TYPE_OPTIONS,
-  COUNTRY_OPTIONS,
-  STATE_OPTIONS,
-} from "../constants";
+import { ADDRESS_TYPE_OPTIONS } from "../constants";
+import locationData from "../locationData.json";
 
 const useStyles = makeStyles({
   gridContainer: {
@@ -25,8 +22,38 @@ const useStyles = makeStyles({
 });
 
 const AddressSection: React.FC = () => {
-  const { control } = useFormContext<AddressDetailsFormValues>();
+  const { control, setValue } = useFormContext<AddressDetailsFormValues>();
+  const selectedCountry = useWatch({ control, name: "country" });
+  const selectedState = useWatch({ control, name: "state" });
   const styles = useStyles();
+
+  const stateOptions = useMemo(() => {
+    const country = locationData.countries.find(
+      (option) => option.value === selectedCountry,
+    );
+
+    return country?.states.map(({ value, label }) => ({ value, label })) ?? [];
+  }, [selectedCountry]);
+
+  const cityOptions = useMemo(() => {
+    const country = locationData.countries.find(
+      (option) => option.value === selectedCountry,
+    );
+    const state = country?.states.find(
+      (option) => option.value === selectedState,
+    );
+
+    return state?.cities ?? [];
+  }, [selectedCountry, selectedState]);
+
+  const handleCountryChange = () => {
+    setValue("state", "");
+    setValue("city", "");
+  };
+
+  const handleStateChange = () => {
+    setValue("city", "");
+  };
 
   return (
     <section>
@@ -47,8 +74,12 @@ const AddressSection: React.FC = () => {
         <FormDropdown
           name="country"
           control={control}
-          placeholder="India"
-          options={COUNTRY_OPTIONS}
+          placeholder="Select Country"
+          options={locationData.countries.map(({ value, label }) => ({
+            value,
+            label,
+          }))}
+          onChange={handleCountryChange}
         />
         <div /> <div />
         <div className={styles.labelCell}>
@@ -79,22 +110,26 @@ const AddressSection: React.FC = () => {
         />
         <div /> <div />
         <div className={styles.labelCell}>
-          <FieldLabel>City/Town</FieldLabel>
-        </div>
-        <FormInput
-          name="city"
-          control={control}
-          placeholder="Enter city/town"
-        />
-        <div /> <div />
-        <div className={styles.labelCell}>
           <FieldLabel>State/Country</FieldLabel>
         </div>
         <FormDropdown
           name="state"
           control={control}
-          placeholder="Tamil Nadu"
-          options={STATE_OPTIONS}
+          placeholder={
+            selectedCountry ? "Select state" : "Select country first"
+          }
+          options={stateOptions}
+          onChange={handleStateChange}
+        />
+        <div /> <div />
+        <div className={styles.labelCell}>
+          <FieldLabel>City/Town</FieldLabel>
+        </div>
+        <FormDropdown
+          name="city"
+          control={control}
+          placeholder={selectedState ? "Select city" : "Select state first"}
+          options={cityOptions}
         />
         <div className={styles.labelCell}>
           <FieldLabel>Postcode</FieldLabel>

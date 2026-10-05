@@ -1,4 +1,4 @@
-import { FieldLabel, FormInput } from "@/shared";
+import { FieldLabel, FormInput, TextAreaField } from "@/shared";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import React from "react";
 import { useFormContext } from "react-hook-form";
@@ -34,12 +34,14 @@ function AccessInfo() {
         <div className={styles.labelCell}>
           <FieldLabel>Access info</FieldLabel>
         </div>
-        <FormInput name="accessInfo" control={control} />
+        {/* <FormInput name="accessInfo" control={control} /> */}
+        <TextAreaField name="accessInfo" control={control} />
 
         <div className={styles.labelCell}>
           <FieldLabel>Directions</FieldLabel>
         </div>
-        <FormInput name="directions" control={control} />
+        {/* <FormInput name="directions" control={control} /> */}
+        <TextAreaField name="directions" control={control} />
       </div>
     </section>
   );

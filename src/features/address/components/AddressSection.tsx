@@ -1,11 +1,24 @@
-import React, { useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 
 import { FieldLabel, FormInput, FormDropdown } from "../../../shared";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 import { ADDRESS_TYPE_OPTIONS } from "../constants";
-import locationData from "../locationData.json";
+
+interface LocationOption {
+  value: string;
+  label: string;
+}
+interface StateOption extends LocationOption {
+  cities: LocationOption[];
+}
+interface CountryOption extends LocationOption {
+  states: StateOption[];
+}
+interface LocationDataResponse {
+  countries: CountryOption[];
+}
 
 const useStyles = makeStyles({
   gridContainer: {
@@ -27,15 +40,44 @@ const AddressSection: React.FC = () => {
   const selectedState = useWatch({ control, name: "state" });
   const styles = useStyles();
 
+  const [locationData, setLocationData] = useState<LocationDataResponse | null>(
+    null,
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchLocationData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/locationData.json");
+
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const data: LocationDataResponse = await response.json();
+        setLocationData(data);
+      } catch (error) {
+        console.error("Failed to fetch location data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLocationData();
+  }, []);
+
   const stateOptions = useMemo(() => {
+    if (!locationData) return [];
+
     const country = locationData.countries.find(
       (option) => option.value === selectedCountry,
     );
 
     return country?.states.map(({ value, label }) => ({ value, label })) ?? [];
-  }, [selectedCountry]);
+  }, [selectedCountry, locationData]);
 
   const cityOptions = useMemo(() => {
+    if (!locationData) return [];
+
     const country = locationData.countries.find(
       (option) => option.value === selectedCountry,
     );
@@ -44,7 +86,7 @@ const AddressSection: React.FC = () => {
     );
 
     return state?.cities ?? [];
-  }, [selectedCountry, selectedState]);
+  }, [selectedCountry, selectedState, locationData]);
 
   const handleCountryChange = () => {
     setValue("state", "");
@@ -74,11 +116,13 @@ const AddressSection: React.FC = () => {
         <FormDropdown
           name="country"
           control={control}
-          placeholder="Select Country"
-          options={locationData.countries.map(({ value, label }) => ({
-            value,
-            label,
-          }))}
+          placeholder={isLoading ? "Loading..." : "Select Country"}
+          options={
+            locationData?.countries.map(({ value, label }) => ({
+              value,
+              label,
+            })) ?? []
+          }
           onChange={handleCountryChange}
         />
         <div /> <div />

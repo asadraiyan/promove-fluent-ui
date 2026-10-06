@@ -42,7 +42,9 @@ module.exports = {
   plugins: [new HtmlWebpackPlugin({ template: "./public/index.html" })],
 
   devServer: {
-    static: false,
+    static: {
+      directory: path.resolve(__dirname, "public"), 
+    },
     port: 3000,
     open: true,
     historyApiFallback: true,

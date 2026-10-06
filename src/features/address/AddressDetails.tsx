@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { AddressDetailsFormValues } from "./AddressDetails.types";
@@ -9,6 +9,8 @@ import ContactDetails from "./components/ContactDetails";
 import ShipperDeclaration from "./components/ShipperDeclaration";
 import AccessInfo from "./components/AccessInfo";
 import { Button, Typography } from "@/shared";
+import { useAppDispatch } from "@/app/hooks";
+import { loadAddressDetailsPeople } from "./reducers/addressDetailsSlice";
 
 const useStyles = makeStyles({
   root: {
@@ -90,9 +92,14 @@ const useStyles = makeStyles({
 
 const AddressDetails: React.FC = () => {
   const styles = useStyles();
+  const dispatch = useAppDispatch();
   const methods = useForm<AddressDetailsFormValues>({
     defaultValues: ADDRESS_DETAILS_DEFAULT_VALUES,
   });
+
+  useEffect(() => {
+    dispatch(loadAddressDetailsPeople());
+  }, [dispatch]);
 
   const onSubmit = (data: AddressDetailsFormValues) => {
     console.log("Address Details:", data);

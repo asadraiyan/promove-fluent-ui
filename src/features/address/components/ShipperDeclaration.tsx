@@ -1,7 +1,9 @@
-import { Button, Dropdown, FieldLabel, FormInput } from "@/shared";
+import { DatePicker } from "@fluentui/react-datepicker-compat";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import React from "react";
-import { useFormContext } from "react-hook-form";
+import { useController, useFormContext } from "react-hook-form";
+
+import { Button, FieldLabel, FormDropdown, FormInput } from "@/shared";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 
 const useStyles = makeStyles({
@@ -24,23 +26,29 @@ const useStyles = makeStyles({
 });
 
 const identificationIndicatorOptions = [
-  { value: "mark", label: "Mark" },
-  { value: "color", label: "Color" },
+  { value: "passport", label: "Passport" },
+  { value: "national-id", label: "National ID" },
 ];
 
-const birthDateDigitOptions = Array.from({ length: 10 }, (_, index) => ({
-  value: String(index),
-  label: String(index),
-}));
+const countryOfIssueOptions = [
+  { value: "india", label: "India" },
+  { value: "usa", label: "United States" },
+  { value: "uk", label: "United Kingdom" },
+];
 
-const issueOptions = Array.from({ length: 10 }, (_, index) => ({
-  value: String(index),
-  label: String(index),
-}));
+const formatDate = (date: Date): string =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+    date.getDate(),
+  ).padStart(2, "0")}`;
 
 function ShipperDeclaration() {
   const { control } = useFormContext<AddressDetailsFormValues>();
+  const { field: dateOfBirthField } = useController({
+    name: "customerDateOfBirth",
+    control,
+  });
   const styles = useStyles();
+
   return (
     <section>
       <div className={styles.title}>Shipper Declaration :</div>
@@ -48,24 +56,42 @@ function ShipperDeclaration() {
         <div className={styles.labelCell}>
           <FieldLabel>Identification Indicator</FieldLabel>
         </div>
-        <Dropdown
+        <FormDropdown
+          name="identificationIndicator"
+          control={control}
           placeholder="Select Indicator"
           options={identificationIndicatorOptions}
         />
         <div className={styles.labelCell}>
           <FieldLabel>Customer Date of Birth</FieldLabel>
         </div>
-        <Dropdown placeholder="Select a date" options={birthDateDigitOptions} />
+        <DatePicker
+          placeholder="Select a date"
+          value={
+            dateOfBirthField.value
+              ? new Date(`${dateOfBirthField.value}T00:00:00`)
+              : null
+          }
+          onSelectDate={(date) =>
+            dateOfBirthField.onChange(date ? formatDate(date) : "")
+          }
+          formatDate={(date) => (date ? formatDate(date) : "")}
+        />
         <Button>Edit</Button>
         <div className={styles.labelCell}>
           <FieldLabel>Foreign Id/EIN</FieldLabel>
         </div>
-        <FormInput name="foreignId" control={control} />
+        <FormInput name="foreignIdEIN" control={control} />
         <div className={styles.labelCell}>
           <FieldLabel>Country of Issue</FieldLabel>
         </div>
-        <Dropdown placeholder="Select a Issue" options={issueOptions} />
-        <div />{" "}
+        <FormDropdown
+          name="countryOfIssue"
+          control={control}
+          placeholder="Select a country"
+          options={countryOfIssueOptions}
+        />
+        <div />
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import { Dropdown, FieldLabel, FormInput } from "@/shared";
+import { FieldLabel, FormDropdown, FormInput } from "@/shared";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import React from "react";
 import { useFormContext } from "react-hook-form";
@@ -19,8 +19,9 @@ const useStyles = makeStyles({
 });
 
 const preferredOption = [
-  { value: "mark", label: "Mark" },
-  { value: "color", label: "Color" },
+  { value: "email", label: "Email" },
+  { value: "mobile", label: "Mobile" },
+  { value: "phone", label: "Phone" },
 ];
 
 function ContactDetails() {
@@ -67,12 +68,16 @@ function ContactDetails() {
       <div className={styles.labelCell}>
         <FieldLabel>Preferred</FieldLabel>
       </div>
-      <Dropdown options={preferredOption} />
+      <FormDropdown
+        name="preferred"
+        control={control}
+        options={preferredOption}
+      />
 
       <div className={styles.labelCell}>
         <FieldLabel>Alternate e-mail</FieldLabel>
       </div>
-      <FormInput name="altEmail" control={control} />
+      <FormInput name="alternateEmail" control={control} />
     </div>
   );
 }

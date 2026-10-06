@@ -7,7 +7,7 @@ import { AddressDetailsFormValues } from "../AddressDetails.types";
 import { ADDRESS_TYPE_OPTIONS } from "../constants";
 
 interface LocationOption {
-  value: string;
+  id: string;
   label: string;
 }
 interface StateOption extends LocationOption {
@@ -68,24 +68,18 @@ const AddressSection: React.FC = () => {
   const stateOptions = useMemo(() => {
     if (!locationData) return [];
 
-    const country = locationData.countries.find(
-      (option) => option.value === selectedCountry,
-    );
+    const country = locationData.countries.find(({ id }) => id === selectedCountry);
 
-    return country?.states.map(({ value, label }) => ({ value, label })) ?? [];
+    return country?.states.map(({ id, label }) => ({ value: id, label })) ?? [];
   }, [selectedCountry, locationData]);
 
   const cityOptions = useMemo(() => {
     if (!locationData) return [];
 
-    const country = locationData.countries.find(
-      (option) => option.value === selectedCountry,
-    );
-    const state = country?.states.find(
-      (option) => option.value === selectedState,
-    );
+    const country = locationData.countries.find(({ id }) => id === selectedCountry);
+    const state = country?.states.find(({ id }) => id === selectedState);
 
-    return state?.cities ?? [];
+    return state?.cities.map(({ id, label }) => ({ value: id, label })) ?? [];
   }, [selectedCountry, selectedState, locationData]);
 
   const handleCountryChange = () => {
@@ -118,8 +112,8 @@ const AddressSection: React.FC = () => {
           control={control}
           placeholder={isLoading ? "Loading..." : "Select Country"}
           options={
-            locationData?.countries.map(({ value, label }) => ({
-              value,
+            locationData?.countries.map(({ id, label }) => ({
+              value: id,
               label,
             })) ?? []
           }

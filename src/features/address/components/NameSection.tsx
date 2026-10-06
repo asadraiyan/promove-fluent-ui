@@ -5,7 +5,9 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import { FormInput, FormDropdown, FieldLabel } from "../../../shared";
 
 import type { AddressDetailsFormValues } from "../AddressDetails.types";
-import { PREFIX_OPTIONS } from "../constants";
+import { ADDRESS_DETAILS_DEFAULT_VALUES } from "../constants";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { selectAddressDetailsPerson } from "../reducers/addressDetailsSlice";
 
 const useStyles = makeStyles({
   grid: {
@@ -33,11 +35,31 @@ const useStyles = makeStyles({
 });
 
 const NameSection: React.FC = () => {
-  const { control } = useFormContext<AddressDetailsFormValues>();
+  const { control, reset } = useFormContext<AddressDetailsFormValues>();
   const styles = useStyles();
+  const dispatch = useAppDispatch();
+  const { people, error } = useAppSelector((state) => state.addressDetails);
+
+  const handlePersonChange = (personId: string) => {
+    const person = people.find(({ id }) => id === personId);
+    if (!person) {
+      dispatch(selectAddressDetailsPerson(null));
+      reset(ADDRESS_DETAILS_DEFAULT_VALUES);
+      return;
+    }
+
+    dispatch(selectAddressDetailsPerson(person.id));
+    reset({
+      ...person.formValues,
+      country: person.formValues.country.id,
+      state: person.formValues.state.id,
+      city: person.formValues.city.id,
+    });
+  };
 
   return (
     <section>
+      {error && <div role="alert">{error}</div>}
       <div className={styles.grid}>
         <div className={styles.field}>
           <FieldLabel>Prefix</FieldLabel>
@@ -45,8 +67,12 @@ const NameSection: React.FC = () => {
           <FormDropdown
             name="prefix"
             control={control}
-            options={PREFIX_OPTIONS}
+            options={people.map(({ id, label }) => ({
+              value: id,
+              label,
+            }))}
             placeholder="Select"
+            onChange={handlePersonChange}
           />
         </div>
 

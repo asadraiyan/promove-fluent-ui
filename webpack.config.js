@@ -43,7 +43,8 @@ module.exports = {
 
   devServer: {
     static: {
-      directory: path.resolve(__dirname, "public"), 
+      directory: path.resolve(__dirname, "public"),
+      serveIndex: false,
     },
     port: 3000,
     open: true,

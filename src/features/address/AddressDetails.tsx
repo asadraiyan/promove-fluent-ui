@@ -10,8 +10,11 @@ import ShipperDeclaration from "./components/ShipperDeclaration";
 import AccessInfo from "./components/AccessInfo";
 import { Button, Typography } from "@/shared";
 import { useAppDispatch } from "@/app/hooks";
-import { loadAddressDetailsPeople } from "./reducers/addressDetailsSlice";
 import { loadLocationData } from "./reducers/locationDataSlice";
+import {
+  loadAddressDetailsPeople,
+  selectAddressDetailsPerson,
+} from "./reducers/addressDetailsSlice";
 
 const useStyles = makeStyles({
   root: {
@@ -89,6 +92,12 @@ const useStyles = makeStyles({
     gap: tokens.spacingHorizontalM,
     paddingTop: tokens.spacingVerticalS,
   },
+  btnContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
+  },
 });
 
 const AddressDetails: React.FC = () => {
@@ -98,13 +107,34 @@ const AddressDetails: React.FC = () => {
     defaultValues: ADDRESS_DETAILS_DEFAULT_VALUES,
   });
 
+  const { dirtyFields } = methods.formState;
+
   useEffect(() => {
     dispatch(loadAddressDetailsPeople());
     dispatch(loadLocationData());
   }, [dispatch]);
 
   const onSubmit = (data: AddressDetailsFormValues) => {
-    console.log("Address Details:", data);
+    if (!data.prefix) {
+      console.log("Create New Payload:", data);
+    } else {
+      const updatePayload: Partial<AddressDetailsFormValues> = {};
+
+      (
+        Object.keys(dirtyFields) as Array<keyof AddressDetailsFormValues>
+      ).forEach((key) => {
+        if (dirtyFields[key]) {
+          (updatePayload as any)[key] = data[key];
+        }
+      });
+
+      console.log("Update Payload (Modified Fields Only):", updatePayload);
+    }
+  };
+
+  const handleNewClick = () => {
+    methods.reset(ADDRESS_DETAILS_DEFAULT_VALUES);
+    dispatch(selectAddressDetailsPerson(null));
   };
 
   return (
@@ -141,7 +171,12 @@ const AddressDetails: React.FC = () => {
           <hr className={styles.divider} />
           <div className={styles.actionSection}>
             <Typography>Modification Date : 07/08/2026 10:14:10 EST</Typography>
-            <Button>Close</Button>
+            <div className={styles.btnContainer}>
+              <Button type="button" onClick={handleNewClick}>
+                New
+              </Button>
+              <Button type="submit">Save</Button>
+            </div>
           </div>
         </div>
       </form>

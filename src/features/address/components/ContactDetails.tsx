@@ -11,10 +11,18 @@ const useStyles = makeStyles({
     rowGap: tokens.spacingVerticalS,
     columnGap: tokens.spacingHorizontalS,
     alignItems: "center",
+    "@media (max-width: 600px)": {
+      gridTemplateColumns: "minmax(0, 1fr)",
+      alignItems: "stretch",
+    },
   },
   labelCell: {
     justifySelf: "end",
     textAlign: "right",
+    "@media (max-width: 600px)": {
+      justifySelf: "start",
+      textAlign: "left",
+    },
   },
 });
 

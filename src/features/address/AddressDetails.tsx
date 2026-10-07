@@ -19,12 +19,18 @@ import {
 const useStyles = makeStyles({
   root: {
     boxSizing: "border-box",
-    width: "min(100% - 32px, 1200px)",
+    width: "calc(100% - 32px)",
+    maxWidth: "1200px",
     margin: "24px auto",
     padding: tokens.spacingVerticalM,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
     borderRadius: tokens.borderRadiusSmall,
     backgroundColor: tokens.colorNeutralBackground1,
+    "& input, & select, & textarea": {
+      boxSizing: "border-box",
+      width: "100%",
+      minWidth: 0,
+    },
   },
   header: {
     display: "flex",
@@ -63,16 +69,21 @@ const useStyles = makeStyles({
     display: "grid",
     gridTemplateColumns: "2fr 1fr",
     gap: tokens.spacingHorizontalL,
+    "@media (max-width: 600px)": {
+      gridTemplateColumns: "minmax(0, 1fr)",
+    },
   },
   leftColumn: {
     display: "flex",
     flexDirection: "column",
     gap: tokens.spacingVerticalM,
+    minWidth: 0,
   },
   rightColumn: {
     display: "flex",
     flexDirection: "column",
     gap: tokens.spacingVerticalM,
+    minWidth: 0,
   },
   divider: {
     border: "none",

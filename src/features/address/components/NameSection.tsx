@@ -16,6 +16,9 @@ const useStyles = makeStyles({
       "minmax(72px, 0.65fr) minmax(120px, 1.7fr) minmax(100px, 1.2fr) minmax(110px, 1.45fr) minmax(100px, 1.1fr)",
     gap: tokens.spacingHorizontalS,
     alignItems: "start",
+    "@media (max-width: 600px)": {
+      gridTemplateColumns: "minmax(0, 1fr)",
+    },
   },
   field: {
     display: "flex",

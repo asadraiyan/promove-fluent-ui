@@ -11,6 +11,7 @@ import AccessInfo from "./components/AccessInfo";
 import { Button, Typography } from "@/shared";
 import { useAppDispatch } from "@/app/hooks";
 import { loadAddressDetailsPeople } from "./reducers/addressDetailsSlice";
+import { loadLocationData } from "./reducers/locationDataSlice";
 
 const useStyles = makeStyles({
   root: {
@@ -99,6 +100,7 @@ const AddressDetails: React.FC = () => {
 
   useEffect(() => {
     dispatch(loadAddressDetailsPeople());
+    dispatch(loadLocationData());
   }, [dispatch]);
 
   const onSubmit = (data: AddressDetailsFormValues) => {

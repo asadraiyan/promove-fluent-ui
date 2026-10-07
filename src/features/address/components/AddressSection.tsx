@@ -1,24 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 
 import { FieldLabel, FormInput, FormDropdown } from "../../../shared";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 import { ADDRESS_TYPE_OPTIONS } from "../constants";
-
-interface LocationOption {
-  id: string;
-  label: string;
-}
-interface StateOption extends LocationOption {
-  cities: LocationOption[];
-}
-interface CountryOption extends LocationOption {
-  states: StateOption[];
-}
-interface LocationDataResponse {
-  countries: CountryOption[];
-}
+import { useAppSelector } from "@/app/hooks";
 
 const useStyles = makeStyles({
   gridContainer: {
@@ -39,31 +26,10 @@ const AddressSection: React.FC = () => {
   const selectedCountry = useWatch({ control, name: "country" });
   const selectedState = useWatch({ control, name: "state" });
   const styles = useStyles();
-
-  const [locationData, setLocationData] = useState<LocationDataResponse | null>(
-    null,
+  const { data: locationData, status, error } = useAppSelector(
+    (state) => state.locationData,
   );
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchLocationData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch("/locationData.json");
-
-        if (!response.ok) throw new Error("Network response was not ok");
-
-        const data: LocationDataResponse = await response.json();
-        setLocationData(data);
-      } catch (error) {
-        console.error("Failed to fetch location data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchLocationData();
-  }, []);
+  const isLoading = status === "idle" || status === "loading";
 
   const stateOptions = useMemo(() => {
     if (!locationData) return [];
@@ -93,6 +59,7 @@ const AddressSection: React.FC = () => {
 
   return (
     <section>
+      {error && <div role="alert">{error}</div>}
       <div className={styles.gridContainer}>
         <div className={styles.labelCell}>
           <FieldLabel>Address Type</FieldLabel>

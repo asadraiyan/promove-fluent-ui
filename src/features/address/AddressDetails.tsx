@@ -8,7 +8,7 @@ import { ADDRESS_DETAILS_DEFAULT_VALUES } from "./constants";
 import ContactDetails from "./components/ContactDetails";
 import ShipperDeclaration from "./components/ShipperDeclaration";
 import AccessInfo from "./components/AccessInfo";
-import { Button, Typography } from "@/shared";
+import { Button, ResponsiveGrid, Typography } from "@/shared";
 import { useAppDispatch } from "@/app/hooks";
 import { loadLocationData } from "./reducers/locationDataSlice";
 import {
@@ -66,12 +66,8 @@ const useStyles = makeStyles({
     },
   },
   formBody: {
-    display: "grid",
     gridTemplateColumns: "2fr 1fr",
     gap: tokens.spacingHorizontalL,
-    "@media (max-width: 600px)": {
-      gridTemplateColumns: "minmax(0, 1fr)",
-    },
   },
   leftColumn: {
     display: "flex",
@@ -162,7 +158,7 @@ const AddressDetails: React.FC = () => {
           </button>
         </div>
 
-        <div className={styles.formBody}>
+        <ResponsiveGrid className={styles.formBody}>
           <div className={styles.leftColumn}>
             <NameSection />
             <hr className={styles.divider} />
@@ -170,13 +166,12 @@ const AddressDetails: React.FC = () => {
             <hr className={styles.divider} />
             <ShipperDeclaration />
           </div>
-
           <div className={styles.rightColumn}>
             <ContactDetails />
             <hr className={styles.divider} />
             <AccessInfo />
           </div>
-        </div>
+        </ResponsiveGrid>
 
         <div className={styles.footer}>
           <hr className={styles.divider} />

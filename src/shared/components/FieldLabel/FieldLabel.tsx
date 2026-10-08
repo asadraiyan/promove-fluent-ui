@@ -10,6 +10,8 @@ export interface FieldLabelProps extends LabelProps {
   required?: boolean;
 }
 
+export type FieldLabelPosition = "top" | "left";
+
 export const FieldLabel: React.FC<FieldLabelProps> = ({
   children,
   required = false,
@@ -24,4 +26,3 @@ export const FieldLabel: React.FC<FieldLabelProps> = ({
     </Label>
   );
 };
-

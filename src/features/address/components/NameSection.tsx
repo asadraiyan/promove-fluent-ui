@@ -2,7 +2,11 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 
-import { FormInput, FormDropdown, FieldLabel } from "../../../shared";
+import {
+  FormInput,
+  FormDropdown,
+  ResponsiveGrid,
+} from "../../../shared";
 
 import type { AddressDetailsFormValues } from "../AddressDetails.types";
 import { ADDRESS_DETAILS_DEFAULT_VALUES } from "../constants";
@@ -11,14 +15,10 @@ import { selectAddressDetailsPerson } from "../reducers/addressDetailsSlice";
 
 const useStyles = makeStyles({
   grid: {
-    display: "grid",
     gridTemplateColumns:
       "minmax(72px, 0.65fr) minmax(120px, 1.7fr) minmax(100px, 1.2fr) minmax(110px, 1.45fr) minmax(100px, 1.1fr)",
     gap: tokens.spacingHorizontalS,
     alignItems: "start",
-    "@media (max-width: 600px)": {
-      gridTemplateColumns: "minmax(0, 1fr)",
-    },
   },
   field: {
     display: "flex",
@@ -63,13 +63,12 @@ const NameSection: React.FC = () => {
   return (
     <section>
       {error && <div role="alert">{error}</div>}
-      <div className={styles.grid}>
+      <ResponsiveGrid className={styles.grid}>
         <div className={styles.field}>
-          <FieldLabel>Prefix</FieldLabel>
-
           <FormDropdown
             name="prefix"
             control={control}
+            label="Prefix"
             options={people.map(({ id, label }) => ({
               value: id,
               label,
@@ -80,29 +79,21 @@ const NameSection: React.FC = () => {
         </div>
 
         <div className={styles.field}>
-          <FieldLabel>Name</FieldLabel>
-
-          <FormInput name="firstName" control={control} placeholder="" />
+          <FormInput label="Name" name="firstName" control={control} placeholder="" />
         </div>
 
         <div className={styles.field}>
-          <FieldLabel>Middle</FieldLabel>
-
-          <FormInput name="middleName" control={control} placeholder="" />
+          <FormInput label="Middle" name="middleName" control={control} placeholder="" />
         </div>
 
         <div className={styles.field}>
-          <FieldLabel>Last</FieldLabel>
-
-          <FormInput name="lastName" control={control} placeholder="" />
+          <FormInput label="Last" name="lastName" control={control} placeholder="" />
         </div>
 
         <div className={styles.field}>
-          <FieldLabel>Nick Name</FieldLabel>
-
-          <FormInput name="nickName" control={control} placeholder="" />
+          <FormInput label="Nick Name" name="nickName" control={control} placeholder="" />
         </div>
-      </div>
+      </ResponsiveGrid>
     </section>
   );
 };

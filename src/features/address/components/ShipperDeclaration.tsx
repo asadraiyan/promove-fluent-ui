@@ -3,7 +3,12 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import React from "react";
 import { useController, useFormContext } from "react-hook-form";
 
-import { Button, FieldLabel, FormDropdown, FormInput } from "@/shared";
+import {
+  FieldLabel,
+  FormDropdown,
+  FormInput,
+  ResponsiveGrid,
+} from "@/shared";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 
 const useStyles = makeStyles({
@@ -13,26 +18,13 @@ const useStyles = makeStyles({
     marginBottom: tokens.spacingVerticalM,
   },
   grid: {
-    display: "grid",
-    gridTemplateColumns: "140px 1fr 160px 1fr auto",
+    gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
     rowGap: tokens.spacingVerticalM,
     columnGap: tokens.spacingHorizontalM,
-    alignItems: "center",
-    "@media (max-width: 600px)": {
-      gridTemplateColumns: "minmax(0, 1fr)",
-      alignItems: "stretch",
-      "& > div:empty": {
-        display: "none",
-      },
-    },
   },
-  labelCell: {
-    justifySelf: "end",
-    textAlign: "right",
-    "@media (max-width: 600px)": {
-      justifySelf: "start",
-      textAlign: "left",
-    },
+  dateGrid: {
+    gridTemplateColumns: "160px minmax(0, 1fr)",
+    gap: tokens.spacingHorizontalM,
   },
 });
 
@@ -63,48 +55,48 @@ function ShipperDeclaration() {
   return (
     <section>
       <div className={styles.title}>Shipper Declaration :</div>
-      <div className={styles.grid}>
-        <div className={styles.labelCell}>
-          <FieldLabel>Identification Indicator</FieldLabel>
-        </div>
+      <ResponsiveGrid className={styles.grid}>
         <FormDropdown
           name="identificationIndicator"
           control={control}
+          label="Identification Indicator"
+          labelPosition="left"
           placeholder="Select Indicator"
           options={identificationIndicatorOptions}
         />
-        <div className={styles.labelCell}>
-          <FieldLabel>Customer Date of Birth</FieldLabel>
-        </div>
-        <DatePicker
-          placeholder="Select a date"
-          value={
-            dateOfBirthField.value
-              ? new Date(`${dateOfBirthField.value}T00:00:00`)
-              : null
-          }
-          onSelectDate={(date) =>
-            dateOfBirthField.onChange(date ? formatDate(date) : "")
-          }
-          formatDate={(date) => (date ? formatDate(date) : "")}
+        <ResponsiveGrid className={styles.dateGrid}>
+          <FieldLabel htmlFor="customerDateOfBirth">
+            Customer Date of Birth
+          </FieldLabel>
+          <DatePicker
+            id="customerDateOfBirth"
+            placeholder="Select a date"
+            value={
+              dateOfBirthField.value
+                ? new Date(`${dateOfBirthField.value}T00:00:00`)
+                : null
+            }
+            onSelectDate={(date) =>
+              dateOfBirthField.onChange(date ? formatDate(date) : "")
+            }
+            formatDate={(date) => (date ? formatDate(date) : "")}
+          />
+        </ResponsiveGrid>
+        <FormInput
+          name="foreignIdEIN"
+          control={control}
+          label="Foreign Id/EIN"
+          labelPosition="left"
         />
-        {/* <Button>Edit</Button> */}
-        <div></div>
-        <div className={styles.labelCell}>
-          <FieldLabel>Foreign Id/EIN</FieldLabel>
-        </div>
-        <FormInput name="foreignIdEIN" control={control} />
-        <div className={styles.labelCell}>
-          <FieldLabel>Country of Issue</FieldLabel>
-        </div>
         <FormDropdown
           name="countryOfIssue"
           control={control}
+          label="Country of Issue"
+          labelPosition="left"
           placeholder="Select a country"
           options={countryOfIssueOptions}
         />
-        <div />
-      </div>
+      </ResponsiveGrid>
     </section>
   );
 }

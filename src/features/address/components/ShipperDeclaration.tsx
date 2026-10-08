@@ -88,7 +88,8 @@ function ShipperDeclaration() {
           }
           formatDate={(date) => (date ? formatDate(date) : "")}
         />
-        <Button>Edit</Button>
+        {/* <Button>Edit</Button> */}
+        <div></div>
         <div className={styles.labelCell}>
           <FieldLabel>Foreign Id/EIN</FieldLabel>
         </div>

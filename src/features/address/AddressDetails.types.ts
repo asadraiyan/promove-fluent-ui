@@ -31,3 +31,23 @@ export interface AddressDetailsFormValues {
   foreignIdEIN: string;
   countryOfIssue: string;
 }
+
+export interface AddressLocationReference {
+  id: string;
+  name: string;
+}
+
+export type AddressDetailsPersonFormValues = Omit<
+  AddressDetailsFormValues,
+  "country" | "state" | "city"
+> & {
+  country: AddressLocationReference;
+  state: AddressLocationReference;
+  city: AddressLocationReference;
+};
+
+export interface AddressDetailsPerson {
+  id: string;
+  label: string;
+  formValues: AddressDetailsPersonFormValues;
+}

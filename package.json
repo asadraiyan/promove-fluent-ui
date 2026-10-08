@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fluentui/react-components": "^9.0.0",
+    "@fluentui/react-datepicker-compat": "^0.6.39",
     "@reduxjs/toolkit": "^1.9.7",
     "@syncfusion/ej2-base": "^34.2.8",
     "@syncfusion/ej2-react-documenteditor": "^34.2.9",

@@ -1,69 +1,69 @@
 {
   "countries": [
     {
-      "value": "india",
+      "id": "india",
       "label": "India",
       "states": [
         {
-          "value": "uttar-pradesh",
+          "id": "uttar-pradesh",
           "label": "Uttar Pradesh",
           "cities": [
             {
-              "value": "lucknow",
+              "id": "lucknow",
               "label": "Lucknow"
             },
             {
-              "value": "kanpur",
+              "id": "kanpur",
               "label": "Kanpur"
             },
             {
-              "value": "noida",
+              "id": "noida",
               "label": "Noida"
             },
             {
-              "value": "varanasi",
+              "id": "varanasi",
               "label": "Varanasi"
             }
           ]
         },
         {
-          "value": "delhi",
+          "id": "delhi",
           "label": "Delhi",
           "cities": [
             {
-              "value": "new-delhi",
+              "id": "new-delhi",
               "label": "New Delhi"
             }
           ]
         },
         {
-          "value": "maharashtra",
+          "id": "maharashtra",
           "label": "Maharashtra",
           "cities": [
             {
-              "value": "mumbai",
+              "id": "mumbai",
               "label": "Mumbai"
             },
             {
-              "value": "pune",
+              "id": "pune",
               "label": "Pune"
             },
             {
-              "value": "nagpur",
+              "id": "nagpur",
               "label": "Nagpur"
             }
           ]
         },
         {
-          "value": "karnataka",
+          "id": "karnataka",
           "label": "Karnataka",
           "cities": [
             {
-              "value": "bangalore",
+              "id": "bangalore",
               "label": "Bangalore"
             },
             {
-              "value": "mysore",
+              "id": "mysore",
               "label": "Mysore"
             }
           ]
@@ -71,33 +71,33 @@
       ]
     },
     {
-      "value": "usa",
+      "id": "usa",
       "label": "United States",
       "states": [
         {
-          "value": "california",
+          "id": "california",
           "label": "California",
           "cities": [
             {
-              "value": "los-angeles",
+              "id": "los-angeles",
               "label": "Los Angeles"
             },
             {
-              "value": "san-francisco",
+              "id": "san-francisco",
               "label": "San Francisco"
             }
           ]
         },
         {
-          "value": "texas",
+          "id": "texas",
           "label": "Texas",
           "cities": [
             {
-              "value": "houston",
+              "id": "houston",
               "label": "Houston"
             },
             {
-              "value": "dallas",
+              "id": "dallas",
               "label": "Dallas"
             }
           ]
@@ -105,33 +105,33 @@
       ]
     },
     {
-      "value": "uk",
+      "id": "uk",
       "label": "United Kingdom",
       "states": [
         {
-          "value": "england",
+          "id": "england",
           "label": "England",
           "cities": [
             {
-              "value": "london",
+              "id": "london",
               "label": "London"
             },
             {
-              "value": "manchester",
+              "id": "manchester",
               "label": "Manchester"
             }
           ]
         },
         {
-          "value": "scotland",
+          "id": "scotland",
           "label": "Scotland",
           "cities": [
             {
-              "value": "edinburgh",
+              "id": "edinburgh",
               "label": "Edinburgh"
             },
             {
-              "value": "glasgow",
+              "id": "glasgow",
               "label": "Glasgow"
             }
           ]

@@ -1,0 +1,130 @@
+{
+  "users": [
+    {
+      "id": "person-asad",
+      "label": "Asad",
+      "formValues": {
+        "prefix": "person-asad",
+        "firstName": "Asad",
+        "middleName": "Raiyan",
+        "lastName": "Khan",
+        "nickName": "Asad",
+        "addressType": "delivery",
+        "country": {
+          "id": "india",
+          "name": "India"
+        },
+        "address1": "12 Residency Road",
+        "address2": "Flat 4B",
+        "address3": "Ashok Nagar",
+        "city": {
+          "id": "bangalore",
+          "name": "Bangalore"
+        },
+        "state": {
+          "id": "karnataka",
+          "name": "Karnataka"
+        },
+        "postcode": "560025",
+        "homeTel": "+91-80-4567-1001",
+        "officeTel": "+91-80-4567-1002",
+        "mobile1": "+91-98765-43210",
+        "mobile2": "+91-98765-43211",
+        "fax": "+91-80-4567-1003",
+        "email": "asad.khan@example.com",
+        "preferred": "email",
+        "alternateEmail": "asad.rai@example.com",
+        "accessInfo": "Call on arrival; the security desk will provide access.",
+        "directions": "Enter from Residency Road and use the east entrance.",
+        "identificationIndicator": "passport",
+        "customerDateOfBirth": "1992-04-18",
+        "foreignIdEIN": "IN-ASAD-1042",
+        "countryOfIssue": "india"
+      }
+    },
+    {
+      "id": "person-arpit",
+      "label": "Arpit",
+      "formValues": {
+        "prefix": "person-arpit",
+        "firstName": "Arpit",
+        "middleName": "Raj",
+        "lastName": "Sharma",
+        "nickName": "Ari",
+        "addressType": "billing",
+        "country": {
+          "id": "india",
+          "name": "India"
+        },
+        "address1": "45 Gomti Nagar",
+        "address2": "Vibhuti Khand",
+        "address3": "Near Riverside Mall",
+        "city": {
+          "id": "lucknow",
+          "name": "Lucknow"
+        },
+        "state": {
+          "id": "uttar-pradesh",
+          "name": "Uttar Pradesh"
+        },
+        "postcode": "226010",
+        "homeTel": "+91-522-456-2001",
+        "officeTel": "+91-522-456-2002",
+        "mobile1": "+91-91234-56780",
+        "mobile2": "+91-91234-56781",
+        "fax": "+91-522-456-2003",
+        "email": "arpit.sharma@example.com",
+        "preferred": "mobile",
+        "alternateEmail": "arpit.raj@example.com",
+        "accessInfo": "Please check in with reception before entry.",
+        "directions": "Use the main entrance on the north side of the building.",
+        "identificationIndicator": "national-id",
+        "customerDateOfBirth": "1988-11-03",
+        "foreignIdEIN": "IN-ARPIT-2086",
+        "countryOfIssue": "india"
+      }
+    },
+    {
+      "id": "person-syed",
+      "label": "Syed",
+      "formValues": {
+        "prefix": "person-syed",
+        "firstName": "Syed",
+        "middleName": "Ahmed",
+        "lastName": "Farooq",
+        "nickName": "Sam",
+        "addressType": "delivery",
+        "country": {
+          "id": "usa",
+          "name": "United States"
+        },
+        "address1": "850 Market Street",
+        "address2": "Suite 320",
+        "address3": "Financial District",
+        "city": {
+          "id": "san-francisco",
+          "name": "San Francisco"
+        },
+        "state": {
+          "id": "california",
+          "name": "California"
+        },
+        "postcode": "94103",
+        "homeTel": "+1-415-555-3001",
+        "officeTel": "+1-415-555-3002",
+        "mobile1": "+1-415-555-0130",
+        "mobile2": "+1-415-555-0131",
+        "fax": "+1-415-555-3003",
+        "email": "syed.farooq@example.com",
+        "preferred": "email",
+        "alternateEmail": "syed.ahmed@example.com",
+        "accessInfo": "Visitor badge required; contact the front desk.",
+        "directions": "Enter through the Market Street lobby and take the elevators to floor 3.",
+        "identificationIndicator": "passport",
+        "customerDateOfBirth": "1985-07-26",
+        "foreignIdEIN": "US-SYED-3095",
+        "countryOfIssue": "usa"
+      }
+    }
+  ]
+}

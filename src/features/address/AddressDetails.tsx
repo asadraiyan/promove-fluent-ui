@@ -118,7 +118,7 @@ const AddressDetails: React.FC = () => {
     defaultValues: ADDRESS_DETAILS_DEFAULT_VALUES,
   });
 
-  const { dirtyFields } = methods.formState;
+  const { dirtyFields, isDirty } = methods.formState;
 
   useEffect(() => {
     dispatch(loadAddressDetailsPeople());
@@ -186,7 +186,9 @@ const AddressDetails: React.FC = () => {
               <Button type="button" onClick={handleNewClick}>
                 New
               </Button>
-              <Button type="submit">Save</Button>
+              <Button type="submit" disabled={!isDirty}>
+                Save
+              </Button>
             </div>
           </div>
         </div>

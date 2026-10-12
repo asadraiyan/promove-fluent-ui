@@ -188,6 +188,7 @@ export const PersonDashboard: React.FC = () => {
         searchPlaceholder="Search by name, email, or location..."
         selectionMode="multiselect"
         toolbarActions={ToolbarButtons}
+        pageSize={10}
       />
     </div>
   );

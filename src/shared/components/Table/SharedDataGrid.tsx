@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   DataGrid,
   DataGridHeader,
@@ -12,8 +12,13 @@ import {
   makeStyles,
   tokens,
   Text,
+  Button,
 } from "@fluentui/react-components";
-import { SearchRegular } from "@fluentui/react-icons";
+import {
+  SearchRegular,
+  ChevronLeftRegular,
+  ChevronRightRegular,
+} from "@fluentui/react-icons";
 
 export interface GridColumnDef<T> {
   key: keyof T & string;
@@ -30,6 +35,7 @@ interface SharedDataGridProps<T> {
   toolbarActions?: React.ReactNode;
   selectionMode?: "single" | "multiselect";
   emptyState?: React.ReactNode;
+  pageSize?: number;
 }
 
 const useStyles = makeStyles({
@@ -65,6 +71,19 @@ const useStyles = makeStyles({
     alignItems: "center",
     color: tokens.colorNeutralForeground3,
   },
+  footer: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: `${tokens.spacingVerticalM} ${tokens.spacingHorizontalM}`,
+    borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground1,
+  },
+  paginationControls: {
+    display: "flex",
+    gap: tokens.spacingHorizontalS,
+    alignItems: "center",
+  },
 });
 
 export const SharedDataGrid = <T extends Record<string, any>>({
@@ -75,9 +94,16 @@ export const SharedDataGrid = <T extends Record<string, any>>({
   toolbarActions,
   selectionMode,
   emptyState,
+  pageSize = 0,
 }: SharedDataGridProps<T>) => {
   const styles = useStyles();
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   const fluentColumns: TableColumnDefinition<T>[] = useMemo(() => {
     return columns.map((col) =>
@@ -111,6 +137,16 @@ export const SharedDataGrid = <T extends Record<string, any>>({
     );
   }, [items, searchQuery, columns]);
 
+  const paginatedItems = useMemo(() => {
+    if (pageSize <= 0) return filteredItems;
+    const startIndex = (currentPage - 1) * pageSize;
+    return filteredItems.slice(startIndex, startIndex + pageSize);
+  }, [filteredItems, currentPage, pageSize]);
+
+  const totalPages =
+    pageSize > 0 ? Math.ceil(filteredItems.length / pageSize) : 1;
+  const isPaginationEnabled = pageSize > 0 && filteredItems.length > 0;
+
   return (
     <div className={styles.container}>
       <div className={styles.toolbar}>
@@ -125,7 +161,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
       </div>
 
       <DataGrid
-        items={filteredItems}
+        items={paginatedItems}
         columns={fluentColumns}
         sortable
         selectionMode={selectionMode}
@@ -169,6 +205,38 @@ export const SharedDataGrid = <T extends Record<string, any>>({
       {filteredItems.length === 0 && (
         <div className={styles.emptyState}>
           {emptyState || <Text>No records match your search criteria.</Text>}
+        </div>
+      )}
+
+      {isPaginationEnabled && (
+        <div className={styles.footer}>
+          <Text size={200} color="neutralForeground3">
+            Showing {(currentPage - 1) * pageSize + 1} to{" "}
+            {Math.min(currentPage * pageSize, filteredItems.length)} of{" "}
+            {filteredItems.length} records
+          </Text>
+
+          <div className={styles.paginationControls}>
+            <Button
+              appearance="subtle"
+              icon={<ChevronLeftRegular />}
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              aria-label="Previous page"
+            />
+            <Text size={200} weight="semibold">
+              Page {currentPage} of {totalPages}
+            </Text>
+            <Button
+              appearance="subtle"
+              icon={<ChevronRightRegular />}
+              disabled={currentPage === totalPages}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              aria-label="Next page"
+            />
+          </div>
         </div>
       )}
     </div>

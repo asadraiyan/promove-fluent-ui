@@ -4,22 +4,25 @@ import {
   TableCellLayout,
   Avatar,
   tokens,
+  makeStyles,
+  typographyStyles,
+  mergeClasses,
 } from "@fluentui/react-components";
 import { PersonAddRegular, ArrowDownloadRegular } from "@fluentui/react-icons";
 import { SharedDataGrid, GridColumnDef } from "./SharedDataGrid";
 import apiResponse from "../../../../public/addressDetails.json";
 
 interface ApiUser {
-  id: string;
-  label: string;
-  formValues: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    mobile1: string;
-    addressType: string;
-    city: { name: string };
-    country: { name: string };
+  id?: string;
+  label?: string;
+  formValues?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    mobile1?: string;
+    addressType?: string;
+    city?: { name?: string };
+    country?: { name?: string };
     [key: string]: any;
   };
 }
@@ -33,23 +36,86 @@ interface FlatUserRow {
   locationString: string;
 }
 
-// Simulate your API response
 // const apiResponse = {
 //   users: [
-//     // ... paste your entire JSON array here
+//     // ... your JSON array
 //   ],
 // };
 
+const useStyles = makeStyles({
+  layout: {
+    padding: tokens.spacingVerticalXXL,
+    maxWidth: "1200px",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  header: {
+    ...typographyStyles.title2,
+    marginBottom: tokens.spacingVerticalL,
+  },
+  badgeBase: {
+    padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalS}`,
+    borderRadius: tokens.borderRadiusCircular,
+    textTransform: "capitalize",
+    fontSize: tokens.fontSizeBase200,
+    fontWeight: tokens.fontWeightSemibold,
+  },
+  badgeDelivery: {
+    backgroundColor: tokens.colorPaletteGreenBackground1,
+    color: tokens.colorPaletteGreenForeground1,
+  },
+  badgeBilling: {
+    backgroundColor: tokens.colorPaletteBlueBackground2,
+    color: tokens.colorPaletteBlueForeground2,
+  },
+  badgeDefault: {
+    backgroundColor: tokens.colorNeutralBackground3,
+    color: tokens.colorNeutralForeground3,
+  },
+});
+
 export const PersonDashboard: React.FC = () => {
+  const styles = useStyles();
+
   const flatData: FlatUserRow[] = useMemo(() => {
-    return apiResponse.users.map((user: ApiUser) => ({
-      id: user.id,
-      fullName: `${user.formValues.firstName} ${user.formValues.lastName}`,
-      email: user.formValues.email,
-      phone: user.formValues.mobile1,
-      addressType: user.formValues.addressType,
-      locationString: `${user.formValues.city.name}, ${user.formValues.country.name}`,
-    }));
+    if (!apiResponse?.users || !Array.isArray(apiResponse.users)) {
+      return [];
+    }
+
+    return apiResponse.users
+      .map((user: ApiUser) => {
+        if (!user || !user.formValues) return null;
+
+        const form = user.formValues;
+
+        const firstName = form.firstName?.trim() || "Unknown";
+        const lastName = form.lastName?.trim() || "";
+        const fullName = `${firstName} ${lastName}`.trim();
+
+        const cityName = form.city?.name?.trim();
+        const countryName = form.country?.name?.trim();
+
+        let locationString = "Location not provided";
+        if (cityName && countryName) {
+          locationString = `${cityName}, ${countryName}`;
+        } else if (cityName) {
+          locationString = cityName;
+        } else if (countryName) {
+          locationString = countryName;
+        }
+
+        return {
+          id:
+            user.id ||
+            `unknown-${crypto.randomUUID ? crypto.randomUUID() : Math.random()}`,
+          fullName,
+          email: form.email?.trim() || "No email provided",
+          phone: form.mobile1?.trim() || "No phone provided",
+          addressType: form.addressType?.trim() || "unspecified",
+          locationString,
+        };
+      })
+      .filter((row): row is FlatUserRow => row !== null);
   }, []);
 
   const columns = useMemo<GridColumnDef<FlatUserRow>[]>(
@@ -82,30 +148,22 @@ export const PersonDashboard: React.FC = () => {
         key: "addressType",
         label: "Type",
         renderCell: (row) => {
-          const isDelivery = row.addressType === "delivery";
+          const badgeColorClass =
+            row.addressType === "delivery"
+              ? styles.badgeDelivery
+              : row.addressType === "billing"
+                ? styles.badgeBilling
+                : styles.badgeDefault;
+
           return (
-            <span
-              style={{
-                padding: "2px 8px",
-                backgroundColor: isDelivery
-                  ? tokens.colorPaletteGreenBackground1
-                  : tokens.colorPaletteBlueBackground2,
-                color: isDelivery
-                  ? tokens.colorPaletteGreenForeground1
-                  : tokens.colorPaletteBlueForeground2,
-                borderRadius: tokens.borderRadiusCircular,
-                textTransform: "capitalize",
-                fontSize: tokens.fontSizeBase200,
-                fontWeight: tokens.fontWeightSemibold,
-              }}
-            >
+            <span className={mergeClasses(styles.badgeBase, badgeColorClass)}>
               {row.addressType}
             </span>
           );
         },
       },
     ],
-    [],
+    [styles],
   );
 
   const ToolbarButtons = (
@@ -120,10 +178,8 @@ export const PersonDashboard: React.FC = () => {
   );
 
   return (
-    <div style={{ padding: "32px", maxWidth: "1200px", margin: "0 auto" }}>
-      <h2 style={{ fontFamily: "Segoe UI", marginBottom: "24px" }}>
-        User Directory
-      </h2>
+    <div className={styles.layout}>
+      <h2 className={styles.header}>User Directory</h2>
 
       <SharedDataGrid<FlatUserRow>
         items={flatData}

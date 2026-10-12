@@ -27,7 +27,6 @@ interface SharedDataGridProps<T> {
   columns: GridColumnDef<T>[];
   getRowId: (item: T) => string;
   searchPlaceholder?: string;
-
   toolbarActions?: React.ReactNode;
   selectionMode?: "single" | "multiselect";
   emptyState?: React.ReactNode;
@@ -41,15 +40,15 @@ const useStyles = makeStyles({
     borderRadius: tokens.borderRadiusMedium,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
     boxShadow: tokens.shadow2,
-    overflow: "hidden", 
+    overflow: "hidden",
   },
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: tokens.spacingVerticalM + " " + tokens.spacingHorizontalM,
+    padding: `${tokens.spacingVerticalM} ${tokens.spacingHorizontalM}`,
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-    backgroundColor: tokens.colorNeutralBackground2, 
+    backgroundColor: tokens.colorNeutralBackground2,
   },
   actionsGroup: {
     display: "flex",
@@ -131,7 +130,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
         sortable
         selectionMode={selectionMode}
         getRowId={getRowId}
-        focusMode="composite" 
+        focusMode="composite"
       >
         <DataGridHeader>
           <DataGridRow

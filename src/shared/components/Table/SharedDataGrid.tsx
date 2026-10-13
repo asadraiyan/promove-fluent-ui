@@ -46,7 +46,13 @@ const useStyles = makeStyles({
     borderRadius: tokens.borderRadiusMedium,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
     boxShadow: tokens.shadow2,
-    overflow: "hidden",
+  },
+  tableWrapper: {
+    overflowX: "auto",
+    width: "100%",
+  },
+  grid: {
+    minWidth: "800px",
   },
   toolbar: {
     display: "flex",
@@ -159,49 +165,50 @@ export const SharedDataGrid = <T extends Record<string, any>>({
           onChange={(ev, data) => setSearchQuery(data.value)}
         />
       </div>
-
-      <DataGrid
-        items={paginatedItems}
-        columns={fluentColumns}
-        sortable
-        selectionMode={selectionMode}
-        getRowId={getRowId}
-        focusMode="composite"
-      >
-        <DataGridHeader>
-          <DataGridRow
-            selectionCell={
-              selectionMode === "multiselect"
-                ? { checkboxIndicator: { "aria-label": "Select all rows" } }
-                : undefined
-            }
-          >
-            {({ renderHeaderCell }) => (
-              <DataGridHeaderCell>
-                <Text weight="semibold">{renderHeaderCell()}</Text>
-              </DataGridHeaderCell>
-            )}
-          </DataGridRow>
-        </DataGridHeader>
-
-        <DataGridBody<T>>
-          {({ item, rowId }) => (
-            <DataGridRow<T>
-              key={rowId}
+      <div className={styles.tableWrapper}>
+        <DataGrid
+          className={styles.grid}
+          items={paginatedItems}
+          columns={fluentColumns}
+          sortable
+          selectionMode={selectionMode}
+          getRowId={getRowId}
+          focusMode="composite"
+        >
+          <DataGridHeader>
+            <DataGridRow
               selectionCell={
-                selectionMode
-                  ? { checkboxIndicator: { "aria-label": "Select row" } }
+                selectionMode === "multiselect"
+                  ? { checkboxIndicator: { "aria-label": "Select all rows" } }
                   : undefined
               }
             >
-              {({ renderCell }) => (
-                <DataGridCell>{renderCell(item)}</DataGridCell>
+              {({ renderHeaderCell }) => (
+                <DataGridHeaderCell>
+                  <Text weight="semibold">{renderHeaderCell()}</Text>
+                </DataGridHeaderCell>
               )}
             </DataGridRow>
-          )}
-        </DataGridBody>
-      </DataGrid>
+          </DataGridHeader>
 
+          <DataGridBody<T>>
+            {({ item, rowId }) => (
+              <DataGridRow<T>
+                key={rowId}
+                selectionCell={
+                  selectionMode
+                    ? { checkboxIndicator: { "aria-label": "Select row" } }
+                    : undefined
+                }
+              >
+                {({ renderCell }) => (
+                  <DataGridCell>{renderCell(item)}</DataGridCell>
+                )}
+              </DataGridRow>
+            )}
+          </DataGridBody>
+        </DataGrid>
+      </div>
       {filteredItems.length === 0 && (
         <div className={styles.emptyState}>
           {emptyState || <Text>No records match your search criteria.</Text>}

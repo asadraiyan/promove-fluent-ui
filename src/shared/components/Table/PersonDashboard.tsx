@@ -187,7 +187,7 @@ export const PersonDashboard: React.FC = () => {
         getRowId={(row) => row.id}
         searchPlaceholder="Search by name, email, or location..."
         selectionMode="multiselect"
-        toolbarActions={ToolbarButtons}
+        // toolbarActions={ToolbarButtons}
         pageSize={10}
       />
     </div>

@@ -1,6 +1,6 @@
 import { DatePicker } from "@fluentui/react-datepicker-compat";
 import { makeStyles, tokens } from "@fluentui/react-components";
-import React from "react";
+import React, { useMemo } from "react";
 import { useController, useFormContext } from "react-hook-form";
 
 import {
@@ -52,6 +52,13 @@ function ShipperDeclaration() {
   });
   const styles = useStyles();
 
+  const { today, minDobDate } = useMemo(() => {
+    const currentDate = new Date();
+    const minDate = new Date();
+    minDate.setFullYear(currentDate.getFullYear() - 120);
+    return { today: currentDate, minDobDate: minDate };
+  }, []);
+
   return (
     <section>
       <div className={styles.title}>Shipper Declaration :</div>
@@ -80,6 +87,8 @@ function ShipperDeclaration() {
               dateOfBirthField.onChange(date ? formatDate(date) : "")
             }
             formatDate={(date) => (date ? formatDate(date) : "")}
+             maxDate={today}
+             minDate={minDobDate}
           />
         </ResponsiveGrid>
         <FormInput

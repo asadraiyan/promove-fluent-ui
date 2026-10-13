@@ -11,18 +11,18 @@
         "nickName": "Asad",
         "addressType": "delivery",
         "country": {
-          "id": "india",
+          "id": "IN",
           "name": "India"
         },
         "address1": "12 Residency Road",
         "address2": "Flat 4B",
         "address3": "Ashok Nagar",
         "city": {
-          "id": "bangalore",
+          "id": "BLR",
           "name": "Bangalore"
         },
         "state": {
-          "id": "karnataka",
+          "id": "IN-KA",
           "name": "Karnataka"
         },
         "postcode": "560025",
@@ -48,23 +48,23 @@
       "formValues": {
         "prefix": "person-arpit",
         "firstName": "Arpit",
-        "middleName": "Raj",
-        "lastName": "Sharma",
+        "middleName": "",
+        "lastName": "Singh",
         "nickName": "Ari",
         "addressType": "billing",
         "country": {
-          "id": "india",
+          "id": "IN",
           "name": "India"
         },
         "address1": "45 Gomti Nagar",
         "address2": "Vibhuti Khand",
         "address3": "Near Riverside Mall",
         "city": {
-          "id": "lucknow",
+          "id": "LKO",
           "name": "Lucknow"
         },
         "state": {
-          "id": "uttar-pradesh",
+          "id": "IN-UP",
           "name": "Uttar Pradesh"
         },
         "postcode": "226010",
@@ -79,7 +79,7 @@
         "accessInfo": "Please check in with reception before entry.",
         "directions": "Use the main entrance on the north side of the building.",
         "identificationIndicator": "national-id",
-        "customerDateOfBirth": "1988-11-03",
+        "customerDateOfBirth": "1998-11-09",
         "foreignIdEIN": "IN-ARPIT-2086",
         "countryOfIssue": "india"
       }
@@ -95,18 +95,18 @@
         "nickName": "Sam",
         "addressType": "delivery",
         "country": {
-          "id": "usa",
+          "id": "US",
           "name": "United States"
         },
         "address1": "850 Market Street",
         "address2": "Suite 320",
         "address3": "Financial District",
         "city": {
-          "id": "san-francisco",
+          "id": "SFO",
           "name": "San Francisco"
         },
         "state": {
-          "id": "california",
+          "id": "US-CA",
           "name": "California"
         },
         "postcode": "94103",

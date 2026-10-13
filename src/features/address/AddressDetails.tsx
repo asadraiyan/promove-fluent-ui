@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { AddressDetailsFormValues } from "./AddressDetails.types";
 import NameSection from "./components/NameSection";
@@ -115,6 +115,10 @@ const AddressDetails: React.FC = () => {
   });
 
   const { dirtyFields } = methods.formState;
+  const formValues = useWatch({ control: methods.control });
+  const hasFormValues = Object.values(formValues).some(
+    (value) => value.trim().length > 0,
+  );
 
   useEffect(() => {
     dispatch(loadAddressDetailsPeople());
@@ -181,7 +185,9 @@ const AddressDetails: React.FC = () => {
               <Button type="button" onClick={handleNewClick}>
                 New
               </Button>
-              <Button type="submit">Save</Button>
+              <Button type="submit" disabled={!hasFormValues}>
+                Save
+              </Button>
             </div>
           </div>
         </div>

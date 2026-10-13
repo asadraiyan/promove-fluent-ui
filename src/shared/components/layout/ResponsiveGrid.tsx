@@ -5,15 +5,17 @@ const useStyles = makeStyles({
   grid: {
     display: "grid",
     minWidth: 0,
-    "@media (max-width: 600px)": {
-      gridTemplateColumns: "minmax(0, 1fr)",
-      alignItems: "stretch",
-      "& > div:empty": {
-        display: "none",
+    "@media (max-width: 1024px)": {
+      "&[data-responsive-grid]": {
+        gridTemplateColumns: "minmax(0, 1fr)",
+        alignItems: "stretch",
       },
       "& [data-responsive-grid-label]": {
         justifySelf: "start",
         textAlign: "left",
+      },
+      "& > div:empty": {
+        display: "none",
       },
     },
   },
@@ -38,6 +40,7 @@ export const ResponsiveGrid: React.FC<ResponsiveGridProps> = ({
     <div
       {...props}
       className={className ? `${styles.grid} ${className}` : styles.grid}
+      data-responsive-grid
     />
   );
 };

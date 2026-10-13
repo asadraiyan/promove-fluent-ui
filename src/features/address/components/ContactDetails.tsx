@@ -1,30 +1,12 @@
-import { FieldLabel, FormDropdown, FormInput } from "@/shared";
+import {
+  FormDropdown,
+  FormInput,
+  ResponsiveGrid,
+} from "@/shared";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
-
-const useStyles = makeStyles({
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "100px 1fr",
-    rowGap: tokens.spacingVerticalS,
-    columnGap: tokens.spacingHorizontalS,
-    alignItems: "center",
-    "@media (max-width: 600px)": {
-      gridTemplateColumns: "minmax(0, 1fr)",
-      alignItems: "stretch",
-    },
-  },
-  labelCell: {
-    justifySelf: "end",
-    textAlign: "right",
-    "@media (max-width: 600px)": {
-      justifySelf: "start",
-      textAlign: "left",
-    },
-  },
-});
 
 const preferredOption = [
   { value: "email", label: "Email" },
@@ -32,61 +14,49 @@ const preferredOption = [
   { value: "phone", label: "Phone" },
 ];
 
+const useStyles = makeStyles({
+  grid: {
+    gridTemplateColumns: "minmax(0, 1fr)",
+    rowGap: tokens.spacingVerticalS,
+    columnGap: tokens.spacingHorizontalS,
+  },
+});
+
 function ContactDetails() {
-  const styles = useStyles();
   const { control } = useFormContext<AddressDetailsFormValues>();
+  const styles = useStyles();
 
   return (
-    <div className={styles.grid}>
-      <div className={styles.labelCell}>
-        <FieldLabel>Home Tel</FieldLabel>
-      </div>
-      <FormInput name="homeTel" control={control} />
+    <ResponsiveGrid className={styles.grid}>
+      <FormInput label="Home Tel" labelPosition="left" name="homeTel" control={control} />
 
-      <div className={styles.labelCell}>
-        <FieldLabel>Office Tel</FieldLabel>
-      </div>
-      <FormInput name="officeTel" control={control} />
+      <FormInput label="Office Tel" labelPosition="left" name="officeTel" control={control} />
 
-      <div className={styles.labelCell}>
-        <FieldLabel>Mobile 1</FieldLabel>
-      </div>
-      <FormInput name="mobile1" control={control} />
+      <FormInput label="Mobile 1" labelPosition="left" name="mobile1" control={control} />
 
-      <div className={styles.labelCell}>
-        <FieldLabel>Mobile 2</FieldLabel>
-      </div>
-      <FormInput name="mobile2" control={control} />
+      <FormInput label="Mobile 2" labelPosition="left" name="mobile2" control={control} />
 
-      <div className={styles.labelCell}>
-        <FieldLabel>Fax</FieldLabel>
-      </div>
-      <FormInput name="fax" control={control} />
+      <FormInput label="Fax" labelPosition="left" name="fax" control={control} />
 
-      <div className={styles.labelCell}>
-        <FieldLabel>email</FieldLabel>
-      </div>
       <FormInput
         name="email"
+        label="email"
+        labelPosition="left"
         type="email"
         control={control}
         placeholder="example@sirva.com"
       />
 
-      <div className={styles.labelCell}>
-        <FieldLabel>Preferred</FieldLabel>
-      </div>
       <FormDropdown
         name="preferred"
         control={control}
+        label="Preferred"
+        labelPosition="left"
         options={preferredOption}
       />
 
-      <div className={styles.labelCell}>
-        <FieldLabel>Alternate e-mail</FieldLabel>
-      </div>
-      <FormInput name="alternateEmail" control={control} />
-    </div>
+      <FormInput label="Alternate e-mail" labelPosition="left" name="alternateEmail" control={control} />
+    </ResponsiveGrid>
   );
 }
 

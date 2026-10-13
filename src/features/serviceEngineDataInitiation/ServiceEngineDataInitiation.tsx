@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { FieldLabel, FormInput, TextAreaField } from "@/shared";
+import {
+  FormInput,
+  ResponsiveGrid,
+  TextAreaField,
+} from "@/shared";
 import { ServiceEngineDataInitiationFormValues } from "./ServiceEngine.types";
 import { SERVICE_ENGINE_DEFAULT_VALUES } from "./constants";
 
@@ -46,19 +50,23 @@ const useStyles = makeStyles({
     fontWeight: tokens.fontWeightSemibold,
   },
   content: {
-    display: "grid",
+    padding: tokens.spacingHorizontalM,
     gridTemplateColumns: "minmax(0, 3.2fr) minmax(190px, 1fr)",
     columnGap: tokens.spacingHorizontalM,
     rowGap: tokens.spacingVerticalS,
-    alignItems: "center",
-    padding: tokens.spacingHorizontalM,
+  },
+  financialGrid: {
+    gridTemplateColumns:
+      "minmax(0, 1.3fr) minmax(0, 1.25fr) minmax(0, 0.8fr)",
+    columnGap: tokens.spacingHorizontalXS,
+    rowGap: tokens.spacingVerticalS,
   },
   fieldRow: {
-    display: "grid",
-    gridTemplateColumns: "minmax(145px, 0.72fr) minmax(0, 1.8fr)",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
     minWidth: 0,
+    "& > div": {
+      width: "100%",
+      minWidth: 0,
+    },
     "& input": {
       width: "100%",
       minWidth: 0,
@@ -66,10 +74,6 @@ const useStyles = makeStyles({
     },
   },
   textareaRow: {
-    display: "grid",
-    gridTemplateColumns: "minmax(145px, 0.72fr) minmax(0, 1.8fr)",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
     minWidth: 0,
     "& textarea": {
       width: "100%",
@@ -79,32 +83,10 @@ const useStyles = makeStyles({
       resize: "vertical",
     },
   },
-  financialRow: {
-    display: "grid",
-    gridTemplateColumns: "minmax(100px, 1.3fr) minmax(54px, 0.35fr) minmax(120px, 1.25fr) minmax(76px, 0.65fr) minmax(58px, 0.5fr) minmax(80px, 0.8fr)",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalXS,
-    minWidth: 0,
-    "& input": {
-      width: "100%",
-      minWidth: 0,
-      boxSizing: "border-box",
-    },
-  },
-  financialInput: {
-    minWidth: 0,
-  },
   label: {
     minWidth: 0,
     fontSize: tokens.fontSizeBase200,
     lineHeight: tokens.lineHeightBase200,
-  },
-  compactField: {
-    minWidth: 0,
-    "& > div": {
-      width: "100%",
-      minWidth: 0,
-    },
   },
 });
 
@@ -133,112 +115,130 @@ const ServiceEngineDataInitiation: React.FC = () => {
         </div>
 
         {isExpanded && (
-          <div className={styles.content}>
+          <ResponsiveGrid
+            className={styles.content}
+          >
             <div className={styles.fieldRow}>
-              <FieldLabel htmlFor="seProgram" className={styles.label}>
-                SE Program
-              </FieldLabel>
-              <div className={styles.compactField}>
-                <FormInput name="seProgram" control={control} />
-              </div>
+              <FormInput
+                name="seProgram"
+                control={control}
+                label="SE Program"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
             </div>
             <div className={styles.fieldRow}>
-              <FieldLabel htmlFor="moveType" className={styles.label}>
-                Move Type
-              </FieldLabel>
-              <div className={styles.compactField}>
-                <FormInput name="moveType" control={control} />
-              </div>
+              <FormInput
+                name="moveType"
+                control={control}
+                label="Move Type"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
             </div>
-            <div className={styles.financialRow}>
-              <FieldLabel htmlFor="monetaryCap" className={styles.label}>
-                Is there a monetary cap on this relocation?
-              </FieldLabel>
-              <div className={styles.financialInput}>
-                <FormInput name="monetaryCap" control={control} />
-              </div>
-              <FieldLabel htmlFor="monetaryCapAmount" className={styles.label}>
-                If yes what is the amount
-              </FieldLabel>
-              <div className={styles.financialInput}>
-                <FormInput name="monetaryCapAmount" control={control} />
-              </div>
-              <FieldLabel htmlFor="currency" className={styles.label}>
-                Currency
-              </FieldLabel>
-              <div className={styles.financialInput}>
-                <FormInput name="currency" control={control} />
-              </div>
-            </div>
+            <ResponsiveGrid
+              className={styles.financialGrid}
+            >
+              <FormInput
+                name="monetaryCap"
+                control={control}
+                label="Is there a monetary cap on this relocation?"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
+              <FormInput
+                name="monetaryCapAmount"
+                control={control}
+                label="If yes what is the amount"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
+              <FormInput
+                name="currency"
+                control={control}
+                label="Currency"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
+            </ResponsiveGrid>
             <div className={styles.fieldRow}>
-              <FieldLabel htmlFor="preferredMoveDate" className={styles.label}>
-                Preferred Move Date
-              </FieldLabel>
-              <div className={styles.compactField}>
-                <FormInput name="preferredMoveDate" control={control} />
-              </div>
+              <FormInput
+                name="preferredMoveDate"
+                control={control}
+                label="Preferred Move Date"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
             </div>
             <TextAreaField
               name="empInstructions"
               control={control}
               label="EMP Instructions"
+              labelPosition="left"
               className={styles.textareaRow}
               labelClassName={styles.label}
             />
             <div className={styles.fieldRow}>
-              <FieldLabel htmlFor="citizenship" className={styles.label}>
-                Citizenship
-              </FieldLabel>
-              <div className={styles.compactField}>
-                <FormInput name="citizenship" control={control} />
-              </div>
+              <FormInput
+                name="citizenship"
+                control={control}
+                label="Citizenship"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
             </div>
             <TextAreaField
               name="confidentialAssignmentRequirements"
               control={control}
               label="Confidential Assignment Requirements"
+              labelPosition="left"
               className={styles.textareaRow}
               labelClassName={styles.label}
             />
             <div className={styles.fieldRow}>
-              <FieldLabel htmlFor="volume" className={styles.label}>
-                Volume
-              </FieldLabel>
-              <div className={styles.compactField}>
-                <FormInput name="volume" control={control} />
-              </div>
+              <FormInput
+                name="volume"
+                control={control}
+                label="Volume"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
             </div>
             <TextAreaField
               name="reasonForRushMove"
               control={control}
               label="Reason for Rush Move"
+              labelPosition="left"
               className={styles.textareaRow}
               labelClassName={styles.label}
             />
             <div className={styles.fieldRow}>
-              <FieldLabel htmlFor="containerSize" className={styles.label}>
-                Container Size
-              </FieldLabel>
-              <div className={styles.compactField}>
-                <FormInput name="containerSize" control={control} />
-              </div>
+              <FormInput
+                name="containerSize"
+                control={control}
+                label="Container Size"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
             </div>
             <TextAreaField
               name="singlePointOfContactInstructions"
               control={control}
               label="Single Point of Contact Instructions"
+              labelPosition="left"
               className={styles.textareaRow}
               labelClassName={styles.label}
             />
             <div className={styles.fieldRow}>
-              <FieldLabel htmlFor="unitsOfMeasurement" className={styles.label}>
-                Units of Measurement
-              </FieldLabel>
-              <div className={styles.compactField}>
-                <FormInput name="unitsOfMeasurement" control={control} />
-              </div>
+              <FormInput
+                name="unitsOfMeasurement"
+                control={control}
+                label="Units of Measurement"
+                labelPosition="left"
+                labelClassName={styles.label}
+              />
             </div>
-          </div>
+          </ResponsiveGrid>
         )}
       </section>
     </FormProvider>

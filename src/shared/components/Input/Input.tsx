@@ -7,6 +7,14 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import { useController } from "react-hook-form";
+import {
+  FieldLabel,
+  type FieldLabelPosition,
+} from "../FieldLabel/FieldLabel";
+import {
+  ResponsiveGrid,
+  ResponsiveGridLabel,
+} from "../layout/ResponsiveGrid";
 
 type InputFieldProps = {
   value?: string | number;
@@ -41,6 +49,9 @@ type FormInputProps = {
   name: string;
   control: any;
   label?: string;
+  labelPosition?: FieldLabelPosition;
+  labelClassName?: string;
+  className?: string;
   placeholder?: string;
   defaultValue?: string;
   type?: InputProps["type"];
@@ -52,11 +63,19 @@ const useStyles = makeStyles({
     flexDirection: "column",
     gap: tokens.spacingVerticalXS,
   },
-  label: {
-    display: "block",
-    marginBottom: tokens.spacingVerticalXS,
+  rootInline: {
+    gridTemplateColumns: "minmax(0, min(12rem, 40%)) minmax(0, 1fr)",
+    alignItems: "center",
+    columnGap: tokens.spacingHorizontalM,
+    minWidth: 0,
+  },
+  input: {
+    width: "100%",
+    minWidth: 0,
+    boxSizing: "border-box",
   },
   error: {
+    gridColumn: "1 / -1",
     color: tokens.colorPaletteRedForeground1,
     marginTop: tokens.spacingVerticalXS,
     fontSize: "12px",
@@ -67,6 +86,9 @@ export const FormInput: React.FC<FormInputProps> = ({
   name,
   control,
   label,
+  labelPosition = "top",
+  labelClassName,
+  className,
   placeholder,
   defaultValue,
   type,
@@ -77,18 +99,37 @@ export const FormInput: React.FC<FormInputProps> = ({
     defaultValue: defaultValue ?? "",
   });
   const styles = useStyles();
+  const inline = labelPosition === "left" && Boolean(label);
 
-  return (
-    <div className={styles.root}>
-      {label && (
-        <label htmlFor={name} className={styles.label}>
-          {label}
-        </label>
-      )}
-      <InputField {...field} placeholder={placeholder} id={name} type={type} />
-      {fieldState.error?.message && (
-        <Text className={styles.error}>{String(fieldState.error.message)}</Text>
-      )}
+  const fieldLabel = label && (
+    <FieldLabel htmlFor={name} className={labelClassName}>
+      {label}
+    </FieldLabel>
+  );
+  const input = (
+    <InputField
+      {...field}
+      placeholder={placeholder}
+      id={name}
+      type={type}
+      className={styles.input}
+    />
+  );
+  const error = fieldState.error?.message && (
+    <Text className={styles.error}>{String(fieldState.error.message)}</Text>
+  );
+
+  return inline ? (
+    <ResponsiveGrid className={`${styles.rootInline} ${className ?? ""}`.trim()}>
+      {fieldLabel && <ResponsiveGridLabel>{fieldLabel}</ResponsiveGridLabel>}
+      <div>{input}</div>
+      {error}
+    </ResponsiveGrid>
+  ) : (
+    <div className={`${styles.root} ${className ?? ""}`.trim()}>
+      {fieldLabel}
+      {input}
+      {error}
     </div>
   );
 };

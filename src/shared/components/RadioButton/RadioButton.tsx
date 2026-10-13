@@ -1,6 +1,11 @@
 import React from "react";
 import { Radio, tokens, Text, makeStyles } from "@fluentui/react-components";
 import { useController } from "react-hook-form";
+import { FieldLabel, type FieldLabelPosition } from "../FieldLabel/FieldLabel";
+import {
+  ResponsiveGrid,
+  ResponsiveGridLabel,
+} from "../layout/ResponsiveGrid";
 
 type Option = {
   label: string;
@@ -15,7 +20,8 @@ type RadioGroupProps = {
   onChange?: (value: string) => void;
   className?: string;
   direction?: "vertical" | "horizontal";
-};
+  labelPosition?: FieldLabelPosition;
+}
 
 const useStyles = makeStyles({
   fieldset: {
@@ -25,6 +31,11 @@ const useStyles = makeStyles({
   },
   legend: {
     marginBottom: tokens.spacingVerticalXS,
+  },
+  groupInline: {
+    gridTemplateColumns: "minmax(0, min(12rem, 40%)) minmax(0, 1fr)",
+    alignItems: "center",
+    columnGap: tokens.spacingHorizontalM,
   },
   containerVertical: {
     display: "flex",
@@ -46,30 +57,50 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
   onChange,
   className,
   direction = "vertical",
+  labelPosition = "top",
 }) => {
   const styles = useStyles();
+  const inline = labelPosition === "left" && Boolean(label);
+  const optionsContent = (
+    <div
+      className={
+        direction === "vertical"
+          ? styles.containerVertical
+          : styles.containerHorizontal
+      }
+    >
+      {options.map((o) => (
+        <Radio
+          key={o.value}
+          name={name}
+          value={o.value}
+          checked={value === o.value}
+          onChange={(e) => onChange?.((e.target as HTMLInputElement).value)}
+          label={o.label}
+        />
+      ))}
+    </div>
+  );
 
-  return (
-    <fieldset className={`${styles.fieldset} ${className ?? ""}`.trim()}>
-      {label && <legend className={styles.legend}> {label} </legend>}
-      <div
-        className={
-          direction === "vertical"
-            ? styles.containerVertical
-            : styles.containerHorizontal
-        }
-      >
-        {options.map((o) => (
-          <Radio
-            key={o.value}
-            name={name}
-            value={o.value}
-            checked={value === o.value}
-            onChange={(e) => onChange?.((e.target as HTMLInputElement).value)}
-            label={o.label}
-          />
-        ))}
+  return inline ? (
+    <ResponsiveGrid className={`${styles.groupInline} ${className ?? ""}`.trim()}>
+      <ResponsiveGridLabel>
+        <FieldLabel>{label}</FieldLabel>
+      </ResponsiveGridLabel>
+      <div role="group" aria-label={label}>
+        {optionsContent}
       </div>
+    </ResponsiveGrid>
+  ) : (
+    <fieldset
+      className={`${styles.fieldset} ${className ?? ""}`.trim()}
+    >
+      {label && (
+        <legend className={styles.legend}>
+          <FieldLabel>{label}</FieldLabel>
+        </legend>
+      )}
+      {optionsContent}
     </fieldset>
   );
 };
@@ -81,7 +112,8 @@ type FormRadioGroupProps = {
   options: Option[];
   defaultValue?: string;
   direction?: "vertical" | "horizontal";
-};
+  labelPosition?: FieldLabelPosition;
+}
 
 const useFormStyles = makeStyles({
   root: {
@@ -103,6 +135,7 @@ export const FormRadioGroup: React.FC<FormRadioGroupProps> = ({
   options,
   defaultValue,
   direction = "vertical",
+  labelPosition = "top",
 }) => {
   const { field, fieldState } = useController({
     name,
@@ -115,10 +148,11 @@ export const FormRadioGroup: React.FC<FormRadioGroupProps> = ({
     <div className={styles.root}>
       <RadioGroup
         label={label}
+        labelPosition={labelPosition}
         name={name}
         options={options}
         value={field.value}
-        onChange={(v) => field.onChange()}
+        onChange={(value) => field.onChange(value)}
         direction={direction}
       />
       {fieldState.error?.message && (

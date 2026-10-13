@@ -1,8 +1,28 @@
 import React from "react";
-import { Textarea } from "@fluentui/react-components";
+import { makeStyles, Textarea, tokens } from "@fluentui/react-components";
 import { useController } from "react-hook-form";
 
-import { FieldLabel } from "../FieldLabel/FieldLabel";
+import {
+  FieldLabel,
+  type FieldLabelPosition,
+} from "../FieldLabel/FieldLabel";
+import {
+  ResponsiveGrid,
+  ResponsiveGridLabel,
+} from "../layout/ResponsiveGrid";
+
+const useStyles = makeStyles({
+  inline: {
+    gridTemplateColumns: "minmax(0, min(12rem, 40%)) minmax(0, 1fr)",
+    alignItems: "center",
+    columnGap: tokens.spacingHorizontalM,
+  },
+  textarea: {
+    width: "100%",
+    minWidth: 0,
+    boxSizing: "border-box",
+  },
+});
 
 export type TextAreaFieldProps = {
   name: string;
@@ -12,6 +32,7 @@ export type TextAreaFieldProps = {
   defaultValue?: string;
   className?: string;
   labelClassName?: string;
+  labelPosition?: FieldLabelPosition;
 };
 
 export const TextAreaField: React.FC<TextAreaFieldProps> = ({
@@ -22,25 +43,38 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
   defaultValue = "",
   className,
   labelClassName,
+  labelPosition = "top",
 }) => {
   const { field } = useController({ name, control, defaultValue });
+  const styles = useStyles();
+  const inline = labelPosition === "left" && Boolean(label);
+  const fieldLabel = label && (
+    <FieldLabel htmlFor={name} className={labelClassName}>
+      {label}
+    </FieldLabel>
+  );
+  const textarea = (
+    <Textarea
+      id={name}
+      name={field.name}
+      value={field.value ?? ""}
+      onChange={(event) => field.onChange(event.currentTarget.value)}
+      onBlur={field.onBlur}
+      ref={field.ref as any}
+      rows={rows}
+      className={styles.textarea}
+    />
+  );
 
-  return (
+  return inline ? (
+    <ResponsiveGrid className={`${styles.inline} ${className ?? ""}`.trim()}>
+      {fieldLabel && <ResponsiveGridLabel>{fieldLabel}</ResponsiveGridLabel>}
+      <div>{textarea}</div>
+    </ResponsiveGrid>
+  ) : (
     <div className={className}>
-      {label && (
-        <FieldLabel htmlFor={name} className={labelClassName}>
-          {label}
-        </FieldLabel>
-      )}
-      <Textarea
-        id={name}
-        name={field.name}
-        value={field.value ?? ""}
-        onChange={(event) => field.onChange(event.currentTarget.value)}
-        onBlur={field.onBlur}
-        ref={field.ref as any}
-        rows={rows}
-      />
+      {fieldLabel}
+      {textarea}
     </div>
   );
 };

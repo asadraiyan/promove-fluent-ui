@@ -2,41 +2,28 @@ import React, { useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 
-import { FieldLabel, FormInput, FormDropdown } from "../../../shared";
+import {
+  FormInput,
+  FormDropdown,
+  ResponsiveGrid,
+} from "../../../shared";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 import { ADDRESS_TYPE_OPTIONS } from "../constants";
 import { useAppSelector } from "@/app/hooks";
 
 const useStyles = makeStyles({
-  gridContainer: {
-    display: "grid",
-    gridTemplateColumns: "110px 1.5fr 80px 1fr",
+  grid: {
+    gridTemplateColumns: "minmax(0, 1fr)",
     rowGap: tokens.spacingVerticalS,
     columnGap: tokens.spacingHorizontalM,
-    alignItems: "center",
-    "@media (max-width: 600px)": {
-      gridTemplateColumns: "minmax(0, 1fr)",
-      alignItems: "stretch",
-      "& > div:empty": {
-        display: "none",
-      },
-    },
-  },
-  labelCell: {
-    justifySelf: "end",
-    textAlign: "right",
-    "@media (max-width: 600px)": {
-      justifySelf: "start",
-      textAlign: "left",
-    },
   },
 });
 
 const AddressSection: React.FC = () => {
+  const styles = useStyles();
   const { control, setValue } = useFormContext<AddressDetailsFormValues>();
   const selectedCountry = useWatch({ control, name: "country" });
   const selectedState = useWatch({ control, name: "state" });
-  const styles = useStyles();
   const { data: locationData, status, error } = useAppSelector(
     (state) => state.locationData,
   );
@@ -71,23 +58,20 @@ const AddressSection: React.FC = () => {
   return (
     <section>
       {error && <div role="alert">{error}</div>}
-      <div className={styles.gridContainer}>
-        <div className={styles.labelCell}>
-          <FieldLabel>Address Type</FieldLabel>
-        </div>
+      <ResponsiveGrid className={styles.grid}>
         <FormDropdown
           name="addressType"
           control={control}
+          label="Address Type"
+          labelPosition="left"
           placeholder="Delivery Address"
           options={ADDRESS_TYPE_OPTIONS}
         />
-        <div /> <div />
-        <div className={styles.labelCell}>
-          <FieldLabel>Country</FieldLabel>
-        </div>
         <FormDropdown
           name="country"
           control={control}
+          label="Country"
+          labelPosition="left"
           placeholder={isLoading ? "Loading..." : "Select Country"}
           options={
             locationData?.countries.map(({ id, label }) => ({
@@ -97,65 +81,54 @@ const AddressSection: React.FC = () => {
           }
           onChange={handleCountryChange}
         />
-        <div /> <div />
-        <div className={styles.labelCell}>
-          <FieldLabel>Address 1</FieldLabel>
-        </div>
         <FormInput
           name="address1"
+          label="Address 1"
+          labelPosition="left"
           control={control}
           placeholder="Enter address"
         />
-        <div /> <div />
-        <div className={styles.labelCell}>
-          <FieldLabel>Address 2</FieldLabel>
-        </div>
         <FormInput
           name="address2"
+          label="Address 2"
+          labelPosition="left"
           control={control}
           placeholder="Enter address"
         />
-        <div /> <div />
-        <div className={styles.labelCell}>
-          <FieldLabel>Address 3</FieldLabel>
-        </div>
         <FormInput
           name="address3"
+          label="Address 3"
+          labelPosition="left"
           control={control}
           placeholder="Enter address"
         />
-        <div /> <div />
-        <div className={styles.labelCell}>
-          <FieldLabel>State/Country</FieldLabel>
-        </div>
         <FormDropdown
           name="state"
           control={control}
+          label="State/Country"
+          labelPosition="left"
           placeholder={
             selectedCountry ? "Select state" : "Select country first"
           }
           options={stateOptions}
           onChange={handleStateChange}
         />
-        <div /> <div />
-        <div className={styles.labelCell}>
-          <FieldLabel>City/Town</FieldLabel>
-        </div>
         <FormDropdown
           name="city"
           control={control}
+          label="City/Town"
+          labelPosition="left"
           placeholder={selectedState ? "Select city" : "Select state first"}
           options={cityOptions}
         />
-        <div className={styles.labelCell}>
-          <FieldLabel>Postcode</FieldLabel>
-        </div>
         <FormInput
           name="postcode"
+          label="Postcode"
+          labelPosition="left"
           control={control}
           placeholder="Enter postcode"
         />
-      </div>
+      </ResponsiveGrid>
     </section>
   );
 };

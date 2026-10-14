@@ -10,7 +10,7 @@ import {
 } from "@fluentui/react-components";
 import { PersonAddRegular, ArrowDownloadRegular } from "@fluentui/react-icons";
 import { SharedDataGrid, GridColumnDef } from "./SharedDataGrid";
-import { CustomerEditDialog } from "./CustomerEditDialog";
+import { CustomerEditDialog } from "./CommonEditDialog";
 import apiResponse from "../../../../public/addressDetails.json";
 
 interface ApiUser {
@@ -130,7 +130,7 @@ export const PersonDashboard: React.FC = () => {
   );
 
   const updateEditingCustomer = (
-    field: "email" | "phone" | "locationString" | "addressType",
+    field: keyof FlatUserRow,
     value: string,
   ) => {
     setEditingCustomer((customer) =>
@@ -230,6 +230,14 @@ export const PersonDashboard: React.FC = () => {
 
       <CustomerEditDialog
         customer={editingCustomer}
+        heading="Edit customer details"
+        labels={{
+          email: "Email address",
+          phone: "Phone number",
+          locationString: "Location",
+          addressType: "Type",
+        }}
+        fieldTypes={{ email: "email" }}
         onChange={updateEditingCustomer}
         onSave={saveCustomer}
         onClose={() => setEditingCustomer(null)}

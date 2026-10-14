@@ -9,6 +9,7 @@
         "middleName": "Raiyan",
         "lastName": "Khan",
         "nickName": "Asad",
+        "roles": ["Admin", "Editor", "Viewer"],
         "addressType": "delivery",
         "country": {
           "id": "IN",

@@ -25,6 +25,7 @@ export interface GridColumnDef<T> {
   label: string;
   renderCell?: (item: T) => React.ReactNode;
   sortable?: boolean;
+  accessor?: (item: T) => string | number;
 }
 
 interface SharedDataGridProps<T> {
@@ -116,7 +117,6 @@ export const SharedDataGrid = <T extends Record<string, any>>({
 }: SharedDataGridProps<T>) => {
   const styles = useStyles();
   const [searchQuery, setSearchQuery] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -130,8 +130,9 @@ export const SharedDataGrid = <T extends Record<string, any>>({
         compare:
           col.sortable !== false
             ? (a, b) => {
-                const valA = a[col.key];
-                const valB = b[col.key];
+                const valA = col.accessor ? col.accessor(a) : a[col.key];
+                const valB = col.accessor ? col.accessor(b) : b[col.key];
+                console.log("Comparing:", valA, valB);
                 if (valA == null) return -1;
                 if (valB == null) return 1;
                 return valA > valB ? 1 : valA < valB ? -1 : 0;
@@ -153,14 +154,14 @@ export const SharedDataGrid = <T extends Record<string, any>>({
         },
       }),
     );
-  }, [columns]);
+  }, [columns, styles.cellContent]);
 
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return items;
     const query = searchQuery.toLowerCase();
     return items.filter((item) =>
       columns.some((col) => {
-        const value = item[col.key];
+        const value = col.accessor ? col.accessor(item) : item[col.key];
         return value != null && String(value).toLowerCase().includes(query);
       }),
     );

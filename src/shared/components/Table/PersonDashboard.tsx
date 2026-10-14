@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Button,
   TableCellLayout,
@@ -10,6 +10,7 @@ import {
 } from "@fluentui/react-components";
 import { PersonAddRegular, ArrowDownloadRegular } from "@fluentui/react-icons";
 import { SharedDataGrid, GridColumnDef } from "./SharedDataGrid";
+import { CustomerEditDialog } from "./CustomerEditDialog";
 import apiResponse from "../../../../public/addressDetails.json";
 
 interface ApiUser {
@@ -72,12 +73,19 @@ const useStyles = makeStyles({
     backgroundColor: tokens.colorNeutralBackground3,
     color: tokens.colorNeutralForeground3,
   },
+  customerLink: {
+    color: tokens.colorBrandForegroundLink,
+    textDecorationLine: "underline",
+    minWidth: "0",
+    paddingLeft: "0",
+    paddingRight: "0",
+  },
 });
 
 export const PersonDashboard: React.FC = () => {
   const styles = useStyles();
 
-  const flatData: FlatUserRow[] = useMemo(() => {
+  const [flatData, setFlatData] = useState<FlatUserRow[]>(() => {
     if (!apiResponse?.users || !Array.isArray(apiResponse.users)) {
       return [];
     }
@@ -116,7 +124,30 @@ export const PersonDashboard: React.FC = () => {
         };
       })
       .filter((row): row is FlatUserRow => row !== null);
-  }, []);
+  });
+  const [editingCustomer, setEditingCustomer] = useState<FlatUserRow | null>(
+    null,
+  );
+
+  const updateEditingCustomer = (
+    field: "email" | "phone" | "locationString" | "addressType",
+    value: string,
+  ) => {
+    setEditingCustomer((customer) =>
+      customer ? { ...customer, [field]: value } : customer,
+    );
+  };
+
+  const saveCustomer = () => {
+    if (!editingCustomer) return;
+
+    setFlatData((rows) =>
+      rows.map((row) =>
+        row.id === editingCustomer.id ? editingCustomer : row,
+      ),
+    );
+    setEditingCustomer(null);
+  };
 
   const columns = useMemo<GridColumnDef<FlatUserRow>[]>(
     () => [
@@ -127,7 +158,13 @@ export const PersonDashboard: React.FC = () => {
           <TableCellLayout
             media={<Avatar name={row.fullName} color="colorful" />}
           >
-            {row.fullName}
+            <Button
+              appearance="transparent"
+              className={styles.customerLink}
+              onClick={() => setEditingCustomer({ ...row })}
+            >
+              {row.fullName}
+            </Button>
           </TableCellLayout>
         ),
       },
@@ -189,6 +226,13 @@ export const PersonDashboard: React.FC = () => {
         selectionMode="multiselect"
         // toolbarActions={ToolbarButtons}
         pageSize={10}
+      />
+
+      <CustomerEditDialog
+        customer={editingCustomer}
+        onChange={updateEditingCustomer}
+        onSave={saveCustomer}
+        onClose={() => setEditingCustomer(null)}
       />
     </div>
   );

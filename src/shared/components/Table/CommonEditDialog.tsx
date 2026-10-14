@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   },
 });
 
-export function CustomerEditDialog<T extends { [K in keyof T]: string }>({
+export function CommonEditDialog<T extends { [K in keyof T]: string }>({
   customer,
   heading,
   labels,

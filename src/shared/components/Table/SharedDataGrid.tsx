@@ -58,6 +58,8 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    flexWrap: "wrap",
+    gap: tokens.spacingVerticalM,
     padding: `${tokens.spacingVerticalM} ${tokens.spacingHorizontalM}`,
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground2,
@@ -66,9 +68,12 @@ const useStyles = makeStyles({
     display: "flex",
     gap: tokens.spacingHorizontalS,
     alignItems: "center",
+    flexWrap: "wrap",
   },
   searchInput: {
-    minWidth: "280px",
+    flexGrow: 1,
+    minWidth: "200px",
+    maxWidth: "350px",
   },
   emptyState: {
     padding: tokens.spacingVerticalXXL,
@@ -89,6 +94,13 @@ const useStyles = makeStyles({
     display: "flex",
     gap: tokens.spacingHorizontalS,
     alignItems: "center",
+  },
+  cellContent: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    width: "100%",
+    display: "block",
   },
 });
 
@@ -126,8 +138,19 @@ export const SharedDataGrid = <T extends Record<string, any>>({
               }
             : undefined,
         renderHeaderCell: () => col.label,
-        renderCell: (item) =>
-          col.renderCell ? col.renderCell(item) : String(item[col.key] ?? ""),
+        renderCell: (item) => {
+          const content = col.renderCell
+            ? col.renderCell(item)
+            : String(item[col.key] ?? "");
+          return (
+            <span
+              className={styles.cellContent}
+              title={String(item[col.key] ?? "")}
+            >
+              {content}
+            </span>
+          );
+        },
       }),
     );
   }, [columns]);

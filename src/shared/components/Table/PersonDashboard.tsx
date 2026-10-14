@@ -10,8 +10,8 @@ import {
 } from "@fluentui/react-components";
 import { PersonAddRegular, ArrowDownloadRegular } from "@fluentui/react-icons";
 import { SharedDataGrid, GridColumnDef } from "./SharedDataGrid";
-import { CustomerEditDialog } from "./CommonEditDialog";
 import apiResponse from "../../../../public/addressDetails.json";
+import { CommonEditDialog } from "./CommonEditDialog";
 
 interface ApiUser {
   id?: string;
@@ -24,6 +24,7 @@ interface ApiUser {
     addressType?: string;
     city?: { name?: string };
     country?: { name?: string };
+    roles?: string[];
     [key: string]: any;
   };
 }
@@ -31,6 +32,7 @@ interface ApiUser {
 interface FlatUserRow {
   id: string;
   fullName: string;
+  roles: string[];
   email: string;
   phone: string;
   addressType: string;
@@ -80,6 +82,18 @@ const useStyles = makeStyles({
     paddingLeft: "0",
     paddingRight: "0",
   },
+  rolesContainer: {
+    // display: "flex",
+    gap: tokens.spacingHorizontalSNudge,
+    flexWrap: "wrap",
+  },
+  roleBadge: {
+    // border: `1px solid ${tokens.colorNeutralStroke2}`,
+    padding: `${tokens.spacingVerticalMNudge} ${tokens.spacingHorizontalS}`,
+    // borderRadius: tokens.borderRadiusMedium,
+    // fontSize: tokens.fontSizeBase200,
+    color: tokens.colorNeutralForeground2,
+  },
 });
 
 export const PersonDashboard: React.FC = () => {
@@ -95,7 +109,6 @@ export const PersonDashboard: React.FC = () => {
         if (!user || !user.formValues) return null;
 
         const form = user.formValues;
-
         const firstName = form.firstName?.trim() || "Unknown";
         const lastName = form.lastName?.trim() || "";
         const fullName = `${firstName} ${lastName}`.trim();
@@ -121,10 +134,15 @@ export const PersonDashboard: React.FC = () => {
           phone: form.mobile1?.trim() || "No phone provided",
           addressType: form.addressType?.trim() || "unspecified",
           locationString,
+          roles:
+            Array.isArray(form.roles) && form.roles.length > 0
+              ? form.roles
+              : ["Standard User"],
         };
       })
       .filter((row): row is FlatUserRow => row !== null);
   });
+
   const [editingCustomer, setEditingCustomer] = useState<FlatUserRow | null>(
     null,
   );
@@ -199,6 +217,21 @@ export const PersonDashboard: React.FC = () => {
           );
         },
       },
+      {
+        key: "roles",
+        label: "Assigned Roles",
+        accessor: (row: FlatUserRow) => row.roles.join(", "),
+        renderCell: (row) => (
+          <div className={styles.rolesContainer}>
+            {row.roles.map((role, index) => (
+              <React.Fragment key={`${role}-${index}`}>
+                <div className={styles.roleBadge}>{role}</div>
+                {index !== row.roles.length - 1 && <hr />}
+              </React.Fragment>
+            ))}
+          </div>
+        ),
+      },
     ],
     [styles],
   );
@@ -222,14 +255,18 @@ export const PersonDashboard: React.FC = () => {
         items={flatData}
         columns={columns}
         getRowId={(row) => row.id}
-        searchPlaceholder="Search by name, email, or location..."
+        searchPlaceholder="Search by name, email, roles, or location..."
         selectionMode="multiselect"
         // toolbarActions={ToolbarButtons}
-        pageSize={10}
+        pageSize={5}
       />
 
-      <CustomerEditDialog
-        customer={editingCustomer}
+      <CommonEditDialog
+        customer={
+          editingCustomer
+            ? { ...editingCustomer, roles: editingCustomer.roles.join(", ") }
+            : null
+        }
         heading="Edit customer details"
         labels={{
           email: "Email address",

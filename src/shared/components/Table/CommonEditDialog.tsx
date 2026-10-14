@@ -7,60 +7,76 @@ import {
   DialogContent,
   DialogSurface,
   DialogTitle,
-  Field,
-  Input,
   makeStyles,
-  tokens,
-  type InputProps,
+  type ButtonProps,
 } from "@fluentui/react-components";
 
-export interface CustomerEditDetails {
-  email: string;
-  phone: string;
-  locationString: string;
-  addressType: string;
+export interface CommonEditDialogAction {
+  label: React.ReactNode;
+  onClick: () => void;
+  position?: "start" | "end";
+  appearance?: ButtonProps["appearance"];
+  disabled?: ButtonProps["disabled"];
+  icon?: ButtonProps["icon"];
+  size?: ButtonProps["size"];
+  shape?: ButtonProps["shape"];
+  type?: "button" | "submit" | "reset";
 }
 
-interface CustomerEditDialogProps<T extends { [K in keyof T]: string }> {
-  customer: T | null;
-  heading: string;
-  labels: Partial<Record<keyof T, string>>;
-  fieldTypes?: Partial<Record<keyof T, InputProps["type"]>>;
-  onChange: (field: keyof T, value: string) => void;
-  onSave: () => void;
+interface CommonEditDialogProps {
+  open: boolean;
+  heading: React.ReactNode;
+  content: React.ReactNode;
+  actions?: CommonEditDialogAction[];
   onClose: () => void;
 }
 
 const useStyles = makeStyles({
-  fields: {
-    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-    rowGap: tokens.spacingVerticalM,
-    columnGap: tokens.spacingHorizontalM,
-  },
-  field: {
-    minWidth: 0,
-  },
-  input: {
+  actions: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     width: "100%",
-    minWidth: 0,
+    rowGap: "8px",
+  },
+  actionGroup: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "8px",
   },
 });
 
-export function CommonEditDialog<T extends { [K in keyof T]: string }>({
-  customer,
+export const CommonEditDialog: React.FC<CommonEditDialogProps> = ({
+  open,
   heading,
-  labels,
-  fieldTypes,
-  onChange,
-  onSave,
+  content,
+  actions = [],
   onClose,
-}: CustomerEditDialogProps<T>) {
+}) => {
   const styles = useStyles();
-  const fields = Object.keys(labels) as Array<keyof T>;
+  const startActions = actions.filter((action) => action.position === "start");
+  const endActions = actions.filter((action) => action.position !== "start");
+
+  const renderActions = (items: CommonEditDialogAction[]) =>
+    items.map((action, index) => (
+      <Button
+        as="button"
+        key={`${String(action.label)}-${index}`}
+        appearance={action.appearance}
+        disabled={action.disabled}
+        icon={action.icon}
+        size={action.size}
+        shape={action.shape}
+        type={action.type}
+        onClick={action.onClick}
+      >
+        {action.label}
+      </Button>
+    ));
 
   return (
     <Dialog
-      open={customer !== null}
+      open={open}
       onOpenChange={(_, data) => {
         if (!data.open) onClose();
       }}
@@ -68,32 +84,21 @@ export function CommonEditDialog<T extends { [K in keyof T]: string }>({
       <DialogSurface>
         <DialogBody>
           <DialogTitle>{heading}</DialogTitle>
-          <DialogContent>
-              {fields.map((field) => (
-                <Field
-                  key={String(field)}
-                  className={styles.field}
-                  label={labels[field]}
-                >
-                  <Input
-                    className={styles.input}
-                    type={fieldTypes?.[field]}
-                    value={customer?.[field] ?? ""}
-                    onChange={(_, data) => onChange(field, data.value)}
-                  />
-                </Field>
-              ))}
-          </DialogContent>
-          <DialogActions>
-            <Button appearance="secondary" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button appearance="primary" onClick={onSave}>
-              Save
-            </Button>
-          </DialogActions>
+          <DialogContent>{content}</DialogContent>
+          {actions.length > 0 && (
+            <DialogActions position="end">
+              <div className={styles.actions}>
+                <div className={styles.actionGroup}>
+                  {renderActions(startActions)}
+                </div>
+                <div className={styles.actionGroup}>
+                  {renderActions(endActions)}
+                </div>
+              </div>
+            </DialogActions>
+          )}
         </DialogBody>
       </DialogSurface>
     </Dialog>
   );
-}
+};

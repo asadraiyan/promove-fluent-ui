@@ -12,6 +12,7 @@ import { PersonAddRegular, ArrowDownloadRegular } from "@fluentui/react-icons";
 import { SharedDataGrid, GridColumnDef } from "./SharedDataGrid";
 import apiResponse from "../../../../public/addressDetails.json";
 import { CommonEditDialog } from "./CommonEditDialog";
+import { PersonDashboardEditFields } from "./PersonDashboardEditFields";
 
 interface ApiUser {
   id?: string;
@@ -29,7 +30,7 @@ interface ApiUser {
   };
 }
 
-interface FlatUserRow {
+export interface FlatUserRow {
   id: string;
   fullName: string;
   roles: string[];
@@ -262,21 +263,28 @@ export const PersonDashboard: React.FC = () => {
       />
 
       <CommonEditDialog
-        customer={
-          editingCustomer
-            ? { ...editingCustomer, roles: editingCustomer.roles.join(", ") }
-            : null
-        }
+        open={editingCustomer !== null}
         heading="Edit customer details"
-        labels={{
-          email: "Email address",
-          phone: "Phone number",
-          locationString: "Location",
-          addressType: "Type",
-        }}
-        fieldTypes={{ email: "email" }}
-        onChange={updateEditingCustomer}
-        onSave={saveCustomer}
+        content={
+          <PersonDashboardEditFields
+            customer={editingCustomer}
+            onChange={updateEditingCustomer}
+          />
+        }
+        actions={[
+          {
+            label: "Cancel",
+            appearance: "secondary",
+            onClick: () => setEditingCustomer(null),
+            position: "end",
+          },
+          {
+            label: "Save",
+            appearance: "primary",
+            onClick: saveCustomer,
+            position: "end",
+          },
+        ]}
         onClose={() => setEditingCustomer(null)}
       />
     </div>

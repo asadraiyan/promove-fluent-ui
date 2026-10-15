@@ -15,7 +15,6 @@ import {
   ArrowDownRegular,
 } from "@fluentui/react-icons";
 
-// Generic interface for maximum reusability
 export interface TransferListProps<T> {
   leftItems: T[];
   rightItems: T[];
@@ -84,11 +83,9 @@ export const TransferList = <T extends Record<string, any> | string>({
 }: TransferListProps<T>) => {
   const styles = useStyles();
 
-  // Local state tracks ONLY what is currently highlighted
   const [selectedLeft, setSelectedLeft] = useState<Set<string>>(new Set());
   const [selectedRight, setSelectedRight] = useState<Set<string>>(new Set());
 
-  // --- ITEM TOGGLING ---
   const toggleSelection = (key: string, side: "left" | "right") => {
     const targetSet = side === "left" ? selectedLeft : selectedRight;
     const setter = side === "left" ? setSelectedLeft : setSelectedRight;
@@ -102,7 +99,6 @@ export const TransferList = <T extends Record<string, any> | string>({
     setter(newSet);
   };
 
-  // --- TRANSFER LOGIC ---
   const moveRight = () => {
     const itemsToMove = leftItems.filter((item) =>
       selectedLeft.has(getKey(item)),
@@ -110,9 +106,8 @@ export const TransferList = <T extends Record<string, any> | string>({
     const remainingLeft = leftItems.filter(
       (item) => !selectedLeft.has(getKey(item)),
     );
-
     onChange(remainingLeft, [...rightItems, ...itemsToMove]);
-    setSelectedLeft(new Set()); // Clear selection after move
+    setSelectedLeft(new Set());
   };
 
   const moveLeft = () => {
@@ -122,7 +117,6 @@ export const TransferList = <T extends Record<string, any> | string>({
     const remainingRight = rightItems.filter(
       (item) => !selectedRight.has(getKey(item)),
     );
-
     onChange([...leftItems, ...itemsToMove], remainingRight);
     setSelectedRight(new Set());
   };
@@ -137,79 +131,80 @@ export const TransferList = <T extends Record<string, any> | string>({
     setSelectedRight(new Set());
   };
 
-  // --- REORDER LOGIC (Enterprise Block-Shift Algorithm) ---
-  const moveUp = () => {
-    // Determine which box is active. Block action if both have selections to prevent UX confusion.
-    if (selectedLeft.size > 0 && selectedRight.size > 0) return;
-
-    const isLeft = selectedLeft.size > 0;
-    const items = isLeft ? [...leftItems] : [...rightItems];
-    const selection = isLeft ? selectedLeft : selectedRight;
-
-    for (let i = 1; i < items.length; i++) {
+  const shiftUp = (items: T[], selection: Set<string>) => {
+    if (selection.size === 0) return items;
+    const newItems = [...items];
+    for (let i = 1; i < newItems.length; i++) {
       if (
-        selection.has(getKey(items[i])) &&
-        !selection.has(getKey(items[i - 1]))
+        selection.has(getKey(newItems[i])) &&
+        !selection.has(getKey(newItems[i - 1]))
       ) {
-        // Swap
-        [items[i], items[i - 1]] = [items[i - 1], items[i]];
+        [newItems[i], newItems[i - 1]] = [newItems[i - 1], newItems[i]];
       }
     }
+    return newItems;
+  };
 
-    isLeft ? onChange(items, rightItems) : onChange(leftItems, items);
+  const shiftDown = (items: T[], selection: Set<string>) => {
+    if (selection.size === 0) return items;
+    const newItems = [...items];
+    for (let i = newItems.length - 2; i >= 0; i--) {
+      if (
+        selection.has(getKey(newItems[i])) &&
+        !selection.has(getKey(newItems[i + 1]))
+      ) {
+        [newItems[i], newItems[i + 1]] = [newItems[i + 1], newItems[i]];
+      }
+    }
+    return newItems;
+  };
+
+  const moveUp = () => {
+    onChange(
+      shiftUp(leftItems, selectedLeft),
+      shiftUp(rightItems, selectedRight),
+    );
   };
 
   const moveDown = () => {
-    if (selectedLeft.size > 0 && selectedRight.size > 0) return;
-
-    const isLeft = selectedLeft.size > 0;
-    const items = isLeft ? [...leftItems] : [...rightItems];
-    const selection = isLeft ? selectedLeft : selectedRight;
-
-    for (let i = items.length - 2; i >= 0; i--) {
-      if (
-        selection.has(getKey(items[i])) &&
-        !selection.has(getKey(items[i + 1]))
-      ) {
-        // Swap
-        [items[i], items[i + 1]] = [items[i + 1], items[i]];
-      }
-    }
-
-    isLeft ? onChange(items, rightItems) : onChange(leftItems, items);
+    onChange(
+      shiftDown(leftItems, selectedLeft),
+      shiftDown(rightItems, selectedRight),
+    );
   };
 
-  // --- VALIDATION COMPUTATIONS ---
   const disableUp = useMemo(() => {
-    if (selectedLeft.size > 0 && selectedRight.size > 0) return true; // Conflicting selections
     if (selectedLeft.size === 0 && selectedRight.size === 0) return true;
 
-    const activeItems = selectedLeft.size > 0 ? leftItems : rightItems;
-    const activeSelection =
-      selectedLeft.size > 0 ? selectedLeft : selectedRight;
-    // Disabled if the very first item is selected (can't move up)
-    return (
-      activeItems.length > 0 && activeSelection.has(getKey(activeItems[0]))
-    );
+    const leftStuck =
+      selectedLeft.size > 0 && selectedLeft.has(getKey(leftItems[0]));
+    const rightStuck =
+      selectedRight.size > 0 && selectedRight.has(getKey(rightItems[0]));
+
+    const leftCanMove = selectedLeft.size > 0 && !leftStuck;
+    const rightCanMove = selectedRight.size > 0 && !rightStuck;
+
+    return !(leftCanMove || rightCanMove);
   }, [leftItems, rightItems, selectedLeft, selectedRight, getKey]);
 
   const disableDown = useMemo(() => {
-    if (selectedLeft.size > 0 && selectedRight.size > 0) return true;
     if (selectedLeft.size === 0 && selectedRight.size === 0) return true;
 
-    const activeItems = selectedLeft.size > 0 ? leftItems : rightItems;
-    const activeSelection =
-      selectedLeft.size > 0 ? selectedLeft : selectedRight;
-    // Disabled if the very last item is selected
-    return (
-      activeItems.length > 0 &&
-      activeSelection.has(getKey(activeItems[activeItems.length - 1]))
-    );
+    const leftStuck =
+      selectedLeft.size > 0 &&
+      selectedLeft.has(getKey(leftItems[leftItems.length - 1]));
+    const rightStuck =
+      selectedRight.size > 0 &&
+      selectedRight.has(getKey(rightItems[rightItems.length - 1]));
+
+    const leftCanMove = selectedLeft.size > 0 && !leftStuck;
+    const rightCanMove = selectedRight.size > 0 && !rightStuck;
+
+    return !(leftCanMove || rightCanMove);
   }, [leftItems, rightItems, selectedLeft, selectedRight, getKey]);
 
   return (
     <div className={styles.container}>
-      {/* LEFT BOX */}
       <div className={styles.boxWrapper}>
         <Text weight="semibold">{leftTitle}</Text>
         <div
@@ -238,7 +233,6 @@ export const TransferList = <T extends Record<string, any> | string>({
         </div>
       </div>
 
-      {/* CONTROLS */}
       <div className={styles.controlsColumn}>
         <Button
           icon={<ChevronRightRegular />}
@@ -264,7 +258,7 @@ export const TransferList = <T extends Record<string, any> | string>({
           disabled={rightItems.length === 0}
           aria-label="Move all left"
         />
-        <div style={{ height: tokens.spacingVerticalS }} /> {/* Spacer */}
+        <div style={{ height: tokens.spacingVerticalS }} />
         <Button
           icon={<ArrowUpRegular />}
           onClick={moveUp}
@@ -279,7 +273,6 @@ export const TransferList = <T extends Record<string, any> | string>({
         />
       </div>
 
-      {/* RIGHT BOX */}
       <div className={styles.boxWrapper}>
         <Text weight="semibold">{rightTitle}</Text>
         <div

@@ -13,6 +13,7 @@ import { SharedDataGrid, GridColumnDef } from "./SharedDataGrid";
 import apiResponse from "../../../../public/addressDetails.json";
 import { CommonEditDialog } from "./CommonEditDialog";
 import { PersonDashboardEditFields } from "./PersonDashboardEditFields";
+import { UserTransferList } from "../TransferList/UserTransferList";
 
 interface ApiUser {
   id?: string;
@@ -287,6 +288,7 @@ export const PersonDashboard: React.FC = () => {
         ]}
         onClose={() => setEditingCustomer(null)}
       />
+      <UserTransferList />
     </div>
   );
 };

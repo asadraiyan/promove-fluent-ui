@@ -8,64 +8,162 @@
           "id": "IN-UP",
           "label": "Uttar Pradesh",
           "cities": [
-            {
-              "id": "LKO",
-              "label": "Lucknow"
-            },
-            {
-              "id": "KNU",
-              "label": "Kanpur"
-            },
-            {
-              "id": "NOI",
-              "label": "Noida"
-            },
-            {
-              "id": "VNS",
-              "label": "Varanasi"
-            }
+            { "id": "LKO", "label": "Lucknow" },
+            { "id": "KNU", "label": "Kanpur" },
+            { "id": "NOI", "label": "Noida" },
+            { "id": "VNS", "label": "Varanasi" }
           ]
         },
         {
           "id": "IN-DL",
           "label": "Delhi",
           "cities": [
-            {
-              "id": "NDL",
-              "label": "New Delhi"
-            }
+            { "id": "NDL", "label": "New Delhi" }
           ]
         },
         {
           "id": "IN-MH",
           "label": "Maharashtra",
           "cities": [
-            {
-              "id": "BOM",
-              "label": "Mumbai"
-            },
-            {
-              "id": "PNQ",
-              "label": "Pune"
-            },
-            {
-              "id": "NAG",
-              "label": "Nagpur"
-            }
+            { "id": "BOM", "label": "Mumbai" },
+            { "id": "PNQ", "label": "Pune" },
+            { "id": "NAG", "label": "Nagpur" }
           ]
         },
         {
           "id": "IN-KA",
           "label": "Karnataka",
           "cities": [
-            {
-              "id": "BLR",
-              "label": "Bangalore"
-            },
-            {
-              "id": "MYQ",
-              "label": "Mysore"
-            }
+            { "id": "BLR", "label": "Bangalore" },
+            { "id": "MYQ", "label": "Mysore" }
+          ]
+        },
+        {
+          "id": "IN-TN",
+          "label": "Tamil Nadu",
+          "cities": [
+            { "id": "CHI", "label": "Chennai" },
+            { "id": "MDU", "label": "Madurai" }
+          ]
+        },
+        {
+          "id": "IN-RJ",
+          "label": "Rajasthan",
+          "cities": [
+            { "id": "JAI", "label": "Jaipur" },
+            { "id": "UDR", "label": "Udaipur" }
+          ]
+        },
+        {
+          "id": "IN-GJ",
+          "label": "Gujarat",
+          "cities": [
+            { "id": "AMD", "label": "Ahmedabad" },
+            { "id": "STV", "label": "Surat" }
+          ]
+        },
+        {
+          "id": "IN-WB",
+          "label": "West Bengal",
+          "cities": [
+            { "id": "CCU", "label": "Kolkata" },
+            { "id": "DGP", "label": "Durgapur" }
+          ]
+        },
+        {
+          "id": "IN-KL",
+          "label": "Kerala",
+          "cities": [
+            { "id": "COK", "label": "Kochi" },
+            { "id": "TRV", "label": "Thiruvananthapuram" }
+          ]
+        },
+        {
+          "id": "IN-AP",
+          "label": "Andhra Pradesh",
+          "cities": [
+            { "id": "VSK", "label": "Visakhapatnam" },
+            { "id": "VJW", "label": "Vijayawada" }
+          ]
+        },
+        {
+          "id": "IN-TS",
+          "label": "Telangana",
+          "cities": [
+            { "id": "HYD", "label": "Hyderabad" },
+            { "id": "WGL", "label": "Warangal" }
+          ]
+        },
+        {
+          "id": "IN-PB",
+          "label": "Punjab",
+          "cities": [
+            { "id": "ASR", "label": "Amritsar" },
+            { "id": "LDH", "label": "Ludhiana" }
+          ]
+        },
+        {
+          "id": "IN-HR",
+          "label": "Haryana",
+          "cities": [
+            { "id": "GGN", "label": "Gurugram" },
+            { "id": "FBD", "label": "Faridabad" }
+          ]
+        },
+        {
+          "id": "IN-BR",
+          "label": "Bihar",
+          "cities": [
+            { "id": "PAT", "label": "Patna" },
+            { "id": "GAY", "label": "Gaya" }
+          ]
+        },
+        {
+          "id": "IN-OR",
+          "label": "Odisha",
+          "cities": [
+            { "id": "BBS", "label": "Bhubaneswar" },
+            { "id": "CTC", "label": "Cuttack" }
+          ]
+        },
+        {
+          "id": "IN-AS",
+          "label": "Assam",
+          "cities": [
+            { "id": "GAU", "label": "Guwahati" },
+            { "id": "DIB", "label": "Dibrugarh" }
+          ]
+        },
+        {
+          "id": "IN-MP",
+          "label": "Madhya Pradesh",
+          "cities": [
+            { "id": "BHO", "label": "Bhopal" },
+            { "id": "IDR", "label": "Indore" }
+          ]
+        },
+        {
+          "id": "IN-CH",
+          "label": "Chhattisgarh",
+          "cities": [
+            { "id": "RPR", "label": "Raipur" },
+            { "id": "BSP", "label": "Bilaspur" }
+          ]
+        },
+        {
+          "id": "IN-JH",
+          "label": "Jharkhand",
+          "cities": [
+            { "id": "RNC", "label": "Ranchi" },
+            { "id": "JSR", "label": "Jamshedpur" }
+          ]
+        },
+        {
+          "id": "IN-HP",
+          "label": "Himachal Pradesh",
+          "cities": [
+            { "id": "SHL", "label": "Shimla" },
+            { "id": "MND", "label": "Mandi" }
           ]
         }
       ]
@@ -78,28 +176,96 @@
           "id": "US-CA",
           "label": "California",
           "cities": [
-            {
-              "id": "LAX",
-              "label": "Los Angeles"
-            },
-            {
-              "id": "SFO",
-              "label": "San Francisco"
-            }
+            { "id": "LAX", "label": "Los Angeles" },
+            { "id": "SFO", "label": "San Francisco" }
           ]
         },
         {
           "id": "US-TX",
           "label": "Texas",
           "cities": [
-            {
-              "id": "HOU",
-              "label": "Houston"
-            },
-            {
-              "id": "DFW",
-              "label": "Dallas"
-            }
+            { "id": "HOU", "label": "Houston" },
+            { "id": "DFW", "label": "Dallas" }
+          ]
+        },
+        {
+          "id": "US-NY",
+          "label": "New York",
+          "cities": [
+            { "id": "NYC", "label": "New York City" },
+            { "id": "BUF", "label": "Buffalo" }
+          ]
+        },
+        {
+          "id": "US-FL",
+          "label": "Florida",
+          "cities": [
+            { "id": "MIA", "label": "Miami" },
+            { "id": "ORL", "label": "Orlando" }
+          ]
+        },
+        {
+          "id": "US-IL",
+          "label": "Illinois",
+          "cities": [
+            { "id": "CHI", "label": "Chicago" },
+            { "id": "SPR", "label": "Springfield" }
+          ]
+        },
+        {
+          "id": "US-WA",
+          "label": "Washington",
+          "cities": [
+            { "id": "SEA", "label": "Seattle" },
+            { "id": "TAC", "label": "Tacoma" }
+          ]
+        },
+        {
+          "id": "US-AZ",
+          "label": "Arizona",
+          "cities": [
+            { "id": "PHX", "label": "Phoenix" },
+            { "id": "TUS", "label": "Tucson" }
+          ]
+        },
+        {
+          "id": "US-CO",
+          "label": "Colorado",
+          "cities": [
+            { "id": "DEN", "label": "Denver" },
+            { "id": "COS", "label": "Colorado Springs" }
+          ]
+        },
+        {
+          "id": "US-GA",
+          "label": "Georgia",
+          "cities": [
+            { "id": "ATL", "label": "Atlanta" },
+            { "id": "SAV", "label": "Savannah" }
+          ]
+        },
+        {
+          "id": "US-NC",
+          "label": "North Carolina",
+          "cities": [
+            { "id": "CLT", "label": "Charlotte" },
+            { "id": "RDU", "label": "Raleigh" }
+          ]
+        },
+        {
+          "id": "US-MA",
+          "label": "Massachusetts",
+          "cities": [
+            { "id": "BOS", "label": "Boston" },
+            { "id": "WOR", "label": "Worcester" }
+          ]
+        },
+        {
+          "id": "US-NJ",
+          "label": "New Jersey",
+          "cities": [
+            { "id": "NEW", "label": "Newark" },
+            { "id": "JCT", "label": "Jersey City" }
           ]
         }
       ]
@@ -112,28 +278,96 @@
           "id": "GB-ENG",
           "label": "England",
           "cities": [
-            {
-              "id": "LON",
-              "label": "London"
-            },
-            {
-              "id": "MAN",
-              "label": "Manchester"
-            }
+            { "id": "LON", "label": "London" },
+            { "id": "MAN", "label": "Manchester" }
           ]
         },
         {
           "id": "GB-SCT",
           "label": "Scotland",
           "cities": [
-            {
-              "id": "EDI",
-              "label": "Edinburgh"
-            },
-            {
-              "id": "GLA",
-              "label": "Glasgow"
-            }
+            { "id": "EDI", "label": "Edinburgh" },
+            { "id": "GLA", "label": "Glasgow" }
+          ]
+        },
+        {
+          "id": "GB-WLS",
+          "label": "Wales",
+          "cities": [
+            { "id": "CDF", "label": "Cardiff" },
+            { "id": "SWN", "label": "Swansea" }
+          ]
+        },
+        {
+          "id": "GB-NIR",
+          "label": "Northern Ireland",
+          "cities": [
+            { "id": "BFS", "label": "Belfast" },
+            { "id": "DRA", "label": "Derry" }
+          ]
+        },
+        {
+          "id": "GB-ENG-NE",
+          "label": "North East England",
+          "cities": [
+            { "id": "NCL", "label": "Newcastle upon Tyne" },
+            { "id": "SUN", "label": "Sunderland" }
+          ]
+        },
+        {
+          "id": "GB-ENG-NW",
+          "label": "North West England",
+          "cities": [
+            { "id": "LIV", "label": "Liverpool" },
+            { "id": "LAN", "label": "Lancaster" }
+          ]
+        },
+        {
+          "id": "GB-ENG-YH",
+          "label": "Yorkshire and the Humber",
+          "cities": [
+            { "id": "LDS", "label": "Leeds" },
+            { "id": "SHF", "label": "Sheffield" }
+          ]
+        },
+        {
+          "id": "GB-ENG-EM",
+          "label": "East Midlands",
+          "cities": [
+            { "id": "NOT", "label": "Nottingham" },
+            { "id": "LEI", "label": "Leicester" }
+          ]
+        },
+        {
+          "id": "GB-ENG-WM",
+          "label": "West Midlands",
+          "cities": [
+            { "id": "BHM", "label": "Birmingham" },
+            { "id": "COV", "label": "Coventry" }
+          ]
+        },
+        {
+          "id": "GB-ENG-EE",
+          "label": "East of England",
+          "cities": [
+            { "id": "CAM", "label": "Cambridge" },
+            { "id": "NOR", "label": "Norwich" }
+          ]
+        },
+        {
+          "id": "GB-ENG-SE",
+          "label": "South East England",
+          "cities": [
+            { "id": "OXF", "label": "Oxford" },
+            { "id": "BRI", "label": "Brighton" }
+          ]
+        },
+        {
+          "id": "GB-ENG-SW",
+          "label": "South West England",
+          "cities": [
+            { "id": "BRS", "label": "Bristol" },
+            { "id": "PLY", "label": "Plymouth" }
           ]
         }
       ]

@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Button as FluentButton } from "@fluentui/react-components";
 import { useFormContext, useWatch } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 
@@ -9,12 +8,12 @@ import {
   ResponsiveGrid,
   SearchableInput,
   CommonEditDialog,
-  SharedDataGrid,
   GridColumnDef,
 } from "../../../shared";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 import { ADDRESS_TYPE_OPTIONS } from "../constants";
 import { useAppSelector } from "@/app/hooks";
+import { ModalTable } from "@/shared/components/Table/ModalTable";
 
 interface CitySearchResult {
   id: string;
@@ -42,9 +41,11 @@ const AddressSection: React.FC = () => {
   const selectedCity = useWatch({ control, name: "city" });
   const [citySearchText, setCitySearchText] = useState("");
   const [isCityDialogOpen, setIsCityDialogOpen] = useState(false);
-  const { data: locationData, status, error } = useAppSelector(
-    (state) => state.locationData,
-  );
+  const {
+    data: locationData,
+    status,
+    error,
+  } = useAppSelector((state) => state.locationData);
   const isLoading = status === "idle" || status === "loading";
 
   const citySearchResults = useMemo<CitySearchResult[]>(() => {
@@ -77,7 +78,9 @@ const AddressSection: React.FC = () => {
   const stateOptions = useMemo(() => {
     if (!locationData) return [];
 
-    const country = locationData.countries.find(({ id }) => id === selectedCountry);
+    const country = locationData.countries.find(
+      ({ id }) => id === selectedCountry,
+    );
 
     return country?.states.map(({ id, label }) => ({ value: id, label })) ?? [];
   }, [selectedCountry, locationData]);
@@ -96,40 +99,29 @@ const AddressSection: React.FC = () => {
 
   const cityColumns = useMemo<GridColumnDef<CitySearchResult>[]>(
     () => [
-      {
-        key: "city",
-        label: "City",
-        renderCell: (city) => (
-          <FluentButton
-            type="button"
-            appearance="transparent"
-            aria-label={`Select ${city.city}, ${city.state}, ${city.country}`}
-            onClick={() => {
-              setValue("country", city.countryId, {
-                shouldDirty: true,
-                shouldValidate: true,
-              });
-              setValue("state", city.stateId, {
-                shouldDirty: true,
-                shouldValidate: true,
-              });
-              setValue("city", city.cityId, {
-                shouldDirty: true,
-                shouldValidate: true,
-              });
-              setCitySearchText(city.city);
-              setIsCityDialogOpen(false);
-            }}
-          >
-            {city.city}
-          </FluentButton>
-        ),
-      },
+      { key: "city", label: "City" },
       { key: "state", label: "State" },
       { key: "country", label: "Country" },
     ],
-    [setValue],
+    [],
   );
+
+  const handleRowClick = (city: CitySearchResult) => {
+    setValue("country", city.countryId, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    setValue("state", city.stateId, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    setValue("city", city.cityId, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    setCitySearchText(city.city);
+    setIsCityDialogOpen(false);
+  };
 
   const handleCountryChange = () => {
     setValue("state", "", { shouldDirty: true, shouldValidate: true });
@@ -145,6 +137,14 @@ const AddressSection: React.FC = () => {
   const handleCityDialogClose = () => {
     setIsCityDialogOpen(false);
     setCitySearchText(selectedCityLabel);
+  };
+
+  const handleCitySearch = () => {
+    if (citySearchText.trim().length >= 3) {
+      setIsCityDialogOpen(true);
+    } else {
+      console.warn("Search requires at least 3 characters.");
+    }
   };
 
   return (
@@ -213,7 +213,7 @@ const AddressSection: React.FC = () => {
           placeholder="Search for a city"
           disabled={isLoading || !locationData}
           onChange={setCitySearchText}
-          onSearch={() => setIsCityDialogOpen(true)}
+          onSearch={handleCitySearch}
         />
         <FormInput
           name="postcode"
@@ -231,12 +231,11 @@ const AddressSection: React.FC = () => {
             : "Select a city"
         }
         content={
-          <SharedDataGrid<CitySearchResult>
+          <ModalTable<CitySearchResult>
             items={citySearchResults}
             columns={cityColumns}
             getRowId={(city) => city.id}
-            showSearch={false}
-            pageSize={5}
+            onRowClick={handleRowClick}
             emptyState={
               citySearchText.trim()
                 ? `No cities found for "${citySearchText.trim()}".`

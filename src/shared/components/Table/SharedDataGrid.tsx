@@ -32,6 +32,7 @@ interface SharedDataGridProps<T> {
   items: T[];
   columns: GridColumnDef<T>[];
   getRowId: (item: T) => string;
+  showSearch?: boolean;
   searchPlaceholder?: string;
   toolbarActions?: React.ReactNode;
   selectionMode?: "single" | "multiselect";
@@ -109,6 +110,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
   items,
   columns,
   getRowId,
+  showSearch = true,
   searchPlaceholder = "Search...",
   toolbarActions,
   selectionMode,
@@ -179,16 +181,20 @@ export const SharedDataGrid = <T extends Record<string, any>>({
 
   return (
     <div className={styles.container}>
-      <div className={styles.toolbar}>
-        <div className={styles.actionsGroup}>{toolbarActions}</div>
-        <Input
-          className={styles.searchInput}
-          placeholder={searchPlaceholder}
-          contentBefore={<SearchRegular />}
-          value={searchQuery}
-          onChange={(ev, data) => setSearchQuery(data.value)}
-        />
-      </div>
+      {(showSearch || toolbarActions) && (
+        <div className={styles.toolbar}>
+          <div className={styles.actionsGroup}>{toolbarActions}</div>
+          {showSearch && (
+            <Input
+              className={styles.searchInput}
+              placeholder={searchPlaceholder}
+              contentBefore={<SearchRegular />}
+              value={searchQuery}
+              onChange={(ev, data) => setSearchQuery(data.value)}
+            />
+          )}
+        </div>
+      )}
       <div className={styles.tableWrapper}>
         <DataGrid
           className={styles.grid}

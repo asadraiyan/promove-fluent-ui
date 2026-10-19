@@ -27,6 +27,7 @@ interface ModalTableProps<T> {
   getRowId: (item: T) => string;
   selectionMode?: "single" | "multiselect";
   emptyState?: React.ReactNode;
+  onRowClick?: (item: T) => void;
 }
 
 const useStyles = makeStyles({
@@ -53,11 +54,26 @@ const useStyles = makeStyles({
     alignItems: "center",
     color: tokens.colorNeutralForeground3,
   },
+  row: {
+    cursor: "pointer",
+    "&:nth-child(even)": {
+      backgroundColor: tokens.colorNeutralBackground2,
+    },
+    "&:hover": {
+      backgroundColor: tokens.colorNeutralBackground1Hover,
+    },
+  },
+  headerCell: {
+    justifyContent: "flex-start",
+    textAlign: "left",
+  },
   cellContent: {
-    whiteSpace: "nowrap",
+    whiteSpace: "normal",
     overflow: "hidden",
     textOverflow: "ellipsis",
     display: "block",
+    paddingTop: tokens.spacingVerticalS,
+    paddingBottom: tokens.spacingVerticalS,
   },
 });
 
@@ -67,6 +83,7 @@ export const ModalTable = <T extends Record<string, any>>({
   getRowId,
   selectionMode,
   emptyState,
+  onRowClick,
 }: ModalTableProps<T>) => {
   const styles = useStyles();
 
@@ -107,7 +124,7 @@ export const ModalTable = <T extends Record<string, any>>({
       <div className={styles.tableWrapper}>
         <DataGrid
           className={styles.grid}
-          items={items} 
+          items={items}
           columns={fluentColumns}
           sortable
           selectionMode={selectionMode}
@@ -123,7 +140,7 @@ export const ModalTable = <T extends Record<string, any>>({
               }
             >
               {({ renderHeaderCell }) => (
-                <DataGridHeaderCell>
+                <DataGridHeaderCell className={styles.headerCell}>
                   <Text weight="semibold">{renderHeaderCell()}</Text>
                 </DataGridHeaderCell>
               )}
@@ -134,6 +151,8 @@ export const ModalTable = <T extends Record<string, any>>({
             {({ item, rowId }) => (
               <DataGridRow<T>
                 key={rowId}
+                className={styles.row}
+                onClick={() => onRowClick && onRowClick(item)}
                 selectionCell={
                   selectionMode
                     ? { checkboxIndicator: { "aria-label": "Select row" } }

@@ -18,6 +18,7 @@ export { CommonEditDialog } from './components/Modal/CommonEditDialog';
 export type { CommonEditDialogAction } from './components/Modal/CommonEditDialog';
 export { SharedDataGrid } from './components/Table/SharedDataGrid';
 export type { GridColumnDef } from './components/Table/SharedDataGrid';
+export { DataTable } from './components/Table/DataTable';
 export { Navbar } from './components/layout/Navbar';
 export {
   ResponsiveGrid,

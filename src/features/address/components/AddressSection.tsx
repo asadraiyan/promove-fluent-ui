@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Button as FluentButton } from "@fluentui/react-components";
 import { useFormContext, useWatch } from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
 
@@ -9,7 +8,7 @@ import {
   ResponsiveGrid,
   SearchableInput,
   CommonEditDialog,
-  SharedDataGrid,
+  DataTable,
   GridColumnDef,
 } from "../../../shared";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
@@ -94,41 +93,33 @@ const AddressSection: React.FC = () => {
     setCitySearchText(selectedCityLabel);
   }, [selectedCity, selectedCityLabel]);
 
+  const handleCitySelect = (city: CitySearchResult) => {
+    setValue("country", city.countryId, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    setValue("state", city.stateId, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    setValue("city", city.cityId, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    setCitySearchText(city.city);
+    setIsCityDialogOpen(false);
+  };
+
   const cityColumns = useMemo<GridColumnDef<CitySearchResult>[]>(
     () => [
       {
         key: "city",
         label: "City",
-        renderCell: (city) => (
-          <FluentButton
-            type="button"
-            appearance="transparent"
-            aria-label={`Select ${city.city}, ${city.state}, ${city.country}`}
-            onClick={() => {
-              setValue("country", city.countryId, {
-                shouldDirty: true,
-                shouldValidate: true,
-              });
-              setValue("state", city.stateId, {
-                shouldDirty: true,
-                shouldValidate: true,
-              });
-              setValue("city", city.cityId, {
-                shouldDirty: true,
-                shouldValidate: true,
-              });
-              setCitySearchText(city.city);
-              setIsCityDialogOpen(false);
-            }}
-          >
-            {city.city}
-          </FluentButton>
-        ),
       },
       { key: "state", label: "State" },
       { key: "country", label: "Country" },
     ],
-    [setValue],
+    [],
   );
 
   const handleCountryChange = () => {
@@ -213,7 +204,9 @@ const AddressSection: React.FC = () => {
           placeholder="Search for a city"
           disabled={isLoading || !locationData}
           onChange={setCitySearchText}
-          onSearch={() => setIsCityDialogOpen(true)}
+          onSearch={() => {
+            if (citySearchText.trim()) setIsCityDialogOpen(true);
+          }}
         />
         <FormInput
           name="postcode"
@@ -231,17 +224,17 @@ const AddressSection: React.FC = () => {
             : "Select a city"
         }
         content={
-          <SharedDataGrid<CitySearchResult>
+          <DataTable<CitySearchResult>
             items={citySearchResults}
             columns={cityColumns}
             getRowId={(city) => city.id}
-            showSearch={false}
-            pageSize={5}
+            compact
             emptyState={
               citySearchText.trim()
                 ? `No cities found for "${citySearchText.trim()}".`
                 : "No cities are available."
             }
+            onRowClick={handleCitySelect}
           />
         }
         actions={[

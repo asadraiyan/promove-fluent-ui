@@ -13,11 +13,14 @@ import {
   tokens,
   Text,
   Button,
+  mergeClasses,
 } from "@fluentui/react-components";
 import {
   SearchRegular,
   ChevronLeftRegular,
   ChevronRightRegular,
+  PinRegular,
+  PinFilled,
 } from "@fluentui/react-icons";
 
 export interface GridColumnDef<T> {
@@ -26,7 +29,12 @@ export interface GridColumnDef<T> {
   renderCell?: (item: T) => React.ReactNode;
   sortable?: boolean;
   accessor?: (item: T) => string | number;
+  minWidth?: number; 
 }
+
+type PinnedCellStyle = React.CSSProperties & {
+  "--pinned-offset": string;
+};
 
 interface SharedDataGridProps<T> {
   items: T[];
@@ -52,6 +60,7 @@ const useStyles = makeStyles({
   tableWrapper: {
     overflowX: "auto",
     width: "100%",
+    // position: "relative",
   },
   grid: {
     minWidth: "800px",
@@ -104,6 +113,26 @@ const useStyles = makeStyles({
     width: "100%",
     display: "block",
   },
+
+  pinnedCell: {
+    position: "sticky",
+    left: "var(--pinned-offset, 0px)",
+    backgroundColor: tokens.colorNeutralBackground1,
+    boxShadow: `2px 0 4px -2px ${tokens.colorNeutralShadowAmbient}`,
+  },
+  pinnedHeader: {
+    zIndex: 3,
+  },
+  pinnedBody: {
+    zIndex: 2,
+  },
+  headerContent: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    // gap: tokens.spacingHorizontalS,
+  },
 });
 
 export const SharedDataGrid = <T extends Record<string, any>>({
@@ -120,13 +149,55 @@ export const SharedDataGrid = <T extends Record<string, any>>({
   const styles = useStyles();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [pinnedColumnIds, setPinnedColumnIds] = useState<string[]>([]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
 
+  // 1. Reorder columns: pinned first, then unpinned
+  const orderedColumnsDef = useMemo(() => {
+    const pinned = columns.filter((col) => pinnedColumnIds.includes(col.key));
+    const unpinned = columns.filter(
+      (col) => !pinnedColumnIds.includes(col.key),
+    );
+    return [...pinned, ...unpinned];
+  }, [columns, pinnedColumnIds]);
+
+  // 2. Calculate offsets using the same widths applied to pinned cells.
+  const { pinnedOffsets, pinnedWidths } = useMemo(() => {
+    const offsets: Record<string, string> = {};
+    const widths: Record<string, number> = {};
+    let currentLeft = 0;
+
+    orderedColumnsDef.forEach((col) => {
+      if (pinnedColumnIds.includes(col.key)) {
+        const width = col.minWidth ?? 100;
+        offsets[col.key] = `${currentLeft}px`;
+        widths[col.key] = width;
+        currentLeft += width;
+      }
+    });
+
+    return { pinnedOffsets: offsets, pinnedWidths: widths };
+  }, [orderedColumnsDef, pinnedColumnIds]);
+
+  const getPinnedCellStyle = (columnId: string): PinnedCellStyle => {
+    const width = pinnedWidths[columnId];
+
+    return {
+      "--pinned-offset": pinnedOffsets[columnId],
+      // width,
+      // minWidth: width,
+      // maxWidth: width,
+      // flex: `0 0 ${width}px`,
+      boxSizing: "border-box",
+    };
+  };
+
+  // 3. Map ordered defs to Fluent TableColumnDefinitions
   const fluentColumns: TableColumnDefinition<T>[] = useMemo(() => {
-    return columns.map((col) =>
+    return orderedColumnsDef.map((col) =>
       createTableColumn<T>({
         columnId: col.key,
         compare:
@@ -134,7 +205,6 @@ export const SharedDataGrid = <T extends Record<string, any>>({
             ? (a, b) => {
                 const valA = col.accessor ? col.accessor(a) : a[col.key];
                 const valB = col.accessor ? col.accessor(b) : b[col.key];
-                console.log("Comparing:", valA, valB);
                 if (valA == null) return -1;
                 if (valB == null) return 1;
                 return valA > valB ? 1 : valA < valB ? -1 : 0;
@@ -156,7 +226,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
         },
       }),
     );
-  }, [columns, styles.cellContent]);
+  }, [orderedColumnsDef, styles.cellContent]);
 
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return items;
@@ -178,6 +248,15 @@ export const SharedDataGrid = <T extends Record<string, any>>({
   const totalPages =
     pageSize > 0 ? Math.ceil(filteredItems.length / pageSize) : 1;
   const isPaginationEnabled = pageSize > 0 && filteredItems.length > 0;
+
+  const togglePin = (columnId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPinnedColumnIds((prev) =>
+      prev.includes(columnId)
+        ? prev.filter((id) => id !== columnId)
+        : [...prev, columnId],
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -213,11 +292,33 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                   : undefined
               }
             >
-              {({ renderHeaderCell }) => (
-                <DataGridHeaderCell>
-                  <Text weight="semibold">{renderHeaderCell()}</Text>
-                </DataGridHeaderCell>
-              )}
+              {({ renderHeaderCell, columnId }) => {
+                const stringColumnId = String(columnId);
+                const isPinned = pinnedColumnIds.includes(stringColumnId);
+
+                return (
+                  <DataGridHeaderCell
+                    className={mergeClasses(
+                      isPinned && styles.pinnedCell,
+                      isPinned && styles.pinnedHeader,
+                    )}
+                    style={
+                      isPinned ? getPinnedCellStyle(stringColumnId) : undefined
+                    }
+                  >
+                    <div className={styles.headerContent}>
+                      <Text weight="semibold">{renderHeaderCell()}</Text>
+                      <Button
+                        appearance="transparent"
+                        icon={isPinned ? <PinFilled /> : <PinRegular />}
+                        onClick={(e) => togglePin(stringColumnId, e)}
+                        aria-label={isPinned ? "Unpin column" : "Pin column"}
+                        size="small"
+                      />
+                    </div>
+                  </DataGridHeaderCell>
+                );
+              }}
             </DataGridRow>
           </DataGridHeader>
 
@@ -231,9 +332,24 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                     : undefined
                 }
               >
-                {({ renderCell }) => (
-                  <DataGridCell>{renderCell(item)}</DataGridCell>
-                )}
+                {({ renderCell, columnId }) => {
+                  const stringColumnId = String(columnId);
+                  const isPinned = pinnedColumnIds.includes(stringColumnId);
+
+                  return (
+                    <DataGridCell
+                      className={mergeClasses(
+                        isPinned && styles.pinnedCell,
+                        isPinned && styles.pinnedBody,
+                      )}
+                      style={
+                        isPinned ? getPinnedCellStyle(stringColumnId) : undefined
+                      }
+                    >
+                      {renderCell(item)}
+                    </DataGridCell>
+                  );
+                }}
               </DataGridRow>
             )}
           </DataGridBody>

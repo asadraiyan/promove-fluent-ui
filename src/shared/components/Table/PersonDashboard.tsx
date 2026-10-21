@@ -49,7 +49,7 @@ export interface FlatUserRow {
 const useStyles = makeStyles({
   layout: {
     padding: tokens.spacingVerticalXXL,
-    maxWidth: "1200px",
+    maxWidth: "500px",
     marginLeft: "auto",
     marginRight: "auto",
   },
@@ -148,10 +148,7 @@ export const PersonDashboard: React.FC = () => {
     null,
   );
 
-  const updateEditingCustomer = (
-    field: keyof FlatUserRow,
-    value: string,
-  ) => {
+  const updateEditingCustomer = (field: keyof FlatUserRow, value: string) => {
     setEditingCustomer((customer) =>
       customer ? { ...customer, [field]: value } : customer,
     );
@@ -173,6 +170,7 @@ export const PersonDashboard: React.FC = () => {
       {
         key: "fullName",
         label: "Customer Name",
+        minWidth: 250,
         renderCell: (row) => (
           <TableCellLayout
             media={<Avatar name={row.fullName} color="colorful" />}
@@ -190,19 +188,23 @@ export const PersonDashboard: React.FC = () => {
       {
         key: "email",
         label: "Email Address",
+        minWidth: 250,
       },
       {
         key: "phone",
         label: "Phone Number",
         sortable: false,
+        minWidth: 250,
       },
       {
         key: "locationString",
         label: "Location",
+        minWidth: 250,
       },
       {
         key: "addressType",
         label: "Type",
+        minWidth: 250,
         renderCell: (row) => {
           const badgeColorClass =
             row.addressType === "delivery"
@@ -221,6 +223,7 @@ export const PersonDashboard: React.FC = () => {
       {
         key: "roles",
         label: "Assigned Roles",
+        minWidth: 250,
         accessor: (row: FlatUserRow) => row.roles.join(", "),
         renderCell: (row) => (
           <div className={styles.rolesContainer}>

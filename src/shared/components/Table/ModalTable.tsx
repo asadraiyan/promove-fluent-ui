@@ -21,31 +21,43 @@ export interface GridColumnDef<T> {
   accessor?: (item: T) => string | number;
 }
 
-interface ModalTableProps<T> {
+interface DataTableProps<T> {
   items: T[];
   columns: GridColumnDef<T>[];
   getRowId: (item: T) => string;
   selectionMode?: "single" | "multiselect";
   emptyState?: React.ReactNode;
+  showEmptyState?: boolean;
+  compact?: boolean;
   onRowClick?: (item: T) => void;
 }
 
 const useStyles = makeStyles({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderRadius: tokens.borderRadiusMedium,
-    border: `1px solid ${tokens.colorNeutralStroke1}`,
-    boxShadow: tokens.shadow2,
-  },
   tableWrapper: {
     overflowX: "auto",
     width: "100%",
-    maxHeight: "400px",
   },
   grid: {
+    minWidth: "800px",
+  },
+  compactGrid: {
+    width: "100%",
     minWidth: "100%",
+  },
+  compactCell: {
+    paddingLeft: tokens.spacingHorizontalXS,
+    paddingRight: tokens.spacingHorizontalXS,
+  },
+  bodyRow: {
+    "&:nth-child(odd)": {
+      backgroundColor: tokens.colorPaletteBlueBackground2,
+    },
+    "&:nth-child(even)": {
+      backgroundColor: tokens.colorPaletteGreenBackground1,
+    },
+    "&:hover": {
+      backgroundColor: tokens.colorBrandBackground2Hover,
+    },
   },
   emptyState: {
     padding: tokens.spacingVerticalXXL,
@@ -54,26 +66,12 @@ const useStyles = makeStyles({
     alignItems: "center",
     color: tokens.colorNeutralForeground3,
   },
-  row: {
-    cursor: "pointer",
-    "&:nth-child(even)": {
-      backgroundColor: tokens.colorNeutralBackground2,
-    },
-    "&:hover": {
-      backgroundColor: tokens.colorNeutralBackground1Hover,
-    },
-  },
-  headerCell: {
-    justifyContent: "flex-start",
-    textAlign: "left",
-  },
   cellContent: {
-    whiteSpace: "normal",
+    whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
+    width: "100%",
     display: "block",
-    paddingTop: tokens.spacingVerticalS,
-    paddingBottom: tokens.spacingVerticalS,
   },
 });
 
@@ -83,53 +81,75 @@ export const ModalTable = <T extends Record<string, any>>({
   getRowId,
   selectionMode,
   emptyState,
+  showEmptyState = true,
+  compact = false,
   onRowClick,
-}: ModalTableProps<T>) => {
+}: DataTableProps<T>) => {
   const styles = useStyles();
+  const compactColumnSizingOptions = useMemo(
+    () =>
+      Object.fromEntries(
+        columns.map(({ key }) => [
+          key,
+          {
+            defaultWidth: 120,
+            idealWidth: 120,
+            minWidth: 80,
+            padding: 8,
+          },
+        ]),
+      ),
+    [columns],
+  );
 
-  const fluentColumns: TableColumnDefinition<T>[] = useMemo(() => {
-    return columns.map((col) =>
-      createTableColumn<T>({
-        columnId: col.key,
-        compare:
-          col.sortable !== false
-            ? (a, b) => {
-                const valA = col.accessor ? col.accessor(a) : a[col.key];
-                const valB = col.accessor ? col.accessor(b) : b[col.key];
-                if (valA == null) return -1;
-                if (valB == null) return 1;
-                return valA > valB ? 1 : valA < valB ? -1 : 0;
-              }
-            : undefined,
-        renderHeaderCell: () => col.label,
-        renderCell: (item) => {
-          const content = col.renderCell
-            ? col.renderCell(item)
-            : String(item[col.key] ?? "");
-          return (
-            <span
-              className={styles.cellContent}
-              title={String(item[col.key] ?? "")}
-            >
-              {content}
-            </span>
-          );
-        },
-      }),
-    );
-  }, [columns, styles.cellContent]);
+  const fluentColumns: TableColumnDefinition<T>[] = useMemo(
+    () =>
+      columns.map((col) =>
+        createTableColumn<T>({
+          columnId: col.key,
+          compare:
+            col.sortable !== false
+              ? (a, b) => {
+                  const valA = col.accessor ? col.accessor(a) : a[col.key];
+                  const valB = col.accessor ? col.accessor(b) : b[col.key];
+                  if (valA == null) return -1;
+                  if (valB == null) return 1;
+                  return valA > valB ? 1 : valA < valB ? -1 : 0;
+                }
+              : undefined,
+          renderHeaderCell: () => col.label,
+          renderCell: (item) => {
+            const content = col.renderCell
+              ? col.renderCell(item)
+              : String(item[col.key] ?? "");
+            return (
+              <span
+                className={styles.cellContent}
+                title={String(item[col.key] ?? "")}
+              >
+                {content}
+              </span>
+            );
+          },
+        }),
+      ),
+    [columns, styles.cellContent],
+  );
 
   return (
-    <div className={styles.container}>
+    <>
       <div className={styles.tableWrapper}>
         <DataGrid
-          className={styles.grid}
+          className={`${styles.grid} ${compact ? styles.compactGrid : ""}`}
           items={items}
           columns={fluentColumns}
           sortable
           selectionMode={selectionMode}
           getRowId={getRowId}
           focusMode="composite"
+          columnSizingOptions={
+            compact ? compactColumnSizingOptions : undefined
+          }
         >
           <DataGridHeader>
             <DataGridRow
@@ -140,7 +160,9 @@ export const ModalTable = <T extends Record<string, any>>({
               }
             >
               {({ renderHeaderCell }) => (
-                <DataGridHeaderCell className={styles.headerCell}>
+                <DataGridHeaderCell
+                  className={compact ? styles.compactCell : ""}
+                >
                   <Text weight="semibold">{renderHeaderCell()}</Text>
                 </DataGridHeaderCell>
               )}
@@ -151,8 +173,8 @@ export const ModalTable = <T extends Record<string, any>>({
             {({ item, rowId }) => (
               <DataGridRow<T>
                 key={rowId}
-                className={styles.row}
-                onClick={() => onRowClick && onRowClick(item)}
+                className={styles.bodyRow}
+                onClick={() => onRowClick?.(item)}
                 selectionCell={
                   selectionMode
                     ? { checkboxIndicator: { "aria-label": "Select row" } }
@@ -160,18 +182,20 @@ export const ModalTable = <T extends Record<string, any>>({
                 }
               >
                 {({ renderCell }) => (
-                  <DataGridCell>{renderCell(item)}</DataGridCell>
+                  <DataGridCell className={compact ? styles.compactCell : ""}>
+                    {renderCell(item)}
+                  </DataGridCell>
                 )}
               </DataGridRow>
             )}
           </DataGridBody>
         </DataGrid>
       </div>
-      {items.length === 0 && (
+      {showEmptyState && items.length === 0 && (
         <div className={styles.emptyState}>
-          {emptyState || <Text>No records available.</Text>}
+          {emptyState || <Text>No records match your search criteria.</Text>}
         </div>
       )}
-    </div>
+    </>
   );
 };

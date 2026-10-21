@@ -40,6 +40,7 @@ const AddressSection: React.FC = () => {
   const selectedState = useWatch({ control, name: "state" });
   const selectedCity = useWatch({ control, name: "city" });
   const [citySearchText, setCitySearchText] = useState("");
+  const [cityDialogSearchText, setCityDialogSearchText] = useState("");
   const [isCityDialogOpen, setIsCityDialogOpen] = useState(false);
   const {
     data: locationData,
@@ -51,7 +52,7 @@ const AddressSection: React.FC = () => {
   const citySearchResults = useMemo<CitySearchResult[]>(() => {
     if (!locationData) return [];
 
-    const query = citySearchText.trim().toLowerCase();
+    const query = cityDialogSearchText.trim().toLowerCase();
     return locationData.countries.reduce<CitySearchResult[]>(
       (countries, country) => {
         country.states.forEach((state) => {
@@ -73,7 +74,7 @@ const AddressSection: React.FC = () => {
       },
       [],
     );
-  }, [citySearchText, locationData]);
+  }, [cityDialogSearchText, locationData]);
 
   const stateOptions = useMemo(() => {
     if (!locationData) return [];
@@ -141,9 +142,10 @@ const AddressSection: React.FC = () => {
 
   const handleCitySearch = () => {
     if (citySearchText.trim().length >= 3) {
+      setCityDialogSearchText(citySearchText);
       setIsCityDialogOpen(true);
     } else {
-      console.warn("Search requires at least 3 characters.");
+      alert("Search requires at least 3 characters.");
     }
   };
 
@@ -226,8 +228,8 @@ const AddressSection: React.FC = () => {
       <CommonEditDialog
         open={isCityDialogOpen}
         heading={
-          citySearchText.trim()
-            ? `Cities matching "${citySearchText.trim()}"`
+          cityDialogSearchText.trim()
+            ? `Cities matching "${cityDialogSearchText.trim()}"`
             : "Select a city"
         }
         content={
@@ -237,8 +239,8 @@ const AddressSection: React.FC = () => {
             getRowId={(city) => city.id}
             onRowClick={handleRowClick}
             emptyState={
-              citySearchText.trim()
-                ? `No cities found for "${citySearchText.trim()}".`
+              cityDialogSearchText.trim()
+                ? `No cities found for "${cityDialogSearchText.trim()}".`
                 : "No cities are available."
             }
           />

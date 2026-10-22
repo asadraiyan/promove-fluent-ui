@@ -29,11 +29,11 @@ export interface GridColumnDef<T> {
   renderCell?: (item: T) => React.ReactNode;
   sortable?: boolean;
   accessor?: (item: T) => string | number;
-  minWidth?: number; 
+  minWidth?: number;
 }
 
 type PinnedCellStyle = React.CSSProperties & {
-  "--pinned-offset": string;
+  "--pinned-offset"?: string;
 };
 
 interface SharedDataGridProps<T> {
@@ -60,7 +60,7 @@ const useStyles = makeStyles({
   tableWrapper: {
     overflowX: "auto",
     width: "100%",
-    // position: "relative",
+    position: "relative",
   },
   grid: {
     minWidth: "800px",
@@ -113,7 +113,6 @@ const useStyles = makeStyles({
     width: "100%",
     display: "block",
   },
-
   pinnedCell: {
     position: "sticky",
     left: "var(--pinned-offset, 0px)",
@@ -131,7 +130,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    // gap: tokens.spacingHorizontalS,
   },
 });
 
@@ -164,38 +162,50 @@ export const SharedDataGrid = <T extends Record<string, any>>({
     return [...pinned, ...unpinned];
   }, [columns, pinnedColumnIds]);
 
-  // 2. Calculate offsets using the same widths applied to pinned cells.
-  const { pinnedOffsets, pinnedWidths } = useMemo(() => {
+  // 2. Calculate offsets for sticky positioning
+  const { pinnedOffsets } = useMemo(() => {
     const offsets: Record<string, string> = {};
-    const widths: Record<string, number> = {};
     let currentLeft = 0;
 
     orderedColumnsDef.forEach((col) => {
       if (pinnedColumnIds.includes(col.key)) {
         const width = col.minWidth ?? 100;
         offsets[col.key] = `${currentLeft}px`;
-        widths[col.key] = width;
         currentLeft += width;
       }
     });
 
-    return { pinnedOffsets: offsets, pinnedWidths: widths };
+    return { pinnedOffsets: offsets };
   }, [orderedColumnsDef, pinnedColumnIds]);
 
-  const getPinnedCellStyle = (columnId: string): PinnedCellStyle => {
-    const width = pinnedWidths[columnId];
+  // 3. Unified sizing logic for ALL cells (pinned and unpinned)
+  const getCellStyle = (
+    columnId: string,
+    isPinned: boolean,
+  ): PinnedCellStyle => {
+    const columnDef = orderedColumnsDef.find((col) => col.key === columnId);
+    const width = columnDef?.minWidth ?? 100;
 
-    return {
-      "--pinned-offset": pinnedOffsets[columnId],
-      width,
-      minWidth: width,
-      maxWidth: width,
+    // Apply strict sizes uniformly so the column doesn't jump in width when pinned
+    const baseStyle: React.CSSProperties = {
+      width: `${width}px`,
+      minWidth: `${width}px`,
+      maxWidth: `${width}px`,
       flex: `0 0 ${width}px`,
       boxSizing: "border-box",
     };
+
+    if (isPinned) {
+      return {
+        ...baseStyle,
+        "--pinned-offset": pinnedOffsets[columnId],
+      };
+    }
+
+    return baseStyle;
   };
 
-  // 3. Map ordered defs to Fluent TableColumnDefinitions
+  // 4. Map ordered defs to Fluent TableColumnDefinitions
   const fluentColumns: TableColumnDefinition<T>[] = useMemo(() => {
     return orderedColumnsDef.map((col) =>
       createTableColumn<T>({
@@ -302,9 +312,8 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                       isPinned && styles.pinnedCell,
                       isPinned && styles.pinnedHeader,
                     )}
-                    style={
-                      isPinned ? getPinnedCellStyle(stringColumnId) : undefined
-                    }
+                    // Applied standard sizing styles uniformly
+                    style={getCellStyle(stringColumnId, isPinned)}
                   >
                     <div className={styles.headerContent}>
                       <Text weight="semibold">{renderHeaderCell()}</Text>
@@ -342,9 +351,8 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                         isPinned && styles.pinnedCell,
                         isPinned && styles.pinnedBody,
                       )}
-                      style={
-                        isPinned ? getPinnedCellStyle(stringColumnId) : undefined
-                      }
+                      // Applied standard sizing styles uniformly
+                      style={getCellStyle(stringColumnId, isPinned)}
                     >
                       {renderCell(item)}
                     </DataGridCell>

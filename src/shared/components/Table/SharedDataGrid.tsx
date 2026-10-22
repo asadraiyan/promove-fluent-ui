@@ -29,11 +29,11 @@ export interface GridColumnDef<T> {
   renderCell?: (item: T) => React.ReactNode;
   sortable?: boolean;
   accessor?: (item: T) => string | number;
-  minWidth?: number; 
+  minWidth?: number;
 }
 
 type PinnedCellStyle = React.CSSProperties & {
-  "--pinned-offset": string;
+  "--pinned-offset"?: string;
 };
 
 interface SharedDataGridProps<T> {
@@ -46,6 +46,7 @@ interface SharedDataGridProps<T> {
   selectionMode?: "single" | "multiselect";
   emptyState?: React.ReactNode;
   pageSize?: number;
+  enableColumnPinning?: boolean;
 }
 
 const useStyles = makeStyles({
@@ -60,10 +61,10 @@ const useStyles = makeStyles({
   tableWrapper: {
     overflowX: "auto",
     width: "100%",
-    // position: "relative",
+    position: "relative",
   },
   grid: {
-    minWidth: "800px",
+    minWidth: "max-content",
   },
   toolbar: {
     display: "flex",
@@ -106,6 +107,12 @@ const useStyles = makeStyles({
     gap: tokens.spacingHorizontalS,
     alignItems: "center",
   },
+  gridRow: {
+    backgroundColor: tokens.colorNeutralBackground1,
+    "&:hover": {
+      backgroundColor: tokens.colorSubtleBackgroundHover,
+    },
+  },
   cellContent: {
     whiteSpace: "nowrap",
     overflow: "hidden",
@@ -113,15 +120,15 @@ const useStyles = makeStyles({
     width: "100%",
     display: "block",
   },
-
   pinnedCell: {
     position: "sticky",
     left: "var(--pinned-offset, 0px)",
-    backgroundColor: tokens.colorNeutralBackground1,
+    backgroundColor: "inherit",
     boxShadow: `2px 0 4px -2px ${tokens.colorNeutralShadowAmbient}`,
   },
   pinnedHeader: {
     zIndex: 3,
+    backgroundColor: tokens.colorNeutralBackground1,
   },
   pinnedBody: {
     zIndex: 2,
@@ -131,7 +138,18 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    // gap: tokens.spacingHorizontalS,
+  },
+  cellBase: {
+    width: "var(--cell-width, 100px)",
+    minWidth: "var(--cell-width, 100px)",
+    maxWidth: "var(--cell-width, 100px)",
+    flexBasis: "var(--cell-width, 100px)",
+    flexGrow: 0,
+    flexShrink: 0,
+    boxSizing: "border-box",
+    alignSelf: "stretch",
+    display: "flex",
+    alignItems: "center",
   },
 });
 
@@ -145,6 +163,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
   selectionMode,
   emptyState,
   pageSize = 0,
+  enableColumnPinning = false,
 }: SharedDataGridProps<T>) => {
   const styles = useStyles();
   const [searchQuery, setSearchQuery] = useState("");
@@ -155,7 +174,6 @@ export const SharedDataGrid = <T extends Record<string, any>>({
     setCurrentPage(1);
   }, [searchQuery]);
 
-  // 1. Reorder columns: pinned first, then unpinned
   const orderedColumnsDef = useMemo(() => {
     const pinned = columns.filter((col) => pinnedColumnIds.includes(col.key));
     const unpinned = columns.filter(
@@ -164,38 +182,39 @@ export const SharedDataGrid = <T extends Record<string, any>>({
     return [...pinned, ...unpinned];
   }, [columns, pinnedColumnIds]);
 
-  // 2. Calculate offsets using the same widths applied to pinned cells.
-  const { pinnedOffsets, pinnedWidths } = useMemo(() => {
+  const { pinnedOffsets } = useMemo(() => {
     const offsets: Record<string, string> = {};
-    const widths: Record<string, number> = {};
     let currentLeft = 0;
 
     orderedColumnsDef.forEach((col) => {
       if (pinnedColumnIds.includes(col.key)) {
         const width = col.minWidth ?? 100;
         offsets[col.key] = `${currentLeft}px`;
-        widths[col.key] = width;
         currentLeft += width;
       }
     });
 
-    return { pinnedOffsets: offsets, pinnedWidths: widths };
+    return { pinnedOffsets: offsets };
   }, [orderedColumnsDef, pinnedColumnIds]);
 
-  const getPinnedCellStyle = (columnId: string): PinnedCellStyle => {
-    const width = pinnedWidths[columnId];
+  const getCellVariables = (
+    columnId: string,
+    isPinned: boolean,
+  ): React.CSSProperties => {
+    const columnDef = orderedColumnsDef.find((col) => col.key === columnId);
+    const width = columnDef?.minWidth ?? 100;
 
-    return {
-      "--pinned-offset": pinnedOffsets[columnId],
-      width,
-      minWidth: width,
-      maxWidth: width,
-      flex: `0 0 ${width}px`,
-      boxSizing: "border-box",
+    const vars: Record<string, string> = {
+      "--cell-width": `${width}px`,
     };
+
+    if (isPinned) {
+      vars["--pinned-offset"] = pinnedOffsets[columnId];
+    }
+
+    return vars as React.CSSProperties;
   };
 
-  // 3. Map ordered defs to Fluent TableColumnDefinitions
   const fluentColumns: TableColumnDefinition<T>[] = useMemo(() => {
     return orderedColumnsDef.map((col) =>
       createTableColumn<T>({
@@ -286,6 +305,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
         >
           <DataGridHeader>
             <DataGridRow
+              className={styles.gridRow}
               selectionCell={
                 selectionMode === "multiselect"
                   ? { checkboxIndicator: { "aria-label": "Select all rows" } }
@@ -299,22 +319,23 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                 return (
                   <DataGridHeaderCell
                     className={mergeClasses(
+                      styles.cellBase,
                       isPinned && styles.pinnedCell,
                       isPinned && styles.pinnedHeader,
                     )}
-                    style={
-                      isPinned ? getPinnedCellStyle(stringColumnId) : undefined
-                    }
+                    style={getCellVariables(stringColumnId, isPinned)}
                   >
                     <div className={styles.headerContent}>
                       <Text weight="semibold">{renderHeaderCell()}</Text>
-                      <Button
-                        appearance="transparent"
-                        icon={isPinned ? <PinFilled /> : <PinRegular />}
-                        onClick={(e) => togglePin(stringColumnId, e)}
-                        aria-label={isPinned ? "Unpin column" : "Pin column"}
-                        size="small"
-                      />
+                      {enableColumnPinning && (
+                        <Button
+                          appearance="transparent"
+                          icon={isPinned ? <PinFilled /> : <PinRegular />}
+                          onClick={(e) => togglePin(stringColumnId, e)}
+                          aria-label={isPinned ? "Unpin column" : "Pin column"}
+                          size="small"
+                        />
+                      )}
                     </div>
                   </DataGridHeaderCell>
                 );
@@ -325,6 +346,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
           <DataGridBody<T>>
             {({ item, rowId }) => (
               <DataGridRow<T>
+                className={styles.gridRow}
                 key={rowId}
                 selectionCell={
                   selectionMode
@@ -339,12 +361,11 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                   return (
                     <DataGridCell
                       className={mergeClasses(
+                        styles.cellBase,
                         isPinned && styles.pinnedCell,
                         isPinned && styles.pinnedBody,
                       )}
-                      style={
-                        isPinned ? getPinnedCellStyle(stringColumnId) : undefined
-                      }
+                      style={getCellVariables(stringColumnId, isPinned)}
                     >
                       {renderCell(item)}
                     </DataGridCell>

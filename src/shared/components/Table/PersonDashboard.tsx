@@ -49,7 +49,7 @@ export interface FlatUserRow {
 const useStyles = makeStyles({
   layout: {
     padding: tokens.spacingVerticalXXL,
-    maxWidth: "500px",
+    maxWidth: "1200px",
     marginLeft: "auto",
     marginRight: "auto",
   },

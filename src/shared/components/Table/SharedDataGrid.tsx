@@ -187,10 +187,10 @@ export const SharedDataGrid = <T extends Record<string, any>>({
 
     return {
       "--pinned-offset": pinnedOffsets[columnId],
-      // width,
-      // minWidth: width,
-      // maxWidth: width,
-      // flex: `0 0 ${width}px`,
+      width,
+      minWidth: width,
+      maxWidth: width,
+      flex: `0 0 ${width}px`,
       boxSizing: "border-box",
     };
   };

@@ -131,6 +131,15 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     width: "100%",
   },
+  cellBase: {
+    width: "var(--cell-width, 100px)",
+    minWidth: "var(--cell-width, 100px)",
+    maxWidth: "var(--cell-width, 100px)",
+    flexBasis: "var(--cell-width, 100px)",
+    flexGrow: 0,
+    flexShrink: 0,
+    boxSizing: "border-box",
+  },
 });
 
 export const SharedDataGrid = <T extends Record<string, any>>({
@@ -153,7 +162,6 @@ export const SharedDataGrid = <T extends Record<string, any>>({
     setCurrentPage(1);
   }, [searchQuery]);
 
-  // 1. Reorder columns: pinned first, then unpinned
   const orderedColumnsDef = useMemo(() => {
     const pinned = columns.filter((col) => pinnedColumnIds.includes(col.key));
     const unpinned = columns.filter(
@@ -162,7 +170,6 @@ export const SharedDataGrid = <T extends Record<string, any>>({
     return [...pinned, ...unpinned];
   }, [columns, pinnedColumnIds]);
 
-  // 2. Calculate offsets for sticky positioning
   const { pinnedOffsets } = useMemo(() => {
     const offsets: Record<string, string> = {};
     let currentLeft = 0;
@@ -178,34 +185,25 @@ export const SharedDataGrid = <T extends Record<string, any>>({
     return { pinnedOffsets: offsets };
   }, [orderedColumnsDef, pinnedColumnIds]);
 
-  // 3. Unified sizing logic for ALL cells (pinned and unpinned)
-  const getCellStyle = (
+  const getCellVariables = (
     columnId: string,
     isPinned: boolean,
-  ): PinnedCellStyle => {
+  ): React.CSSProperties => {
     const columnDef = orderedColumnsDef.find((col) => col.key === columnId);
     const width = columnDef?.minWidth ?? 100;
 
-    // Apply strict sizes uniformly so the column doesn't jump in width when pinned
-    const baseStyle: React.CSSProperties = {
-      width: `${width}px`,
-      minWidth: `${width}px`,
-      maxWidth: `${width}px`,
-      flex: `0 0 ${width}px`,
-      boxSizing: "border-box",
+    const vars: Record<string, string> = {
+      "--cell-width": `${width}px`,
     };
 
     if (isPinned) {
-      return {
-        ...baseStyle,
-        "--pinned-offset": pinnedOffsets[columnId],
-      };
+      vars["--pinned-offset"] = pinnedOffsets[columnId];
     }
-
-    return baseStyle;
+    
+    console.log("vars", vars);
+    return vars as React.CSSProperties;
   };
 
-  // 4. Map ordered defs to Fluent TableColumnDefinitions
   const fluentColumns: TableColumnDefinition<T>[] = useMemo(() => {
     return orderedColumnsDef.map((col) =>
       createTableColumn<T>({
@@ -309,11 +307,11 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                 return (
                   <DataGridHeaderCell
                     className={mergeClasses(
+                      styles.cellBase,
                       isPinned && styles.pinnedCell,
                       isPinned && styles.pinnedHeader,
                     )}
-                    // Applied standard sizing styles uniformly
-                    style={getCellStyle(stringColumnId, isPinned)}
+                    style={getCellVariables(stringColumnId, isPinned)} 
                   >
                     <div className={styles.headerContent}>
                       <Text weight="semibold">{renderHeaderCell()}</Text>
@@ -348,11 +346,11 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                   return (
                     <DataGridCell
                       className={mergeClasses(
+                        styles.cellBase,
                         isPinned && styles.pinnedCell,
                         isPinned && styles.pinnedBody,
                       )}
-                      // Applied standard sizing styles uniformly
-                      style={getCellStyle(stringColumnId, isPinned)}
+                      style={getCellVariables(stringColumnId, isPinned)}
                     >
                       {renderCell(item)}
                     </DataGridCell>

@@ -170,7 +170,7 @@ export const PersonDashboard: React.FC = () => {
       {
         key: "fullName",
         label: "Customer Name",
-        minWidth: 250,
+        minWidth: 150,
         renderCell: (row) => (
           <TableCellLayout
             media={<Avatar name={row.fullName} color="colorful" />}
@@ -188,13 +188,13 @@ export const PersonDashboard: React.FC = () => {
       {
         key: "email",
         label: "Email Address",
-        minWidth: 250,
+        minWidth: 200,
       },
       {
         key: "phone",
         label: "Phone Number",
         sortable: false,
-        minWidth: 250,
+        minWidth: 200,
       },
       {
         key: "locationString",

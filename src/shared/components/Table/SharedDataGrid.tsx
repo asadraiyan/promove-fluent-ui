@@ -46,6 +46,7 @@ interface SharedDataGridProps<T> {
   selectionMode?: "single" | "multiselect";
   emptyState?: React.ReactNode;
   pageSize?: number;
+  enableColumnPinning?: boolean;
 }
 
 const useStyles = makeStyles({
@@ -162,6 +163,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
   selectionMode,
   emptyState,
   pageSize = 0,
+  enableColumnPinning = false,
 }: SharedDataGridProps<T>) => {
   const styles = useStyles();
   const [searchQuery, setSearchQuery] = useState("");
@@ -325,13 +327,15 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                   >
                     <div className={styles.headerContent}>
                       <Text weight="semibold">{renderHeaderCell()}</Text>
-                      <Button
-                        appearance="transparent"
-                        icon={isPinned ? <PinFilled /> : <PinRegular />}
-                        onClick={(e) => togglePin(stringColumnId, e)}
-                        aria-label={isPinned ? "Unpin column" : "Pin column"}
-                        size="small"
-                      />
+                      {enableColumnPinning && (
+                        <Button
+                          appearance="transparent"
+                          icon={isPinned ? <PinFilled /> : <PinRegular />}
+                          onClick={(e) => togglePin(stringColumnId, e)}
+                          aria-label={isPinned ? "Unpin column" : "Pin column"}
+                          size="small"
+                        />
+                      )}
                     </div>
                   </DataGridHeaderCell>
                 );

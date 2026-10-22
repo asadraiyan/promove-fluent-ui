@@ -263,6 +263,7 @@ export const PersonDashboard: React.FC = () => {
         selectionMode="multiselect"
         // toolbarActions={ToolbarButtons}
         pageSize={5}
+        enableColumnPinning={true}
       />
 
       <CommonEditDialog

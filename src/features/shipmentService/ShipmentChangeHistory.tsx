@@ -1,0 +1,244 @@
+import React, { useState, useMemo } from "react";
+import {
+  makeStyles,
+  tokens,
+  Button,
+  Select,
+  Label,
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionPanel,
+} from "@fluentui/react-components";
+import { DatePicker } from "@fluentui/react-datepicker-compat";
+import {
+  AdhocGlobalcoActionResult,
+  AdhocGlobalcoActions,
+} from "../actionButtons/AdhocGlobalcoActions";
+import { FieldLabel, GridColumnDef, SharedDataGrid } from "@/shared";
+
+export interface ChangeHistoryRow {
+  id: string;
+  form: string;
+  field: string;
+  oldValue: string;
+  newValue: string;
+  modifier: string;
+  changeDate: string;
+}
+
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalM,
+    marginTop: tokens.spacingVerticalL,
+  },
+  accordionHeader: {
+    backgroundColor: tokens.colorNeutralBackground3,
+  },
+  filterBar: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
+    flexWrap: "wrap",
+    backgroundColor: tokens.colorBrandBackground2,
+    padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
+    borderRadius: tokens.borderRadiusMedium,
+  },
+  filterGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
+  },
+  filterLabel: {
+    color: tokens.colorNeutralForegroundOnBrand,
+    fontWeight: tokens.fontWeightSemibold,
+  },
+  actionContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: tokens.spacingVerticalS,
+  },
+});
+
+export const ShipmentChangeHistory: React.FC = () => {
+  const styles = useStyles();
+
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [formFilter, setFormFilter] = useState<string>("All");
+
+  const [tableData, setTableData] = useState<ChangeHistoryRow[]>([]);
+  //   const { field: dateOfBirthField } = useController({
+  //     name: "customerDateOfBirth",
+  //     control,
+  //   });
+  const columns = useMemo<GridColumnDef<ChangeHistoryRow>[]>(
+    () => [
+      { key: "form", label: "Form", minWidth: 150 },
+      { key: "field", label: "Field", minWidth: 250 },
+      { key: "oldValue", label: "Old Value", minWidth: 100 },
+      { key: "newValue", label: "New Value", minWidth: 200 },
+      { key: "modifier", label: "Modifier", minWidth: 150 },
+      { key: "changeDate", label: "Change Date", minWidth: 180 },
+    ],
+    [],
+  );
+
+  const handleActionSubmit = (result: AdhocGlobalcoActionResult) => {
+    console.log("Action submitted:", result);
+    const timestamp = new Date().toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
+    // Mock user for the Modifier column
+    const currentUser = "admin";
+    const newRows: ChangeHistoryRow[] = [];
+
+    const prefix =
+      result.action === "notes" ? "(Add Notes to Globalcom)" : "(Ad hoc)";
+
+    if (result.briefComment) {
+      newRows.push({
+        id: crypto.randomUUID(),
+        form: "Shipment Actions",
+        field: `${prefix} Brief Comments`,
+        oldValue: "",
+        newValue: result.briefComment,
+        modifier: currentUser,
+        changeDate: timestamp,
+      });
+    }
+
+    if (result.longComment) {
+      newRows.push({
+        id: crypto.randomUUID(),
+        form: "Shipment Actions",
+        field: `${prefix} Long Comments`,
+        oldValue: "",
+        newValue: result.longComment,
+        modifier: currentUser,
+        changeDate: timestamp,
+      });
+    }
+
+    if (result.markCancelled) {
+      newRows.push({
+        id: crypto.randomUUID(),
+        form: "Shipment Actions",
+        field: `${prefix} Stat`,
+        oldValue: "Open",
+        newValue: "Cancelled",
+        modifier: currentUser,
+        changeDate: timestamp,
+      });
+    } else if (result.outcome === "completed") {
+      newRows.push({
+        id: crypto.randomUUID(),
+        form: "Shipment Actions",
+        field: `${prefix} Stat`,
+        oldValue: "Open",
+        newValue: "Completed",
+        modifier: currentUser,
+        changeDate: timestamp,
+      });
+    }
+
+    setTableData((prevData) => [...newRows, ...prevData]);
+  };
+
+  const handleClearFilters = () => {
+    setStartDate(null);
+    setEndDate(null);
+    setFormFilter("All");
+  };
+
+  return (
+    <div className={styles.container}>
+      <Accordion defaultOpenItems={["change-history"]} collapsible>
+        <AccordionItem value="change-history">
+          <AccordionHeader className={styles.accordionHeader}>
+            Shipment Change History
+          </AccordionHeader>
+          <AccordionPanel>
+            <div className={styles.filterBar}>
+              <div className={styles.filterGroup}>
+                {/* <Label className={styles.filterLabel}>
+                  Change Date (Start)
+                </Label> */}
+                {/* <DatePicker
+                  value={startDate}
+                  onSelectDate={setStartDate}
+                  placeholder="Select a date"
+                /> */}
+                <FieldLabel htmlFor="startDate">Change Date (Start)</FieldLabel>
+                {/* <DatePicker
+                  id="startDate"
+                  placeholder="Select a date"
+                  value={
+                    dateOfBirthField.value
+                      ? new Date(`${dateOfBirthField.value}T00:00:00`)
+                      : null
+                  }
+                  onSelectDate={(date) =>
+                    dateOfBirthField.onChange(date ? formatDate(date) : "")
+                  }
+                  formatDate={(date) => (date ? formatDate(date) : "")}
+                  maxDate={today}
+                  minDate={minDobDate}
+                /> */}
+              </div>
+
+              <div className={styles.filterGroup}>
+                {/* <Label className={styles.filterLabel}>Change Date (End)</Label> */}
+                {/* <DatePicker
+                  value={endDate}
+                  onSelectDate={setEndDate}
+                  placeholder="Select a date"
+                /> */}
+                <FieldLabel htmlFor="startDate">Change Date (Start)</FieldLabel>
+              </div>
+
+              <div className={styles.filterGroup}>
+                <Label className={styles.filterLabel}>Form</Label>
+                <Select
+                  value={formFilter}
+                  onChange={(e, data) => setFormFilter(data.value)}
+                >
+                  <option>All</option>
+                  <option>Shipment Actions</option>
+                </Select>
+              </div>
+
+              <div className={styles.filterGroup}>
+                <Button appearance="primary">Find</Button>
+                <Button appearance="secondary" onClick={handleClearFilters}>
+                  Clear
+                </Button>
+              </div>
+            </div>
+
+            <div className={styles.actionContainer}>
+              <AdhocGlobalcoActions onSubmit={handleActionSubmit} />
+            </div>
+
+            <SharedDataGrid<ChangeHistoryRow>
+              items={tableData}
+              columns={columns}
+              getRowId={(row) => row.id}
+              showSearch={false}
+              pageSize={10}
+              emptyState="No change history found."
+            />
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+    </div>
+  );
+};

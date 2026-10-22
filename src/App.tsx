@@ -5,6 +5,7 @@ import { PersonDashboard } from "./shared/components/Table/PersonDashboard";
 // import ServiceEngineDataInitiation from './features/serviceEngineDataInitiation/ServiceEngineDataInitiation';
 import {TaskDashboard} from "./shared/components/Board/TaskDashboard";
 import { AdhocGlobalcoActions} from "./features/actionButtons/AdhocGlobalcoActions";
+import { ShipmentChangeHistory } from "./features/shipmentService/ShipmentChangeHistory";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       {/* <ServiceEngineDataInitiation /> */}
       <PersonDashboard />
       <TaskDashboard />
+      <ShipmentChangeHistory/>
     </div>
   );
 }

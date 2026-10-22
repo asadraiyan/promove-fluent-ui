@@ -41,22 +41,42 @@ const useStyles = makeStyles({
     minWidth: "800px",
   },
   compactGrid: {
-    width: "100%",
+    width: "max-content",
     minWidth: "100%",
   },
   compactCell: {
-    paddingLeft: tokens.spacingHorizontalXS,
-    paddingRight: tokens.spacingHorizontalXS,
+    paddingLeft: tokens.spacingHorizontalM,
+    paddingRight: tokens.spacingHorizontalM,
+    borderRight: `1px solid ${tokens.colorNeutralStroke2}`,
   },
-  bodyRow: {
+  compactHeaderCell: {
+    paddingLeft: tokens.spacingHorizontalM,
+    paddingRight: tokens.spacingHorizontalM,
+    whiteSpace: "nowrap",
+    borderRight: `1px solid ${tokens.colorNeutralStroke2}`,
+    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+  },
+  compactBodyRow: {
     "&:nth-child(odd)": {
-      backgroundColor: tokens.colorPaletteBlueBackground2,
+      backgroundColor: tokens.colorNeutralBackground1,
     },
     "&:nth-child(even)": {
-      backgroundColor: tokens.colorPaletteGreenBackground1,
+      backgroundColor: tokens.colorNeutralBackground2,
     },
     "&:hover": {
-      backgroundColor: tokens.colorBrandBackground2Hover,
+      backgroundColor: tokens.colorNeutralBackground1Hover,
+    },
+  },
+
+  bodyRow: {
+    "&:nth-child(odd)": {
+      backgroundColor: tokens.colorNeutralBackground1,
+    },
+    "&:nth-child(even)": {
+      backgroundColor: tokens.colorNeutralBackground2,
+    },
+    "&:hover": {
+      backgroundColor: tokens.colorNeutralBackground1Hover,
     },
   },
   emptyState: {
@@ -89,18 +109,27 @@ export const ModalTable = <T extends Record<string, any>>({
   const compactColumnSizingOptions = useMemo(
     () =>
       Object.fromEntries(
-        columns.map(({ key }) => [
-          key,
-          {
-            defaultWidth: 120,
-            idealWidth: 120,
-            minWidth: 80,
-            padding: 8,
-          },
-        ]),
+        columns.map(({ key, label }) => {
+          const width = Math.max(120, label.length * 8 + 40);
+          return [
+            key,
+            {
+              defaultWidth: width,
+              idealWidth: width,
+              minWidth: width,
+              padding: 8,
+            },
+          ];
+        }),
       ),
     [columns],
   );
+  const compactTableWidth = compact
+    ? columns.reduce(
+      (total, { label }) => total + Math.max(120, label.length * 8 + 40),
+      0,
+    )
+    : undefined;
 
   const fluentColumns: TableColumnDefinition<T>[] = useMemo(
     () =>
@@ -110,12 +139,12 @@ export const ModalTable = <T extends Record<string, any>>({
           compare:
             col.sortable !== false
               ? (a, b) => {
-                  const valA = col.accessor ? col.accessor(a) : a[col.key];
-                  const valB = col.accessor ? col.accessor(b) : b[col.key];
-                  if (valA == null) return -1;
-                  if (valB == null) return 1;
-                  return valA > valB ? 1 : valA < valB ? -1 : 0;
-                }
+                const valA = col.accessor ? col.accessor(a) : a[col.key];
+                const valB = col.accessor ? col.accessor(b) : b[col.key];
+                if (valA == null) return -1;
+                if (valB == null) return 1;
+                return valA > valB ? 1 : valA < valB ? -1 : 0;
+              }
               : undefined,
           renderHeaderCell: () => col.label,
           renderCell: (item) => {
@@ -150,6 +179,14 @@ export const ModalTable = <T extends Record<string, any>>({
           columnSizingOptions={
             compact ? compactColumnSizingOptions : undefined
           }
+          style={
+            compactTableWidth
+              ? {
+                width: `${compactTableWidth}px`,
+                minWidth: `${compactTableWidth}px`,
+              }
+              : undefined
+          }
         >
           <DataGridHeader>
             <DataGridRow
@@ -161,9 +198,13 @@ export const ModalTable = <T extends Record<string, any>>({
             >
               {({ renderHeaderCell }) => (
                 <DataGridHeaderCell
-                  className={compact ? styles.compactCell : ""}
+                  className={
+                    compact ? styles.compactHeaderCell : undefined
+                  }
                 >
-                  <Text weight="semibold">{renderHeaderCell()}</Text>
+                  <Text weight="semibold" wrap={!compact}>
+                    {renderHeaderCell()}
+                  </Text>
                 </DataGridHeaderCell>
               )}
             </DataGridRow>
@@ -173,7 +214,8 @@ export const ModalTable = <T extends Record<string, any>>({
             {({ item, rowId }) => (
               <DataGridRow<T>
                 key={rowId}
-                className={styles.bodyRow}
+                className={`${styles.bodyRow} ${compact ? styles.compactBodyRow : ""
+                  }`}
                 onClick={() => onRowClick?.(item)}
                 selectionCell={
                   selectionMode

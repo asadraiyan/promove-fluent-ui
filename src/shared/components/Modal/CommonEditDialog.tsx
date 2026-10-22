@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogBody,
@@ -8,8 +7,11 @@ import {
   DialogSurface,
   DialogTitle,
   makeStyles,
+  tokens,
   type ButtonProps,
 } from "@fluentui/react-components";
+import { DismissRegular } from "@fluentui/react-icons";
+import { Button } from "../Button/Button";
 
 export interface CommonEditDialogAction {
   label: React.ReactNode;
@@ -29,20 +31,62 @@ interface CommonEditDialogProps {
   content: React.ReactNode;
   actions?: CommonEditDialogAction[];
   onClose: () => void;
+  showCloseButton?: boolean;
 }
 
 const useStyles = makeStyles({
+  body: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    minWidth: 0,
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
+    width: "100%",
+    paddingBottom: tokens.spacingVerticalM,
+    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+    boxSizing: "border-box",
+  },
+  heading: {
+    flexGrow: 1,
+    minWidth: 0,
+    margin: 0,
+  },
+  closeButton: {
+    flexShrink: 0,
+    minWidth: "32px",
+    width: "32px",
+    height: "32px",
+    padding: 0,
+    fontSize: tokens.fontSizeBase400,
+  },
   actions: {
     display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
+    flexWrap: "nowrap",
+    justifyContent: "flex-end",
     width: "100%",
-    rowGap: "8px",
+    gap: tokens.spacingHorizontalS,
   },
   actionGroup: {
     display: "flex",
-    flexWrap: "wrap",
-    gap: "8px",
+    flexWrap: "nowrap",
+    gap: tokens.spacingHorizontalS,
+  },
+  actionButton: {
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+  },
+  dialogContent: {
+    width: "100%",
+    minWidth: 0,
+    boxSizing: "border-box",
+  },
+  dialogActions: {
+    width: "100%",
+    boxSizing: "border-box",
   },
 });
 
@@ -52,6 +96,7 @@ export const CommonEditDialog: React.FC<CommonEditDialogProps> = ({
   content,
   actions = [],
   onClose,
+  showCloseButton = false,
 }) => {
   const styles = useStyles();
   const startActions = actions.filter((action) => action.position === "start");
@@ -61,6 +106,7 @@ export const CommonEditDialog: React.FC<CommonEditDialogProps> = ({
     items.map((action, index) => (
       <Button
         as="button"
+        className={styles.actionButton}
         key={`${String(action.label)}-${index}`}
         appearance={action.appearance}
         disabled={action.disabled}
@@ -82,11 +128,25 @@ export const CommonEditDialog: React.FC<CommonEditDialogProps> = ({
       }}
     >
       <DialogSurface>
-        <DialogBody>
-          <DialogTitle>{heading}</DialogTitle>
-          <DialogContent>{content}</DialogContent>
+        <DialogBody className={styles.body}>
+          <div className={styles.header}>
+            <DialogTitle className={styles.heading}>{heading}</DialogTitle>
+            {showCloseButton && (
+              <Button
+                as="button"
+                className={styles.closeButton}
+                appearance="subtle"
+                size="small"
+                aria-label="Close dialog"
+                onClick={onClose}
+              >
+                <DismissRegular />
+              </Button>
+            )}
+          </div>
+          <DialogContent className={styles.dialogContent}>{content}</DialogContent>
           {actions.length > 0 && (
-            <DialogActions position="end">
+            <DialogActions className={styles.dialogActions} position="end">
               <div className={styles.actions}>
                 <div className={styles.actionGroup}>
                   {renderActions(startActions)}

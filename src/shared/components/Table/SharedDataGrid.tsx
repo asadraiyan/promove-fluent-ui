@@ -63,7 +63,7 @@ const useStyles = makeStyles({
     position: "relative",
   },
   grid: {
-    minWidth: "800px",
+    minWidth: "max-content",
   },
   toolbar: {
     display: "flex",
@@ -106,6 +106,12 @@ const useStyles = makeStyles({
     gap: tokens.spacingHorizontalS,
     alignItems: "center",
   },
+  gridRow: {
+    backgroundColor: tokens.colorNeutralBackground1,
+    "&:hover": {
+      backgroundColor: tokens.colorSubtleBackgroundHover,
+    },
+  },
   cellContent: {
     whiteSpace: "nowrap",
     overflow: "hidden",
@@ -116,11 +122,12 @@ const useStyles = makeStyles({
   pinnedCell: {
     position: "sticky",
     left: "var(--pinned-offset, 0px)",
-    backgroundColor: tokens.colorNeutralBackground1,
+    backgroundColor: "inherit",
     boxShadow: `2px 0 4px -2px ${tokens.colorNeutralShadowAmbient}`,
   },
   pinnedHeader: {
     zIndex: 3,
+    backgroundColor: tokens.colorNeutralBackground1,
   },
   pinnedBody: {
     zIndex: 2,
@@ -139,6 +146,9 @@ const useStyles = makeStyles({
     flexGrow: 0,
     flexShrink: 0,
     boxSizing: "border-box",
+    alignSelf: "stretch",
+    display: "flex",
+    alignItems: "center",
   },
 });
 
@@ -199,8 +209,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
     if (isPinned) {
       vars["--pinned-offset"] = pinnedOffsets[columnId];
     }
-    
-    console.log("vars", vars);
+
     return vars as React.CSSProperties;
   };
 
@@ -294,6 +303,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
         >
           <DataGridHeader>
             <DataGridRow
+              className={styles.gridRow}
               selectionCell={
                 selectionMode === "multiselect"
                   ? { checkboxIndicator: { "aria-label": "Select all rows" } }
@@ -311,7 +321,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
                       isPinned && styles.pinnedCell,
                       isPinned && styles.pinnedHeader,
                     )}
-                    style={getCellVariables(stringColumnId, isPinned)} 
+                    style={getCellVariables(stringColumnId, isPinned)}
                   >
                     <div className={styles.headerContent}>
                       <Text weight="semibold">{renderHeaderCell()}</Text>
@@ -332,6 +342,7 @@ export const SharedDataGrid = <T extends Record<string, any>>({
           <DataGridBody<T>>
             {({ item, rowId }) => (
               <DataGridRow<T>
+                className={styles.gridRow}
                 key={rowId}
                 selectionCell={
                   selectionMode

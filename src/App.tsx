@@ -18,7 +18,7 @@ function App() {
       <PersonDashboard />
       <TaskDashboard />
       <ShipmentChangeHistory />
-      <DatesNode />
+      <DatesNode/>
     </div>
   );
 }

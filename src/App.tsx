@@ -6,6 +6,7 @@ import { PersonDashboard } from "./shared/components/Table/PersonDashboard";
 import { TaskDashboard } from "./shared/components/Board/TaskDashboard";
 import { ShipmentChangeHistory } from "./features/shipmentService/ShipmentChangeHistory";
 import ShipmentNotes from "./features/shipmentNotes/ShipmentNotes";
+import DatesNode from "./features/datesNode/datesNode";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <PersonDashboard />
       <TaskDashboard />
       <ShipmentChangeHistory />
+      <DatesNode />
     </div>
   );
 }

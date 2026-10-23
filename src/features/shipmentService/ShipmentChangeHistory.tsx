@@ -1,16 +1,13 @@
 import React, { useState, useMemo } from "react";
-import {
-  makeStyles,
-  tokens,
-  Button,
-  Select,
-  Label,
-} from "@fluentui/react-components";
+import { makeStyles, tokens, Button } from "@fluentui/react-components";
+import { useForm, FormProvider } from "react-hook-form";
 import {
   AdhocGlobalcoActionResult,
   AdhocGlobalcoActions,
 } from "../actionButtons/AdhocGlobalcoActions";
-import { FieldLabel, GridColumnDef, SharedDataGrid } from "@/shared";
+import { GridColumnDef, SharedDataGrid } from "@/shared";
+import { FormDate } from "@/shared/components/Date/FormDate";
+import { FormDropdown } from "@/shared/components/Dropdown/Dropdown";
 
 export interface ChangeHistoryRow {
   id: string;
@@ -34,7 +31,7 @@ const useStyles = makeStyles({
   },
   filterBar: {
     display: "flex",
-    alignItems: "center",
+    alignItems: "end",
     gap: tokens.spacingHorizontalM,
     flexWrap: "wrap",
     backgroundColor: tokens.colorBrandBackground2,
@@ -46,10 +43,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     gap: tokens.spacingHorizontalS,
   },
-  filterLabel: {
-    color: tokens.colorNeutralForegroundOnBrand,
-    fontWeight: tokens.fontWeightSemibold,
-  },
   actionContainer: {
     display: "flex",
     justifyContent: "flex-end",
@@ -57,18 +50,25 @@ const useStyles = makeStyles({
   },
 });
 
+type FilterFormValues = {
+  startDate: string;
+  endDate: string;
+  formFilter: string;
+};
+
 export const ShipmentChangeHistory: React.FC = () => {
   const styles = useStyles();
 
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [formFilter, setFormFilter] = useState<string>("All");
+  const methods = useForm<FilterFormValues>({
+    defaultValues: {
+      startDate: "",
+      endDate: "",
+      formFilter: "All",
+    },
+  });
 
   const [tableData, setTableData] = useState<ChangeHistoryRow[]>([]);
-  //   const { field: dateOfBirthField } = useController({
-  //     name: "customerDateOfBirth",
-  //     control,
-  //   });
+
   const columns = useMemo<GridColumnDef<ChangeHistoryRow>[]>(
     () => [
       { key: "form", label: "Form", minWidth: 150 },
@@ -93,7 +93,6 @@ export const ShipmentChangeHistory: React.FC = () => {
 
     const currentUser = "admin";
     const newRows: ChangeHistoryRow[] = [];
-
     const prefix =
       result.action === "notes" ? "(Add Notes to Globalcom)" : "(Ad hoc)";
 
@@ -146,71 +145,62 @@ export const ShipmentChangeHistory: React.FC = () => {
     setTableData((prevData) => [...newRows, ...prevData]);
   };
 
+  const handleFind = (data: FilterFormValues) => {
+    console.log("Filtering with:", data);
+  };
+
   const handleClearFilters = () => {
-    setStartDate(null);
-    setEndDate(null);
-    setFormFilter("All");
+    methods.reset();
   };
 
   return (
     <div className={styles.container}>
-      <h3> Shipment Change History</h3>
-      <div className={styles.filterBar}>
-        <div className={styles.filterGroup}>
-          {/* <Label className={styles.filterLabel}>
-                  Change Date (Start)
-                </Label> */}
-          {/* <DatePicker
-                  value={startDate}
-                  onSelectDate={setStartDate}
-                  placeholder="Select a date"
-                /> */}
-          <FieldLabel htmlFor="startDate">Change Date (Start)</FieldLabel>
-          {/* <DatePicker
-                  id="startDate"
-                  placeholder="Select a date"
-                  value={
-                    dateOfBirthField.value
-                      ? new Date(`${dateOfBirthField.value}T00:00:00`)
-                      : null
-                  }
-                  onSelectDate={(date) =>
-                    dateOfBirthField.onChange(date ? formatDate(date) : "")
-                  }
-                  formatDate={(date) => (date ? formatDate(date) : "")}
-                  maxDate={today}
-                  minDate={minDobDate}
-                /> */}
-        </div>
+      <h3>Shipment Change History</h3>
 
-        <div className={styles.filterGroup}>
-          {/* <Label className={styles.filterLabel}>Change Date (End)</Label> */}
-          {/* <DatePicker
-                  value={endDate}
-                  onSelectDate={setEndDate}
-                  placeholder="Select a date"
-                /> */}
-          <FieldLabel htmlFor="endDate">Change Date (End)</FieldLabel>
-        </div>
+      <FormProvider {...methods}>
+        <div className={styles.filterBar}>
+          <div className={styles.filterGroup}>
+            <FormDate
+              name="startDate"
+              label="Change Date (Start)"
+              placeholder="Select a date"
+            />
+          </div>
 
-        <div className={styles.filterGroup}>
-          <Label className={styles.filterLabel}>Form</Label>
-          <Select
-            value={formFilter}
-            onChange={(e, data) => setFormFilter(data.value)}
-          >
-            <option>All</option>
-            <option>Shipment Actions</option>
-          </Select>
-        </div>
+          <div className={styles.filterGroup}>
+            <FormDate
+              name="endDate"
+              label="Change Date (End)"
+              placeholder="Select a date"
+            />
+          </div>
 
-        <div className={styles.filterGroup}>
-          <Button appearance="primary">Find</Button>
-          <Button appearance="secondary" onClick={handleClearFilters}>
-            Clear
-          </Button>
+          <div className={styles.filterGroup}>
+            <FormDropdown
+              name="formFilter"
+              control={methods.control}
+              label="Form"
+              labelPosition="left"
+              options={[
+                { label: "All", value: "All" },
+                { label: "Shipment Actions", value: "Shipment Actions" },
+              ]}
+            />
+          </div>
+
+          <div className={styles.filterGroup}>
+            <Button
+              appearance="primary"
+              onClick={methods.handleSubmit(handleFind)}
+            >
+              Find
+            </Button>
+            <Button appearance="secondary" onClick={handleClearFilters}>
+              Clear
+            </Button>
+          </div>
         </div>
-      </div>
+      </FormProvider>
 
       <div className={styles.actionContainer}>
         <AdhocGlobalcoActions onSubmit={handleActionSubmit} />

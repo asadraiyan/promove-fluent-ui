@@ -4,15 +4,16 @@ import SeaContainerDetails from "./features/seaContainerDetails/SeaContainerDeta
 import { PersonDashboard } from "./shared/components/Table/PersonDashboard";
 // import ServiceEngineDataInitiation from './features/serviceEngineDataInitiation/ServiceEngineDataInitiation';
 import { TaskDashboard } from "./shared/components/Board/TaskDashboard";
-import { AdhocGlobalcoActions } from "./features/actionButtons/AdhocGlobalcoActions";
 import { ShipmentChangeHistory } from "./features/shipmentService/ShipmentChangeHistory";
-import DatesNode from "./features/datesNode/DatesNode";
+import ShipmentNotes from "./features/shipmentNotes/ShipmentNotes";
+import DatesNode from "./features/datesNode/datesNode";
 
 function App() {
   return (
     <div>
       <AddressDetails />
       <SeaContainerDetails />
+      <ShipmentNotes/>
       {/* <ServiceEngineDataInitiation /> */}
       <PersonDashboard />
       <TaskDashboard />

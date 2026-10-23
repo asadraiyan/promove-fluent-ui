@@ -12,8 +12,14 @@ export type {
 export { FormInput } from './components/Input/Input';
 export { SearchableInput } from './components/Input/SearchableInput';
 export type { SearchableInputProps } from './components/Input/SearchableInput';
-export { TextAreaField } from './components/TextAreaField/TextAreaField';
-export type { TextAreaFieldProps } from './components/TextAreaField/TextAreaField';
+export {
+  TextArea,
+  TextAreaField,
+} from './components/TextAreaField/TextAreaField';
+export type {
+  TextAreaFieldProps,
+  TextAreaProps,
+} from './components/TextAreaField/TextAreaField';
 export { CommonEditDialog } from './components/Modal/CommonEditDialog';
 export type { CommonEditDialogAction } from './components/Modal/CommonEditDialog';
 export { CommonActionDialogContent } from './components/Modal/CommonActionDialogContent';

@@ -3,6 +3,9 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import { FormProvider, useForm } from "react-hook-form";
 import Destination from "./components/Destination";
 import PermStorage from "./components/PermStorage";
+import { Origin } from "./components/Origin";
+import { Freight } from "./components/Fright";
+
 
 const useStyles = makeStyles({
   root: {
@@ -96,6 +99,9 @@ const DatesNode: React.FC = () => {
   return (
     <FormProvider {...methods}>
       <div className={styles.root}>
+      <h2>Dates Node</h2>
+        <Origin />
+        <Freight />
         <Destination />
         <PermStorage />
       </div>
@@ -104,3 +110,4 @@ const DatesNode: React.FC = () => {
 };
 
 export default DatesNode;
+

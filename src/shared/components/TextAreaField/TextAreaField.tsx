@@ -11,6 +11,19 @@ import {
   ResponsiveGridLabel,
 } from "../layout/ResponsiveGrid";
 
+export type TextAreaProps = React.ComponentProps<typeof Textarea> & {
+  width?: React.CSSProperties["width"];
+  height?: React.CSSProperties["height"];
+};
+
+export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
+  ({ height, style, width, ...props }, ref) => (
+    <Textarea {...props} ref={ref} style={{ ...style, width, height }} />
+  ),
+);
+
+TextArea.displayName = "TextArea";
+
 const useStyles = makeStyles({
   inline: {
     gridTemplateColumns: "minmax(0, min(12rem, 40%)) minmax(0, 1fr)",
@@ -54,7 +67,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
     </FieldLabel>
   );
   const textarea = (
-    <Textarea
+    <TextArea
       id={name}
       name={field.name}
       value={field.value ?? ""}

@@ -11,6 +11,7 @@ import {
   AdhocGlobalcoActions,
 } from "../actionButtons/AdhocGlobalcoActions";
 import { FieldLabel, GridColumnDef, SharedDataGrid } from "@/shared";
+import { DatePicker } from "@fluentui/react-datepicker-compat";
 
 export interface ChangeHistoryRow {
   id: string;
@@ -59,11 +60,11 @@ const useStyles = makeStyles({
 
 export const ShipmentChangeHistory: React.FC = () => {
   const styles = useStyles();
+  const today = new Date().toISOString().split("T")[0];
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [formFilter, setFormFilter] = useState<string>("All");
-
   const [tableData, setTableData] = useState<ChangeHistoryRow[]>([]);
   //   const { field: dateOfBirthField } = useController({
   //     name: "customerDateOfBirth",
@@ -157,45 +158,31 @@ export const ShipmentChangeHistory: React.FC = () => {
       <h3> Shipment Change History</h3>
       <div className={styles.filterBar}>
         <div className={styles.filterGroup}>
-          {/* <Label className={styles.filterLabel}>
-                  Change Date (Start)
-                </Label> */}
-          {/* <DatePicker
-                  value={startDate}
-                  onSelectDate={setStartDate}
-                  placeholder="Select a date"
-                /> */}
+          {/* <Label className={styles.filterLabel}>Change Date (Start)</Label> */}
           <FieldLabel htmlFor="startDate">Change Date (Start)</FieldLabel>
-          {/* <DatePicker
-                  id="startDate"
-                  placeholder="Select a date"
-                  value={
-                    dateOfBirthField.value
-                      ? new Date(`${dateOfBirthField.value}T00:00:00`)
-                      : null
-                  }
-                  onSelectDate={(date) =>
-                    dateOfBirthField.onChange(date ? formatDate(date) : "")
-                  }
-                  formatDate={(date) => (date ? formatDate(date) : "")}
-                  maxDate={today}
-                  minDate={minDobDate}
-                /> */}
+          <DatePicker
+            value={startDate}
+            onSelectDate={(date) => setStartDate(date ?? null)}
+            placeholder="Select a date"
+          />
         </div>
 
         <div className={styles.filterGroup}>
           {/* <Label className={styles.filterLabel}>Change Date (End)</Label> */}
-          {/* <DatePicker
-                  value={endDate}
-                  onSelectDate={setEndDate}
-                  placeholder="Select a date"
-                /> */}
           <FieldLabel htmlFor="endDate">Change Date (End)</FieldLabel>
+          <DatePicker
+            value={endDate}
+            onSelectDate={(date) => setEndDate(date ?? null)}
+            placeholder="Select a date"
+          />
         </div>
 
         <div className={styles.filterGroup}>
-          <Label className={styles.filterLabel}>Form</Label>
+          {/* <Label className={styles.filterLabel}>Form</Label> */}
+          <FieldLabel htmlFor="formFilter">Form</FieldLabel>
+
           <Select
+            id="formFilter"
             value={formFilter}
             onChange={(e, data) => setFormFilter(data.value)}
           >

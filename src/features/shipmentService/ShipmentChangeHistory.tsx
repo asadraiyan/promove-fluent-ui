@@ -5,12 +5,7 @@ import {
   Button,
   Select,
   Label,
-  Accordion,
-  AccordionItem,
-  AccordionHeader,
-  AccordionPanel,
 } from "@fluentui/react-components";
-import { DatePicker } from "@fluentui/react-datepicker-compat";
 import {
   AdhocGlobalcoActionResult,
   AdhocGlobalcoActions,
@@ -33,9 +28,9 @@ const useStyles = makeStyles({
     flexDirection: "column",
     gap: tokens.spacingVerticalM,
     marginTop: tokens.spacingVerticalL,
-  },
-  accordionHeader: {
-    backgroundColor: tokens.colorNeutralBackground3,
+    maxWidth: "1200px",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   filterBar: {
     display: "flex",
@@ -87,7 +82,6 @@ export const ShipmentChangeHistory: React.FC = () => {
   );
 
   const handleActionSubmit = (result: AdhocGlobalcoActionResult) => {
-    console.log("Action submitted:", result);
     const timestamp = new Date().toLocaleString("en-GB", {
       day: "2-digit",
       month: "2-digit",
@@ -97,7 +91,6 @@ export const ShipmentChangeHistory: React.FC = () => {
       second: "2-digit",
     });
 
-    // Mock user for the Modifier column
     const currentUser = "admin";
     const newRows: ChangeHistoryRow[] = [];
 
@@ -161,24 +154,19 @@ export const ShipmentChangeHistory: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Accordion defaultOpenItems={["change-history"]} collapsible>
-        <AccordionItem value="change-history">
-          <AccordionHeader className={styles.accordionHeader}>
-            Shipment Change History
-          </AccordionHeader>
-          <AccordionPanel>
-            <div className={styles.filterBar}>
-              <div className={styles.filterGroup}>
-                {/* <Label className={styles.filterLabel}>
+      <h3> Shipment Change History</h3>
+      <div className={styles.filterBar}>
+        <div className={styles.filterGroup}>
+          {/* <Label className={styles.filterLabel}>
                   Change Date (Start)
                 </Label> */}
-                {/* <DatePicker
+          {/* <DatePicker
                   value={startDate}
                   onSelectDate={setStartDate}
                   placeholder="Select a date"
                 /> */}
-                <FieldLabel htmlFor="startDate">Change Date (Start)</FieldLabel>
-                {/* <DatePicker
+          <FieldLabel htmlFor="startDate">Change Date (Start)</FieldLabel>
+          {/* <DatePicker
                   id="startDate"
                   placeholder="Select a date"
                   value={
@@ -193,52 +181,49 @@ export const ShipmentChangeHistory: React.FC = () => {
                   maxDate={today}
                   minDate={minDobDate}
                 /> */}
-              </div>
+        </div>
 
-              <div className={styles.filterGroup}>
-                {/* <Label className={styles.filterLabel}>Change Date (End)</Label> */}
-                {/* <DatePicker
+        <div className={styles.filterGroup}>
+          {/* <Label className={styles.filterLabel}>Change Date (End)</Label> */}
+          {/* <DatePicker
                   value={endDate}
                   onSelectDate={setEndDate}
                   placeholder="Select a date"
                 /> */}
-                <FieldLabel htmlFor="startDate">Change Date (Start)</FieldLabel>
-              </div>
+          <FieldLabel htmlFor="endDate">Change Date (End)</FieldLabel>
+        </div>
 
-              <div className={styles.filterGroup}>
-                <Label className={styles.filterLabel}>Form</Label>
-                <Select
-                  value={formFilter}
-                  onChange={(e, data) => setFormFilter(data.value)}
-                >
-                  <option>All</option>
-                  <option>Shipment Actions</option>
-                </Select>
-              </div>
+        <div className={styles.filterGroup}>
+          <Label className={styles.filterLabel}>Form</Label>
+          <Select
+            value={formFilter}
+            onChange={(e, data) => setFormFilter(data.value)}
+          >
+            <option>All</option>
+            <option>Shipment Actions</option>
+          </Select>
+        </div>
 
-              <div className={styles.filterGroup}>
-                <Button appearance="primary">Find</Button>
-                <Button appearance="secondary" onClick={handleClearFilters}>
-                  Clear
-                </Button>
-              </div>
-            </div>
+        <div className={styles.filterGroup}>
+          <Button appearance="primary">Find</Button>
+          <Button appearance="secondary" onClick={handleClearFilters}>
+            Clear
+          </Button>
+        </div>
+      </div>
 
-            <div className={styles.actionContainer}>
-              <AdhocGlobalcoActions onSubmit={handleActionSubmit} />
-            </div>
+      <div className={styles.actionContainer}>
+        <AdhocGlobalcoActions onSubmit={handleActionSubmit} />
+      </div>
 
-            <SharedDataGrid<ChangeHistoryRow>
-              items={tableData}
-              columns={columns}
-              getRowId={(row) => row.id}
-              showSearch={false}
-              pageSize={10}
-              emptyState="No change history found."
-            />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+      <SharedDataGrid<ChangeHistoryRow>
+        items={tableData}
+        columns={columns}
+        getRowId={(row) => row.id}
+        showSearch={false}
+        pageSize={10}
+        emptyState="No change history found."
+      />
     </div>
   );
 };

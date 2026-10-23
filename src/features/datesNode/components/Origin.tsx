@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { FormDate } from "@/shared/components/Date/FormDate";
+import { ResponsiveGrid } from "@/shared";
 
 const useStyles = makeStyles({
   sectionContainer: {
@@ -39,6 +40,32 @@ const useStyles = makeStyles({
     padding: tokens.spacingHorizontalM,
     borderRadius: tokens.borderRadiusMedium,
   },
+  fields: {
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    gap: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
+    padding: tokens.spacingHorizontalM,
+  },
+  field: {
+    minWidth: 0,
+    gridTemplateColumns: "minmax(0, 1fr) minmax(110px, 0.85fr)",
+    columnGap: tokens.spacingHorizontalXS,
+    alignItems: "center",
+    "& label": {
+      justifySelf: "end",
+      textAlign: "right",
+      fontSize: tokens.fontSizeBase300,
+      lineHeight: tokens.lineHeightBase300,
+    },
+    "& > div": {
+      width: "100%",
+      minWidth: 0,
+    },
+    "& input": {
+      boxSizing: "border-box",
+      width: "100%",
+      minWidth: 0,
+    },
+  },
 });
 
 export const Origin: React.FC = () => {
@@ -47,53 +74,134 @@ export const Origin: React.FC = () => {
   return (
     <div className={styles.sectionContainer}>
       <div className={styles.sectionTitle}>Origin</div>
-
-      <div className={styles.gridResponsive}>
+      <ResponsiveGrid className={styles.fields}>
         <div className={styles.column}>
-          <FormDate name="enquiryDate" label="Enquiry Date:" />
-          <FormDate name="authorizationDate" label="Authorization Date:" />
-          <FormDate name="surveyDate" label="Survey Date:" />
-          <FormDate name="requestedPackDate" label="Requested Pack Date:" />
-          <FormDate name="residencePickupDate" label="Residence Pickup Date:" />
           <FormDate
+            className={styles.field}
+            name="enquiryDate"
+            orientation="horizontal"
+            label="Enquiry Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="authorizationDate"
+            orientation="horizontal"
+            label="Authorization Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="surveyDate"
+            orientation="horizontal"
+            label="Survey Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="requestedPackDate"
+            orientation="horizontal"
+            label="Requested Pack Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="residencePickupDate"
+            orientation="horizontal"
+            label="Residence Pickup Date:"
+          />
+          <FormDate
+            className={styles.field}
             name="readyToGoAtAgentDate"
+            orientation="horizontal"
             label="Ready to Go at Agent Date:"
           />
           <FormDate
+            className={styles.field}
             name="recdAtConsolidationWarehouse"
+            orientation="horizontal"
             label="Recd at Consolidation Warehouse:"
           />
           <FormDate
+            className={styles.field}
             name="scheduledOriginSITOutDate"
+            orientation="horizontal"
             label="Scheduled Origin SIT Out Date:"
           />
           <FormDate
+            className={styles.field}
             name="actualOriginSITOutDate"
+            orientation="horizontal"
             label="Actual Origin SIT Out Date:"
           />
           <div>
-            <FormDate name="withdrawalDate" label="Withdrawal Date:" />
+            <FormDate
+              className={styles.field}
+              name="withdrawalDate"
+              orientation="horizontal"
+              label="Withdrawal Date:"
+            />
           </div>
         </div>
 
         <div className={styles.column}>
           <FormDate
+            className={styles.field}
             name="shipmentCreationDate"
+            orientation="horizontal"
             label="Shipment Creation Date:"
           />
-          <FormDate name="preferredSurveyDate" label="Preferred Survey Date:" />
-          <FormDate name="introCallDate" label="Intro Call Date:" />
-          <FormDate name="dpsReqPickUpDate" label="DPS Req PickUp Date:" />
-          <FormDate name="activationDate" label="Activation Date:" />
-          <FormDate name="packStartDate" label="Pack Start Date:" />
           <FormDate
+            className={styles.field}
+            name="preferredSurveyDate"
+            orientation="horizontal"
+            label="Preferred Survey Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="introCallDate"
+            orientation="horizontal"
+            label="Intro Call Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="dpsReqPickUpDate"
+            orientation="horizontal"
+            label="DPS Req PickUp Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="activationDate"
+            orientation="horizontal"
+            label="Activation Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="packStartDate"
+            orientation="horizontal"
+            label="Pack Start Date:"
+          />
+          <FormDate
+            className={styles.field}
             name="customsDocumentRecdDate"
+            orientation="horizontal"
             label="Customs Document Recd Date:"
           />
-          <FormDate name="leftAgentDate" label="Left Agent Date:" />
-          <FormDate name="originSITInDate" label="Origin SIT In Date:" />
+          <FormDate
+            className={styles.field}
+            name="leftAgentDate"
+            orientation="horizontal"
+            label="Left Agent Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="originSITInDate"
+            orientation="horizontal"
+            label="Origin SIT In Date:"
+          />
           <div>
-            <FormDate name="counselingDate" label="Counseling Date:" />
+            <FormDate
+              className={styles.field}
+              name="counselingDate"
+              orientation="horizontal"
+              label="Counseling Date:"
+            />
           </div>
         </div>
 
@@ -102,17 +210,21 @@ export const Origin: React.FC = () => {
             <div className={styles.subSectionTitle}>Transit Dates:</div>
             <div className={styles.column}>
               <FormDate
+                className={styles.field}
                 name="transshipmentInDate"
+                orientation="horizontal"
                 label="Transshipment In Date:"
               />
               <FormDate
+                className={styles.field}
                 name="transshipmentOutDate"
+                orientation="horizontal"
                 label="Transshipment Out Date:"
               />
             </div>
           </div>
         </div>
-      </div>
+      </ResponsiveGrid>
     </div>
   );
 };

@@ -71,7 +71,7 @@ export const Origin: React.FC = () => {
             name="actualOriginSITOutDate"
             label="Actual Origin SIT Out Date:"
           />
-          <div style={{ marginTop: tokens.spacingVerticalXL }}>
+          <div>
             <FormDate name="withdrawalDate" label="Withdrawal Date:" />
           </div>
         </div>
@@ -92,16 +92,14 @@ export const Origin: React.FC = () => {
           />
           <FormDate name="leftAgentDate" label="Left Agent Date:" />
           <FormDate name="originSITInDate" label="Origin SIT In Date:" />
-          <div style={{ marginTop: tokens.spacingVerticalXL }}>
+          <div>
             <FormDate name="counselingDate" label="Counseling Date:" />
           </div>
         </div>
 
         <div className={styles.column}>
           <div className={styles.boxedSection}>
-            <div className={styles.subSectionTitle} style={{ marginTop: 0 }}>
-              Transit Dates:
-            </div>
+            <div className={styles.subSectionTitle}>Transit Dates:</div>
             <div className={styles.column}>
               <FormDate
                 name="transshipmentInDate"

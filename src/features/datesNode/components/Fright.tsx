@@ -42,6 +42,10 @@ const useStyles = makeStyles({
     padding: tokens.spacingHorizontalM,
     borderRadius: tokens.borderRadiusMedium,
   },
+  horizontalLine: {
+    margin: tokens.spacingVerticalL,
+    borderTop: "none",
+  },
 });
 
 export const Freight: React.FC = () => {
@@ -81,9 +85,7 @@ export const Freight: React.FC = () => {
 
         <div className={styles.column}>
           <div className={styles.boxedSection}>
-            <div className={styles.subSectionTitle} style={{ marginTop: 0 }}>
-              Other SIT Dates:
-            </div>
+            <div className={styles.subSectionTitle}>Other SIT Dates:</div>
             <div className={styles.column}>
               <FormDate name="otherSITInDate" label="Other SIT In Date:" />
               <FormDate name="schOtherOutDate" label="Sch.Other Out Date:" />
@@ -103,19 +105,13 @@ export const Freight: React.FC = () => {
               />
             </div>
           </div>
-          <div style={{ marginTop: tokens.spacingVerticalM }}>
+          <div>
             <FormDate name="containerReturned" label="Container Returned:" />
           </div>
         </div>
       </div>
 
-      <hr
-        style={{
-          margin: `${tokens.spacingVerticalL} 0`,
-          borderColor: tokens.colorNeutralStroke2,
-          borderTop: "none",
-        }}
-      />
+      <hr className={styles.horizontalLine} />
 
       <div className={styles.subSectionTitle} style={{ marginTop: 0 }}>
         Destination

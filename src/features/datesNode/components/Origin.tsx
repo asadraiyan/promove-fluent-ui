@@ -23,9 +23,9 @@ const useStyles = makeStyles({
     marginTop: tokens.spacingVerticalM,
     marginBottom: tokens.spacingVerticalS,
   },
-  grid3Col: {
+  gridResponsive: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
     gap: tokens.spacingHorizontalL,
     alignItems: "start",
   },
@@ -48,7 +48,7 @@ export const Origin: React.FC = () => {
     <div className={styles.sectionContainer}>
       <div className={styles.sectionTitle}>Origin</div>
 
-      <div className={styles.grid3Col}>
+      <div className={styles.gridResponsive}>
         <div className={styles.column}>
           <FormDate name="enquiryDate" label="Enquiry Date:" />
           <FormDate name="authorizationDate" label="Authorization Date:" />

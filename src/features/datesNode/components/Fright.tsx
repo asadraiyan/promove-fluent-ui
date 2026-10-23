@@ -27,12 +27,6 @@ const useStyles = makeStyles({
     marginTop: tokens.spacingVerticalM,
     marginBottom: tokens.spacingVerticalS,
   },
-  gridResponsive: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: tokens.spacingHorizontalL,
-    alignItems: "start",
-  },
   column: {
     display: "flex",
     flexDirection: "column",

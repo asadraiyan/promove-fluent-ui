@@ -13,6 +13,8 @@ interface FormDateProps {
   required?: boolean;
   rules?: RegisterOptions;
   placeholder?: string;
+  className?: string;
+  orientation?: "vertical" | "horizontal";
 }
 
 export const FormDate: React.FC<FormDateProps> = ({
@@ -21,6 +23,8 @@ export const FormDate: React.FC<FormDateProps> = ({
   required,
   rules,
   placeholder,
+  className,
+  orientation,
 }) => {
   const { control } = useFormContext();
   const { field, fieldState } = useController({
@@ -62,7 +66,9 @@ export const FormDate: React.FC<FormDateProps> = ({
 
   return (
     <Field
+      className={className}
       label={label}
+      orientation={orientation}
       required={required}
       validationState={fieldState.error ? "error" : "none"}
       validationMessage={fieldState.error?.message}

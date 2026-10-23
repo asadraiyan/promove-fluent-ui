@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { FormDate } from "@/shared/components/Date/FormDate";
 import { FormDropdown } from "@/shared/components/Dropdown/Dropdown";
 import { FormInput } from "@/shared/components/Input/Input";
+import { ResponsiveGrid } from "@/shared";
 
 const useStyles = makeStyles({
   sectionContainer: {
@@ -26,12 +27,6 @@ const useStyles = makeStyles({
     marginTop: tokens.spacingVerticalM,
     marginBottom: tokens.spacingVerticalS,
   },
-  gridResponsive: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: tokens.spacingHorizontalL,
-    alignItems: "start",
-  },
   column: {
     display: "flex",
     flexDirection: "column",
@@ -41,6 +36,36 @@ const useStyles = makeStyles({
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     padding: tokens.spacingHorizontalM,
     borderRadius: tokens.borderRadiusMedium,
+  },
+  horizontalLine: {
+    margin: tokens.spacingVerticalL,
+    borderTop: "none",
+  },
+  fields: {
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    gap: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
+    padding: tokens.spacingHorizontalM,
+  },
+  field: {
+    minWidth: 0,
+    gridTemplateColumns: "minmax(0, 1fr) minmax(110px, 0.85fr)",
+    columnGap: tokens.spacingHorizontalXS,
+    alignItems: "center",
+    "& label": {
+      justifySelf: "end",
+      textAlign: "right",
+      fontSize: tokens.fontSizeBase300,
+      lineHeight: tokens.lineHeightBase300,
+    },
+    "& > div": {
+      width: "100%",
+      minWidth: 0,
+    },
+    "& input": {
+      boxSizing: "border-box",
+      width: "100%",
+      minWidth: 0,
+    },
   },
 });
 
@@ -53,41 +78,79 @@ export const Freight: React.FC = () => {
       <div className={styles.sectionTitle}>Freight</div>
 
       <div className={styles.subSectionTitle}>Origin</div>
-      <div className={styles.gridResponsive}>
+      <ResponsiveGrid className={styles.fields}>
         <div className={styles.column}>
           <FormDate
+            className={styles.field}
             name="scheduledDepartureDate"
             label="Scheduled Departure Date:"
           />
-          <FormDate name="bookHaulageDate" label="Book Haulage Date:" />
-          <FormDate name="bookContainerDate" label="Book Container Date:" />
-          <FormDate name="etaAtOriginPort" label="ETA at Origin Port:" />
-          <FormDate name="portCutOffDate" label="Port Cut off Date:" />
+          <FormDate
+            className={styles.field}
+            name="bookHaulageDate"
+            label="Book Haulage Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="bookContainerDate"
+            label="Book Container Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="etaAtOriginPort"
+            label="ETA at Origin Port:"
+          />
+          <FormDate
+            className={styles.field}
+            name="portCutOffDate"
+            label="Port Cut off Date:"
+          />
         </div>
 
         <div className={styles.column}>
-          <FormDate name="actualDepartureDate" label="Actual Departure Date:" />
-          <FormDate name="documentCutoffDate" label="Document Cutoff Date:" />
           <FormDate
+            className={styles.field}
+            name="actualDepartureDate"
+            label="Actual Departure Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="documentCutoffDate"
+            label="Document Cutoff Date:"
+          />
+          <FormDate
+            className={styles.field}
             name="dropEmptyContainerDate"
             label="Drop Empty Container Date:"
           />
           <FormDate
+            className={styles.field}
             name="lastFreeDateAtOrigin"
             label="Last Free Date at Origin:"
           />
-          <FormDate name="inlandCutOffDate" label="Inland Cut off Date:" />
+          <FormDate
+            className={styles.field}
+            name="inlandCutOffDate"
+            label="Inland Cut off Date:"
+          />
         </div>
 
         <div className={styles.column}>
           <div className={styles.boxedSection}>
-            <div className={styles.subSectionTitle} style={{ marginTop: 0 }}>
-              Other SIT Dates:
-            </div>
+            <div className={styles.subSectionTitle}>Other SIT Dates:</div>
             <div className={styles.column}>
-              <FormDate name="otherSITInDate" label="Other SIT In Date:" />
-              <FormDate name="schOtherOutDate" label="Sch.Other Out Date:" />
               <FormDate
+                className={styles.field}
+                name="otherSITInDate"
+                label="Other SIT In Date:"
+              />
+              <FormDate
+                className={styles.field}
+                name="schOtherOutDate"
+                label="Sch.Other Out Date:"
+              />
+              <FormDate
+                className={styles.field}
                 name="actOtherSITOutDate"
                 label="Act.Other SIT Out Date:"
               />
@@ -95,6 +158,7 @@ export const Freight: React.FC = () => {
                 name="reason"
                 control={control}
                 label="Reason:"
+                labelPosition="left"
                 options={[
                   { label: "Select a reason...", value: "" },
                   { label: "Option 1", value: "opt1" },
@@ -103,34 +167,38 @@ export const Freight: React.FC = () => {
               />
             </div>
           </div>
-          <div style={{ marginTop: tokens.spacingVerticalM }}>
-            <FormDate name="containerReturned" label="Container Returned:" />
+          <div>
+            <FormDate
+              className={styles.field}
+              name="containerReturned"
+              label="Container Returned:"
+            />
           </div>
         </div>
-      </div>
+      </ResponsiveGrid>
 
-      <hr
-        style={{
-          margin: `${tokens.spacingVerticalL} 0`,
-          borderColor: tokens.colorNeutralStroke2,
-          borderTop: "none",
-        }}
-      />
+      <hr className={styles.horizontalLine} />
 
       <div className={styles.subSectionTitle} style={{ marginTop: 0 }}>
         Destination
       </div>
-      <div className={styles.gridResponsive}>
+      <ResponsiveGrid className={styles.fields}>
         <div className={styles.column}>
           <FormDate
+            className={styles.field}
             name="scheduledArrivalDate"
             label="Scheduled Arrival Date:"
           />
-          <FormDate name="freightReleaseDate" label="Freight Release Date:" />
+          <FormDate
+            className={styles.field}
+            name="freightReleaseDate"
+            label="Freight Release Date:"
+          />
           <FormDropdown
             name="dailyChargeSchedule"
             control={control}
             label="Daily Charge Schedule:"
+            labelPosition="left"
             options={[
               { label: "Select schedule...", value: "" },
               { label: "Schedule A", value: "A" },
@@ -142,26 +210,41 @@ export const Freight: React.FC = () => {
             control={control}
             type="number"
             label="Daily Charge Amount:"
+            labelPosition="left"
           />
         </div>
 
         <div className={styles.column}>
-          <FormDate name="actualArrivalDate" label="Actual Arrival Date:" />
           <FormDate
+            className={styles.field}
+            name="actualArrivalDate"
+            label="Actual Arrival Date:"
+          />
+          <FormDate
+            className={styles.field}
             name="lastFreeDateAtPort"
             label="Last Free Date at Port: (Demurrage)"
           />
           <FormDate
+            className={styles.field}
             name="lastFreeDateAtDestination"
             label="Last Free Date at Destination: (Detention/Per Diem)"
           />
         </div>
 
         <div className={styles.column}>
-          <FormDate name="outGateDate" label="Out Gate Date:" />
-          <FormDate name="inGateDate" label="In Gate Date:" />
+          <FormDate
+            className={styles.field}
+            name="outGateDate"
+            label="Out Gate Date:"
+          />
+          <FormDate
+            className={styles.field}
+            name="inGateDate"
+            label="In Gate Date:"
+          />
         </div>
-      </div>
+      </ResponsiveGrid>
     </div>
   );
 };

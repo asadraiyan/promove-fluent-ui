@@ -7,18 +7,20 @@ import { TaskDashboard } from "./shared/components/Board/TaskDashboard";
 import { ShipmentChangeHistory } from "./features/shipmentService/ShipmentChangeHistory";
 import ShipmentNotes from "./features/shipmentNotes/ShipmentNotes";
 import DatesNode from "./features/datesNode/datesNode";
+import { Tracking } from "./features/tracking/Tracking";
 
 function App() {
   return (
     <div>
       <AddressDetails />
       <SeaContainerDetails />
-      <ShipmentNotes/>
+      <ShipmentNotes />
       {/* <ServiceEngineDataInitiation /> */}
       <PersonDashboard />
       <TaskDashboard />
       <ShipmentChangeHistory />
-      <DatesNode/>
+      <DatesNode />
+      <Tracking />
     </div>
   );
 }

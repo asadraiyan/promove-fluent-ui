@@ -1,0 +1,266 @@
+[
+  {
+    "id": "UP",
+    "description": "Uttar Pradesh",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "DL",
+    "description": "Delhi",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "MH",
+    "description": "Maharashtra",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "KA",
+    "description": "Karnataka",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "TN",
+    "description": "Tamil Nadu",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "RJ",
+    "description": "Rajasthan",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "GJ",
+    "description": "Gujarat",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "WB",
+    "description": "West Bengal",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "KL",
+    "description": "Kerala",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "AP",
+    "description": "Andhra Pradesh",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "TS",
+    "description": "Telangana",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "PB",
+    "description": "Punjab",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "HR",
+    "description": "Haryana",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "BR",
+    "description": "Bihar",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "OR",
+    "description": "Odisha",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "AS",
+    "description": "Assam",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "MP",
+    "description": "Madhya Pradesh",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "CH",
+    "description": "Chhattisgarh",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "JH",
+    "description": "Jharkhand",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "HP",
+    "description": "Himachal Pradesh",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "CA",
+    "description": "California",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "TX",
+    "description": "Texas",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "NY",
+    "description": "New York",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "FL",
+    "description": "Florida",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "IL",
+    "description": "Illinois",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "WA",
+    "description": "Washington",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "AZ",
+    "description": "Arizona",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "CO",
+    "description": "Colorado",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "GA",
+    "description": "Georgia",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "NC",
+    "description": "North Carolina",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "MA",
+    "description": "Massachusetts",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "NJ",
+    "description": "New Jersey",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "ENG",
+    "description": "England",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "SCT",
+    "description": "Scotland",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "WLS",
+    "description": "Wales",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "NIR",
+    "description": "Northern Ireland",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "ENG-NE",
+    "description": "North East England",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "ENG-NW",
+    "description": "North West England",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "ENG-YH",
+    "description": "Yorkshire and the Humber",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "ENG-EM",
+    "description": "East Midlands",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "ENG-WM",
+    "description": "West Midlands",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "ENG-EE",
+    "description": "East of England",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "ENG-SE",
+    "description": "South East England",
+    "countryCode": "GB",
+    "stateCode": null
+  },
+  {
+    "id": "ENG-SW",
+    "description": "South West England",
+    "countryCode": "GB",
+    "stateCode": null
+  }
+]

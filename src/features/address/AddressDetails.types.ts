@@ -32,22 +32,42 @@ export interface AddressDetailsFormValues {
   countryOfIssue: string;
 }
 
-export interface AddressLocationReference {
+export interface AddressReference {
   id: string;
   name: string;
 }
 
-export type AddressDetailsPersonFormValues = Omit<
-  AddressDetailsFormValues,
-  "country" | "state" | "city"
-> & {
-  country: AddressLocationReference;
-  state: AddressLocationReference;
-  city: AddressLocationReference;
-};
+export interface AddressPhoneNumber {
+  areaCode: string;
+  number: string;
+}
 
-export interface AddressDetailsPerson {
-  id: string;
-  label: string;
-  formValues: AddressDetailsPersonFormValues;
+export interface AddressDetailsResponse {
+  addressId: number;
+  salesFileId: number;
+  addressType: string;
+  ownerCode: string;
+  addressTypeId: number;
+  prefix: string;
+  firstName: string;
+  middleName: string | null;
+  lastName: string;
+  nickName: string | null;
+  country: AddressReference | null;
+  address1: string | null;
+  address2: string | null;
+  address3: string | null;
+  city: AddressReference | null;
+  state: AddressReference | null;
+  postcode: string | null;
+  homeTel: AddressPhoneNumber | null;
+  officeTel: AddressPhoneNumber | null;
+  mobile1: AddressPhoneNumber | null;
+  mobile2: AddressPhoneNumber | null;
+  fax: AddressPhoneNumber | null;
+  email: string | null;
+  alternateEmail: string | null;
+  preferredContactId: number | null;
+  accessInfo: string | null;
+  directions: string | null;
 }

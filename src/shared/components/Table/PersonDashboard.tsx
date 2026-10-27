@@ -10,7 +10,7 @@ import {
 } from "@fluentui/react-components";
 import { PersonAddRegular, ArrowDownloadRegular } from "@fluentui/react-icons";
 import { SharedDataGrid, GridColumnDef } from "./SharedDataGrid";
-import apiResponse from "../../../../public/addressDetails.json";
+import apiResponse from "../../../../public/people.json";
 import { CommonEditDialog } from "../Modal/CommonEditDialog";
 import { PersonDashboardEditFields } from "./PersonDashboardEditFields";
 

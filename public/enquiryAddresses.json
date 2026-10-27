@@ -1,0 +1,29 @@
+[
+  {
+    "addressId": 1,
+    "addressTypeId": 2,
+    "addressType": "Delivery",
+    "name": "John Smith",
+    "address": "123 Main Street",
+    "city": "Newark",
+    "country": "UNITED STATES"
+  },
+  {
+    "addressId": 2,
+    "addressTypeId": 1,
+    "addressType": "Pickup",
+    "name": "Priya Sharma",
+    "address": "12 Residency Road",
+    "city": "Bangalore",
+    "country": "INDIA"
+  },
+  {
+    "addressId": 3,
+    "addressTypeId": 2,
+    "addressType": "Billing",
+    "name": "Michael Brown",
+    "address": "45 High Street",
+    "city": "London",
+    "country": "UNITED KINGDOM"
+  }
+]

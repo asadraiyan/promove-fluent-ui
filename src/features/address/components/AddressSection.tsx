@@ -12,8 +12,9 @@ import {
 } from "../../../shared";
 import { AddressDetailsFormValues } from "../AddressDetails.types";
 import { ADDRESS_TYPE_OPTIONS } from "../constants";
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { ModalTable } from "@/shared/components/Table/ModalTable";
+import { loadCities, loadStates } from "../reducers/locationDataSlice";
 
 interface CitySearchResult {
   id: string;
@@ -35,6 +36,7 @@ const useStyles = makeStyles({
 
 const AddressSection: React.FC = () => {
   const styles = useStyles();
+  const dispatch = useAppDispatch();
   const { control, setValue } = useFormContext<AddressDetailsFormValues>();
   const selectedCountry = useWatch({ control, name: "country" });
   const selectedState = useWatch({ control, name: "state" });
@@ -43,60 +45,62 @@ const AddressSection: React.FC = () => {
   const [cityDialogSearchText, setCityDialogSearchText] = useState("");
   const [isCityDialogOpen, setIsCityDialogOpen] = useState(false);
   const {
-    data: locationData,
-    status,
+    countries,
+    states,
+    cities,
+    countriesStatus,
+    citiesStatus,
     error,
   } = useAppSelector((state) => state.locationData);
-  const isLoading = status === "idle" || status === "loading";
+  const isLoading =
+    countriesStatus === "idle" || countriesStatus === "loading";
 
   const citySearchResults = useMemo<CitySearchResult[]>(() => {
-    if (!locationData) return [];
+    return cities.map((city) => {
+      const country = countries.find(
+        ({ countryCode }) => countryCode === city.countryCode,
+      );
+      const state = states.find(({ id }) => id === city.stateCode);
 
-    const query = cityDialogSearchText.trim().toLowerCase();
-    return locationData.countries.reduce<CitySearchResult[]>(
-      (countries, country) => {
-        country.states.forEach((state) => {
-          state.cities.forEach((city) => {
-            if (!query || city.label.toLowerCase().includes(query)) {
-              countries.push({
-                id: `${country.id}-${state.id}-${city.id}`,
-                cityId: city.id,
-                city: city.label,
-                stateId: state.id,
-                state: state.label,
-                countryId: country.id,
-                country: country.label,
-              });
-            }
-          });
-        });
-        return countries;
-      },
-      [],
-    );
-  }, [cityDialogSearchText, locationData]);
+      return {
+        id: `${city.countryCode}-${city.stateCode}-${city.id}`,
+        cityId: city.id,
+        city: city.description,
+        stateId: city.stateCode ?? "",
+        state: state?.description ?? city.stateCode ?? "",
+        countryId: city.countryCode,
+        country: country?.description ?? city.countryCode,
+      };
+    });
+  }, [cities, countries, states]);
 
   const stateOptions = useMemo(() => {
-    if (!locationData) return [];
-
-    const country = locationData.countries.find(
-      ({ id }) => id === selectedCountry,
-    );
-
-    return country?.states.map(({ id, label }) => ({ value: id, label })) ?? [];
-  }, [selectedCountry, locationData]);
+    return states.map(({ id, description }) => ({
+      value: id,
+      label: description,
+    }));
+  }, [states]);
 
   const selectedCityLabel = useMemo(() => {
-    const country = locationData?.countries.find(
-      ({ id }) => id === selectedCountry,
+    return (
+      cities.find(
+        (city) =>
+          city.id === selectedCity &&
+          city.countryCode === selectedCountry &&
+          city.stateCode === selectedState,
+      )?.description ?? ""
     );
-    const state = country?.states.find(({ id }) => id === selectedState);
-    return state?.cities.find(({ id }) => id === selectedCity)?.label ?? "";
-  }, [selectedCity, selectedCountry, selectedState, locationData]);
+  }, [cities, selectedCity, selectedCountry, selectedState]);
 
   useEffect(() => {
     setCitySearchText(selectedCityLabel);
   }, [selectedCity, selectedCityLabel]);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      dispatch(loadStates(selectedCountry));
+    }
+  }, [dispatch, selectedCountry]);
 
   const cityColumns = useMemo<GridColumnDef<CitySearchResult>[]>(
     () => [
@@ -143,6 +147,12 @@ const AddressSection: React.FC = () => {
   const handleCitySearch = () => {
     if (citySearchText.trim().length >= 3) {
       setCityDialogSearchText(citySearchText);
+      dispatch(
+        loadCities({
+          countryCode: selectedCountry || undefined,
+          search: citySearchText.trim(),
+        }),
+      );
       setIsCityDialogOpen(true);
     } else {
       alert("Search requires at least 3 characters.");
@@ -168,9 +178,9 @@ const AddressSection: React.FC = () => {
           labelPosition="left"
           placeholder={isLoading ? "Loading..." : "Select Country"}
           options={
-            locationData?.countries.map(({ id, label }) => ({
-              value: id,
-              label,
+            countries.map(({ countryCode, description }) => ({
+              value: countryCode,
+              label: description,
             })) ?? []
           }
           onChange={handleCountryChange}
@@ -213,7 +223,7 @@ const AddressSection: React.FC = () => {
           labelPosition="left"
           value={citySearchText}
           placeholder="Search for a city"
-          disabled={isLoading || !locationData}
+          disabled={isLoading || countriesStatus !== "succeeded"}
           onChange={setCitySearchText}
           onSearch={handleCitySearch}
         />
@@ -239,7 +249,9 @@ const AddressSection: React.FC = () => {
             getRowId={(city) => city.id}
             onRowClick={handleRowClick}
             emptyState={
-              cityDialogSearchText.trim()
+              citiesStatus === "loading"
+                ? "Searching cities..."
+                : cityDialogSearchText.trim()
                 ? `No cities found for "${cityDialogSearchText.trim()}".`
                 : "No cities are available."
             }

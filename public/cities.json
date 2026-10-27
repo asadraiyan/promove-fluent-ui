@@ -1,0 +1,542 @@
+[
+  {
+    "id": "LKO",
+    "description": "Lucknow",
+    "countryCode": "IN",
+    "stateCode": "UP"
+  },
+  {
+    "id": "KNU",
+    "description": "Kanpur",
+    "countryCode": "IN",
+    "stateCode": "UP"
+  },
+  {
+    "id": "NOI",
+    "description": "Noida",
+    "countryCode": "IN",
+    "stateCode": "UP"
+  },
+  {
+    "id": "VNS",
+    "description": "Varanasi",
+    "countryCode": "IN",
+    "stateCode": "UP"
+  },
+  {
+    "id": "NDL",
+    "description": "New Delhi",
+    "countryCode": "IN",
+    "stateCode": "DL"
+  },
+  {
+    "id": "BOM",
+    "description": "Mumbai",
+    "countryCode": "IN",
+    "stateCode": "MH"
+  },
+  {
+    "id": "PNQ",
+    "description": "Pune",
+    "countryCode": "IN",
+    "stateCode": "MH"
+  },
+  {
+    "id": "NAG",
+    "description": "Nagpur",
+    "countryCode": "IN",
+    "stateCode": "MH"
+  },
+  {
+    "id": "BLR",
+    "description": "Bangalore",
+    "countryCode": "IN",
+    "stateCode": "KA"
+  },
+  {
+    "id": "MYQ",
+    "description": "Mysore",
+    "countryCode": "IN",
+    "stateCode": "KA"
+  },
+  {
+    "id": "CHI",
+    "description": "Chennai",
+    "countryCode": "IN",
+    "stateCode": "TN"
+  },
+  {
+    "id": "MDU",
+    "description": "Madurai",
+    "countryCode": "IN",
+    "stateCode": "TN"
+  },
+  {
+    "id": "JAI",
+    "description": "Jaipur",
+    "countryCode": "IN",
+    "stateCode": "RJ"
+  },
+  {
+    "id": "UDR",
+    "description": "Udaipur",
+    "countryCode": "IN",
+    "stateCode": "RJ"
+  },
+  {
+    "id": "AMD",
+    "description": "Ahmedabad",
+    "countryCode": "IN",
+    "stateCode": "GJ"
+  },
+  {
+    "id": "STV",
+    "description": "Surat",
+    "countryCode": "IN",
+    "stateCode": "GJ"
+  },
+  {
+    "id": "CCU",
+    "description": "Kolkata",
+    "countryCode": "IN",
+    "stateCode": "WB"
+  },
+  {
+    "id": "DGP",
+    "description": "Durgapur",
+    "countryCode": "IN",
+    "stateCode": "WB"
+  },
+  {
+    "id": "COK",
+    "description": "Kochi",
+    "countryCode": "IN",
+    "stateCode": "KL"
+  },
+  {
+    "id": "TRV",
+    "description": "Thiruvananthapuram",
+    "countryCode": "IN",
+    "stateCode": "KL"
+  },
+  {
+    "id": "VSK",
+    "description": "Visakhapatnam",
+    "countryCode": "IN",
+    "stateCode": "AP"
+  },
+  {
+    "id": "VJW",
+    "description": "Vijayawada",
+    "countryCode": "IN",
+    "stateCode": "AP"
+  },
+  {
+    "id": "HYD",
+    "description": "Hyderabad",
+    "countryCode": "IN",
+    "stateCode": "TS"
+  },
+  {
+    "id": "WGL",
+    "description": "Warangal",
+    "countryCode": "IN",
+    "stateCode": "TS"
+  },
+  {
+    "id": "ASR",
+    "description": "Amritsar",
+    "countryCode": "IN",
+    "stateCode": "PB"
+  },
+  {
+    "id": "LDH",
+    "description": "Ludhiana",
+    "countryCode": "IN",
+    "stateCode": "PB"
+  },
+  {
+    "id": "GGN",
+    "description": "Gurugram",
+    "countryCode": "IN",
+    "stateCode": "HR"
+  },
+  {
+    "id": "FBD",
+    "description": "Faridabad",
+    "countryCode": "IN",
+    "stateCode": "HR"
+  },
+  {
+    "id": "PAT",
+    "description": "Patna",
+    "countryCode": "IN",
+    "stateCode": "BR"
+  },
+  {
+    "id": "GAY",
+    "description": "Gaya",
+    "countryCode": "IN",
+    "stateCode": "BR"
+  },
+  {
+    "id": "BBS",
+    "description": "Bhubaneswar",
+    "countryCode": "IN",
+    "stateCode": "OR"
+  },
+  {
+    "id": "CTC",
+    "description": "Cuttack",
+    "countryCode": "IN",
+    "stateCode": "OR"
+  },
+  {
+    "id": "GAU",
+    "description": "Guwahati",
+    "countryCode": "IN",
+    "stateCode": "AS"
+  },
+  {
+    "id": "DIB",
+    "description": "Dibrugarh",
+    "countryCode": "IN",
+    "stateCode": "AS"
+  },
+  {
+    "id": "BHO",
+    "description": "Bhopal",
+    "countryCode": "IN",
+    "stateCode": "MP"
+  },
+  {
+    "id": "IDR",
+    "description": "Indore",
+    "countryCode": "IN",
+    "stateCode": "MP"
+  },
+  {
+    "id": "RPR",
+    "description": "Raipur",
+    "countryCode": "IN",
+    "stateCode": "CH"
+  },
+  {
+    "id": "BSP",
+    "description": "Bilaspur",
+    "countryCode": "IN",
+    "stateCode": "CH"
+  },
+  {
+    "id": "RNC",
+    "description": "Ranchi",
+    "countryCode": "IN",
+    "stateCode": "JH"
+  },
+  {
+    "id": "JSR",
+    "description": "Jamshedpur",
+    "countryCode": "IN",
+    "stateCode": "JH"
+  },
+  {
+    "id": "SHL",
+    "description": "Shimla",
+    "countryCode": "IN",
+    "stateCode": "HP"
+  },
+  {
+    "id": "MND",
+    "description": "Mandi",
+    "countryCode": "IN",
+    "stateCode": "HP"
+  },
+  {
+    "id": "LAX",
+    "description": "Los Angeles",
+    "countryCode": "US",
+    "stateCode": "CA"
+  },
+  {
+    "id": "SFO",
+    "description": "San Francisco",
+    "countryCode": "US",
+    "stateCode": "CA"
+  },
+  {
+    "id": "HOU",
+    "description": "Houston",
+    "countryCode": "US",
+    "stateCode": "TX"
+  },
+  {
+    "id": "DFW",
+    "description": "Dallas",
+    "countryCode": "US",
+    "stateCode": "TX"
+  },
+  {
+    "id": "NYC",
+    "description": "New York City",
+    "countryCode": "US",
+    "stateCode": "NY"
+  },
+  {
+    "id": "BUF",
+    "description": "Buffalo",
+    "countryCode": "US",
+    "stateCode": "NY"
+  },
+  {
+    "id": "MIA",
+    "description": "Miami",
+    "countryCode": "US",
+    "stateCode": "FL"
+  },
+  {
+    "id": "ORL",
+    "description": "Orlando",
+    "countryCode": "US",
+    "stateCode": "FL"
+  },
+  {
+    "id": "CHI",
+    "description": "Chicago",
+    "countryCode": "US",
+    "stateCode": "IL"
+  },
+  {
+    "id": "SPR",
+    "description": "Springfield",
+    "countryCode": "US",
+    "stateCode": "IL"
+  },
+  {
+    "id": "SEA",
+    "description": "Seattle",
+    "countryCode": "US",
+    "stateCode": "WA"
+  },
+  {
+    "id": "TAC",
+    "description": "Tacoma",
+    "countryCode": "US",
+    "stateCode": "WA"
+  },
+  {
+    "id": "PHX",
+    "description": "Phoenix",
+    "countryCode": "US",
+    "stateCode": "AZ"
+  },
+  {
+    "id": "TUS",
+    "description": "Tucson",
+    "countryCode": "US",
+    "stateCode": "AZ"
+  },
+  {
+    "id": "DEN",
+    "description": "Denver",
+    "countryCode": "US",
+    "stateCode": "CO"
+  },
+  {
+    "id": "COS",
+    "description": "Colorado Springs",
+    "countryCode": "US",
+    "stateCode": "CO"
+  },
+  {
+    "id": "ATL",
+    "description": "Atlanta",
+    "countryCode": "US",
+    "stateCode": "GA"
+  },
+  {
+    "id": "SAV",
+    "description": "Savannah",
+    "countryCode": "US",
+    "stateCode": "GA"
+  },
+  {
+    "id": "CLT",
+    "description": "Charlotte",
+    "countryCode": "US",
+    "stateCode": "NC"
+  },
+  {
+    "id": "RDU",
+    "description": "Raleigh",
+    "countryCode": "US",
+    "stateCode": "NC"
+  },
+  {
+    "id": "BOS",
+    "description": "Boston",
+    "countryCode": "US",
+    "stateCode": "MA"
+  },
+  {
+    "id": "WOR",
+    "description": "Worcester",
+    "countryCode": "US",
+    "stateCode": "MA"
+  },
+  {
+    "id": "NEW",
+    "description": "Newark",
+    "countryCode": "US",
+    "stateCode": "NJ"
+  },
+  {
+    "id": "JCT",
+    "description": "Jersey City",
+    "countryCode": "US",
+    "stateCode": "NJ"
+  },
+  {
+    "id": "LON",
+    "description": "London",
+    "countryCode": "GB",
+    "stateCode": "ENG"
+  },
+  {
+    "id": "MAN",
+    "description": "Manchester",
+    "countryCode": "GB",
+    "stateCode": "ENG"
+  },
+  {
+    "id": "EDI",
+    "description": "Edinburgh",
+    "countryCode": "GB",
+    "stateCode": "SCT"
+  },
+  {
+    "id": "GLA",
+    "description": "Glasgow",
+    "countryCode": "GB",
+    "stateCode": "SCT"
+  },
+  {
+    "id": "CDF",
+    "description": "Cardiff",
+    "countryCode": "GB",
+    "stateCode": "WLS"
+  },
+  {
+    "id": "SWN",
+    "description": "Swansea",
+    "countryCode": "GB",
+    "stateCode": "WLS"
+  },
+  {
+    "id": "BFS",
+    "description": "Belfast",
+    "countryCode": "GB",
+    "stateCode": "NIR"
+  },
+  {
+    "id": "DRA",
+    "description": "Derry",
+    "countryCode": "GB",
+    "stateCode": "NIR"
+  },
+  {
+    "id": "NCL",
+    "description": "Newcastle upon Tyne",
+    "countryCode": "GB",
+    "stateCode": "ENG-NE"
+  },
+  {
+    "id": "SUN",
+    "description": "Sunderland",
+    "countryCode": "GB",
+    "stateCode": "ENG-NE"
+  },
+  {
+    "id": "LIV",
+    "description": "Liverpool",
+    "countryCode": "GB",
+    "stateCode": "ENG-NW"
+  },
+  {
+    "id": "LAN",
+    "description": "Lancaster",
+    "countryCode": "GB",
+    "stateCode": "ENG-NW"
+  },
+  {
+    "id": "LDS",
+    "description": "Leeds",
+    "countryCode": "GB",
+    "stateCode": "ENG-YH"
+  },
+  {
+    "id": "SHF",
+    "description": "Sheffield",
+    "countryCode": "GB",
+    "stateCode": "ENG-YH"
+  },
+  {
+    "id": "NOT",
+    "description": "Nottingham",
+    "countryCode": "GB",
+    "stateCode": "ENG-EM"
+  },
+  {
+    "id": "LEI",
+    "description": "Leicester",
+    "countryCode": "GB",
+    "stateCode": "ENG-EM"
+  },
+  {
+    "id": "BHM",
+    "description": "Birmingham",
+    "countryCode": "GB",
+    "stateCode": "ENG-WM"
+  },
+  {
+    "id": "COV",
+    "description": "Coventry",
+    "countryCode": "GB",
+    "stateCode": "ENG-WM"
+  },
+  {
+    "id": "CAM",
+    "description": "Cambridge",
+    "countryCode": "GB",
+    "stateCode": "ENG-EE"
+  },
+  {
+    "id": "NOR",
+    "description": "Norwich",
+    "countryCode": "GB",
+    "stateCode": "ENG-EE"
+  },
+  {
+    "id": "OXF",
+    "description": "Oxford",
+    "countryCode": "GB",
+    "stateCode": "ENG-SE"
+  },
+  {
+    "id": "BRI",
+    "description": "Brighton",
+    "countryCode": "GB",
+    "stateCode": "ENG-SE"
+  },
+  {
+    "id": "BRS",
+    "description": "Bristol",
+    "countryCode": "GB",
+    "stateCode": "ENG-SW"
+  },
+  {
+    "id": "PLY",
+    "description": "Plymouth",
+    "countryCode": "GB",
+    "stateCode": "ENG-SW"
+  }
+]

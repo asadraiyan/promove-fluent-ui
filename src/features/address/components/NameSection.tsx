@@ -9,9 +9,11 @@ import {
 } from "../../../shared";
 
 import type { AddressDetailsFormValues } from "../AddressDetails.types";
-import { ADDRESS_DETAILS_DEFAULT_VALUES } from "../constants";
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { selectAddressDetailsPerson } from "../reducers/addressDetailsSlice";
+
+const PREFIX_OPTIONS = [
+  { value: "Mr", label: "Mr" },
+  { value: "Mrs", label: "Mrs" },
+];
 
 const useStyles = makeStyles({
   grid: {
@@ -38,60 +40,56 @@ const useStyles = makeStyles({
 });
 
 const NameSection: React.FC = () => {
-  const { control, reset } = useFormContext<AddressDetailsFormValues>();
+  const { control } = useFormContext<AddressDetailsFormValues>();
   const styles = useStyles();
-  const dispatch = useAppDispatch();
-  const { people, error } = useAppSelector((state) => state.addressDetails);
-
-  const handlePersonChange = (personId: string) => {
-    const person = people.find(({ id }) => id === personId);
-    if (!person) {
-      dispatch(selectAddressDetailsPerson(null));
-      reset(ADDRESS_DETAILS_DEFAULT_VALUES);
-      return;
-    }
-
-    dispatch(selectAddressDetailsPerson(person.id));
-    reset({
-      ...person.formValues,
-      country: person.formValues.country.id,
-      state: person.formValues.state.id,
-      city: person.formValues.city.id,
-    });
-  };
 
   return (
     <section>
-      {error && <div role="alert">{error}</div>}
       <ResponsiveGrid className={styles.grid}>
         <div className={styles.field}>
           <FormDropdown
             name="prefix"
             control={control}
             label="Prefix"
-            options={people.map(({ id, label }) => ({
-              value: id,
-              label,
-            }))}
+            options={PREFIX_OPTIONS}
             placeholder="Select"
-            onChange={handlePersonChange}
           />
         </div>
 
         <div className={styles.field}>
-          <FormInput label="Name" name="firstName" control={control} placeholder="" />
+          <FormInput
+            label="Name"
+            name="firstName"
+            control={control}
+            placeholder=""
+          />
         </div>
 
         <div className={styles.field}>
-          <FormInput label="Middle" name="middleName" control={control} placeholder="" />
+          <FormInput
+            label="Middle"
+            name="middleName"
+            control={control}
+            placeholder=""
+          />
         </div>
 
         <div className={styles.field}>
-          <FormInput label="Last" name="lastName" control={control} placeholder="" />
+          <FormInput
+            label="Last"
+            name="lastName"
+            control={control}
+            placeholder=""
+          />
         </div>
 
         <div className={styles.field}>
-          <FormInput label="Nick Name" name="nickName" control={control} placeholder="" />
+          <FormInput
+            label="Nick Name"
+            name="nickName"
+            control={control}
+            placeholder=""
+          />
         </div>
       </ResponsiveGrid>
     </section>

@@ -1,131 +1,131 @@
-{
-  "users": [
-    {
-      "id": "person-asad",
-      "label": "Asad",
-      "formValues": {
-        "prefix": "person-asad",
-        "firstName": "Asad",
-        "middleName": "Raiyan",
-        "lastName": "Khan",
-        "nickName": "Asad",
-        "roles": ["Admin", "Editor", "Viewer"],
-        "addressType": "delivery",
-        "country": {
-          "id": "IN",
-          "name": "India"
-        },
-        "address1": "12 Residency Road",
-        "address2": "Flat 4B",
-        "address3": "Ashok Nagar",
-        "city": {
-          "id": "BLR",
-          "name": "Bangalore"
-        },
-        "state": {
-          "id": "IN-KA",
-          "name": "Karnataka"
-        },
-        "postcode": "560025",
-        "homeTel": "+91-80-4567-1001",
-        "officeTel": "+91-80-4567-1002",
-        "mobile1": "+91-98765-43210",
-        "mobile2": "+91-98765-43211",
-        "fax": "+91-80-4567-1003",
-        "email": "asad.khan@example.com",
-        "preferred": "email",
-        "alternateEmail": "asad.rai@example.com",
-        "accessInfo": "Call on arrival; the security desk will provide access.",
-        "directions": "Enter from Residency Road and use the east entrance.",
-        "identificationIndicator": "passport",
-        "customerDateOfBirth": "1992-04-18",
-        "foreignIdEIN": "IN-ASAD-1042",
-        "countryOfIssue": "india"
-      }
+[
+  {
+    "addressId": 1,
+    "salesFileId": 394492,
+    "addressType": "Delivery",
+    "ownerCode": "BR1",
+    "addressTypeId": 2,
+    "prefix": "Mr",
+    "firstName": "John",
+    "middleName": null,
+    "lastName": "Smith",
+    "nickName": null,
+    "country": {
+      "id": "US",
+      "name": "United States"
     },
-    {
-      "id": "person-arpit",
-      "label": "Arpit",
-      "formValues": {
-        "prefix": "person-arpit",
-        "firstName": "Arpit",
-        "middleName": "",
-        "lastName": "Singh",
-        "nickName": "Ari",
-        "addressType": "billing",
-        "country": {
-          "id": "IN",
-          "name": "India"
-        },
-        "address1": "45 Gomti Nagar",
-        "address2": "Vibhuti Khand",
-        "address3": "Near Riverside Mall",
-        "city": {
-          "id": "LKO",
-          "name": "Lucknow"
-        },
-        "state": {
-          "id": "IN-UP",
-          "name": "Uttar Pradesh"
-        },
-        "postcode": "226010",
-        "homeTel": "+91-522-456-2001",
-        "officeTel": "+91-522-456-2002",
-        "mobile1": "+91-91234-56780",
-        "mobile2": "+91-91234-56781",
-        "fax": "+91-522-456-2003",
-        "email": "arpit.sharma@example.com",
-        "preferred": "mobile",
-        "alternateEmail": "arpit.raj@example.com",
-        "accessInfo": "Please check in with reception before entry.",
-        "directions": "Use the main entrance on the north side of the building.",
-        "identificationIndicator": "national-id",
-        "customerDateOfBirth": "1998-11-09",
-        "foreignIdEIN": "IN-ARPIT-2086",
-        "countryOfIssue": "india"
-      }
+    "address1": "123 Main Street",
+    "address2": null,
+    "address3": null,
+    "city": {
+      "id": "NEW",
+      "name": "Newark"
     },
-    {
-      "id": "person-syed",
-      "label": "Syed",
-      "formValues": {
-        "prefix": "person-syed",
-        "firstName": "Syed",
-        "middleName": "Ahmed",
-        "lastName": "Farooq",
-        "nickName": "Sam",
-        "addressType": "delivery",
-        "country": {
-          "id": "US",
-          "name": "United States"
-        },
-        "address1": "850 Market Street",
-        "address2": "Suite 320",
-        "address3": "Financial District",
-        "city": {
-          "id": "SFO",
-          "name": "San Francisco"
-        },
-        "state": {
-          "id": "US-CA",
-          "name": "California"
-        },
-        "postcode": "94103",
-        "homeTel": "+1-415-555-3001",
-        "officeTel": "+1-415-555-3002",
-        "mobile1": "+1-415-555-0130",
-        "mobile2": "+1-415-555-0131",
-        "fax": "+1-415-555-3003",
-        "email": "syed.farooq@example.com",
-        "preferred": "email",
-        "alternateEmail": "syed.ahmed@example.com",
-        "accessInfo": "Visitor badge required; contact the front desk.",
-        "directions": "Enter through the Market Street lobby and take the elevators to floor 3.",
-        "identificationIndicator": "passport",
-        "customerDateOfBirth": "1985-07-26",
-        "foreignIdEIN": "US-SYED-3095",
-        "countryOfIssue": "usa"
-      }
-    }
-  ]
-}
+    "state": {
+      "id": "NJ",
+      "name": "New Jersey"
+    },
+    "postcode": "07182",
+    "homeTel": {
+      "areaCode": "973",
+      "number": "5551234"
+    },
+    "officeTel": null,
+    "mobile1": {
+      "areaCode": "973",
+      "number": "5559876"
+    },
+    "mobile2": null,
+    "fax": null,
+    "email": "john.smith@example.com",
+    "alternateEmail": null,
+    "preferredContactId": 1,
+    "accessInfo": null,
+    "directions": null
+  },
+  {
+    "addressId": 2,
+    "salesFileId": 394492,
+    "addressType": "Pickup",
+    "ownerCode": "IN1",
+    "addressTypeId": 1,
+    "prefix": "Mrs",
+    "firstName": "Priya",
+    "middleName": null,
+    "lastName": "Sharma",
+    "nickName": null,
+    "country": {
+      "id": "IN",
+      "name": "India"
+    },
+    "address1": "12 Residency Road",
+    "address2": "Flat 4B",
+    "address3": null,
+    "city": {
+      "id": "BLR",
+      "name": "Bangalore"
+    },
+    "state": {
+      "id": "KA",
+      "name": "Karnataka"
+    },
+    "postcode": "560025",
+    "homeTel": null,
+    "officeTel": {
+      "areaCode": "80",
+      "number": "45671002"
+    },
+    "mobile1": {
+      "areaCode": "98765",
+      "number": "43210"
+    },
+    "mobile2": null,
+    "fax": null,
+    "email": "priya.sharma@example.com",
+    "alternateEmail": null,
+    "preferredContactId": 2,
+    "accessInfo": "Call on arrival; the security desk will provide access.",
+    "directions": "Enter from Residency Road and use the east entrance."
+  },
+  {
+    "addressId": 3,
+    "salesFileId": 394492,
+    "addressType": "Billing",
+    "ownerCode": "GB1",
+    "addressTypeId": 2,
+    "prefix": "Mr",
+    "firstName": "Michael",
+    "middleName": "James",
+    "lastName": "Brown",
+    "nickName": "Mike",
+    "country": {
+      "id": "GB",
+      "name": "United Kingdom"
+    },
+    "address1": "45 High Street",
+    "address2": null,
+    "address3": null,
+    "city": {
+      "id": "LON",
+      "name": "London"
+    },
+    "state": {
+      "id": "ENG",
+      "name": "England"
+    },
+    "postcode": "SW1A 1AA",
+    "homeTel": {
+      "areaCode": "20",
+      "number": "79460000"
+    },
+    "officeTel": null,
+    "mobile1": null,
+    "mobile2": null,
+    "fax": null,
+    "email": "michael.brown@example.com",
+    "alternateEmail": null,
+    "preferredContactId": 1,
+    "accessInfo": null,
+    "directions": null
+  }
+]

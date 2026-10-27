@@ -37,6 +37,10 @@ export const ADDRESS_DETAILS_DEFAULT_VALUES: AddressDetailsFormValues = {
 
 export const ADDRESS_TYPE_OPTIONS = [
     {
+        value: "pickup",
+        label: "Pickup Address",
+    },
+    {
         value: "delivery",
         label: "Delivery Address",
     },

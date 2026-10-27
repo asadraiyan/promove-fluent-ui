@@ -1,0 +1,20 @@
+[
+  {
+    "id": "IN",
+    "description": "India",
+    "countryCode": "IN",
+    "stateCode": null
+  },
+  {
+    "id": "US",
+    "description": "United States",
+    "countryCode": "US",
+    "stateCode": null
+  },
+  {
+    "id": "GB",
+    "description": "United Kingdom",
+    "countryCode": "GB",
+    "stateCode": null
+  }
+]

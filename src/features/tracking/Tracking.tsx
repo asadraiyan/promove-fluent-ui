@@ -1,9 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles, tokens, Button } from "@fluentui/react-components";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import { FormInput } from "@/shared/components/Input/Input";
 import { FormDropdown } from "@/shared/components/Dropdown/Dropdown";
 import { ResponsiveGrid } from "@/shared";
+import mockData from "../../dummyJson/trackingData.json";
+
+interface TransitGuideData {
+  recordPoints: number;
+  originTransitAvgDays: number;
+  freightTransitAvgDays: number;
+  customClearanceAvgDays: number;
+  destinationTransitAvgDays: number;
+  dtdTransitAvgDays: number;
+  originTransitDaysRange: string;
+  freightTransitDaysRange: string;
+  customClearanceDaysRange: string;
+  destinationTransitDaysRange: string;
+  dtdTransitDaysRange: string;
+  creationUser: string;
+  modificationUser: string | null;
+  creationTime: string;
+  modificationTime: string | null;
+}
 
 const useStyles = makeStyles({
   sectionContainer: {
@@ -36,13 +55,11 @@ const useStyles = makeStyles({
     gap: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
     padding: tokens.spacingHorizontalM,
   },
-
   field: {
     minWidth: 0,
     gridTemplateColumns: "minmax(0, 1fr) minmax(110px, 0.85fr)",
     columnGap: tokens.spacingHorizontalXS,
     alignItems: "center",
-
     "& > div > div": {
       gridTemplateColumns: "minmax(0, 1fr) minmax(110px, 0.85fr)",
       alignItems: "center",
@@ -64,7 +81,6 @@ const useStyles = makeStyles({
       minWidth: 0,
     },
   },
-
   tableContainer: {
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     borderRadius: tokens.borderRadiusMedium,
@@ -111,7 +127,9 @@ const defaultOptions = [
   { label: "Option 2", value: "opt2" },
 ];
 
-const TrackingContent: React.FC = () => {
+const TrackingContent: React.FC<{ transitGuide: TransitGuideData | null }> = ({
+  transitGuide,
+}) => {
   const styles = useStyles();
   const { control } = useFormContext();
 
@@ -129,45 +147,61 @@ const TrackingContent: React.FC = () => {
           <div className={styles.column}>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>Record Points</span>
-              <span className={styles.tableCellValue}>36</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.recordPoints}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>
                 Origin Transit Avg Days
               </span>
-              <span className={styles.tableCellValue}>34</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.originTransitAvgDays}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>
                 Freight Transit Avg Days
               </span>
-              <span className={styles.tableCellValue}>37</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.freightTransitAvgDays}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>
                 Custom Clearance Avg Days
               </span>
-              <span className={styles.tableCellValue}>12</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.customClearanceAvgDays}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>
                 Destination Transit Avg Days
               </span>
-              <span className={styles.tableCellValue}>11</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.destinationTransitAvgDays}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>
                 DTD Transit Avg Days
               </span>
-              <span className={styles.tableCellValue}>92</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.dtdTransitAvgDays}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>Creation User</span>
-              <span className={styles.tableCellValue}>Syed Sahul</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.creationUser}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>Modification User</span>
-              <span className={styles.tableCellValue}></span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.modificationUser || "-"}
+              </span>
             </div>
           </div>
 
@@ -176,39 +210,53 @@ const TrackingContent: React.FC = () => {
               <span className={styles.tableCellLabel}>
                 Origin Transit Days Range
               </span>
-              <span className={styles.tableCellValue}>24 - 43</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.originTransitDaysRange}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>
                 Freight Transit Days Range
               </span>
-              <span className={styles.tableCellValue}>20 - 55</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.freightTransitDaysRange}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>
                 Custom Clearance Days Range
               </span>
-              <span className={styles.tableCellValue}>5 - 18</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.customClearanceDaysRange}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>
                 Destination Transit Days Range
               </span>
-              <span className={styles.tableCellValue}>3 - 19</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.destinationTransitDaysRange}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>
                 DTD Transit Days Range
               </span>
-              <span className={styles.tableCellValue}>75 - 110</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.dtdTransitDaysRange}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>Creation Time</span>
-              <span className={styles.tableCellValue}>27/10/2026</span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.creationTime}
+              </span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableCellLabel}>Modification Time</span>
-              <span className={styles.tableCellValue}></span>
+              <span className={styles.tableCellValue}>
+                {transitGuide?.modificationTime || "-"}
+              </span>
             </div>
           </div>
         </div>
@@ -266,6 +314,7 @@ const TrackingContent: React.FC = () => {
             control={control}
             label="Variance at Departure:"
             labelPosition="left"
+            type="number"
           />
           <FormInput
             className={styles.field}
@@ -273,6 +322,7 @@ const TrackingContent: React.FC = () => {
             control={control}
             label="Estimated Sailing Time:"
             labelPosition="left"
+            type="number"
           />
           <FormInput
             className={styles.field}
@@ -280,6 +330,7 @@ const TrackingContent: React.FC = () => {
             control={control}
             label="Variance of Sailing Time vs Estimated:"
             labelPosition="left"
+            type="number"
           />
         </div>
 
@@ -340,6 +391,7 @@ const TrackingContent: React.FC = () => {
             control={control}
             label="Total Sailing Time:"
             labelPosition="left"
+            type="number"
           />
           <FormInput
             className={styles.field}
@@ -347,6 +399,7 @@ const TrackingContent: React.FC = () => {
             control={control}
             label="Variance at Arrival:"
             labelPosition="left"
+            type="number"
           />
         </div>
       </ResponsiveGrid>
@@ -355,6 +408,9 @@ const TrackingContent: React.FC = () => {
 };
 
 export const Tracking: React.FC = () => {
+  const [transitGuideData, setTransitGuideData] =
+    useState<TransitGuideData | null>(null);
+
   const methods = useForm({
     defaultValues: {
       masterSCACCode: "",
@@ -376,14 +432,26 @@ export const Tracking: React.FC = () => {
     },
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setTimeout(() => {
+        setTransitGuideData(mockData.transitGuide);
+
+        methods.reset(mockData.trackingInformation);
+      }, 500);
+    };
+
+    fetchData();
+  }, [methods]);
+
   const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
+    console.log("Form Submitted Data:", data);
   };
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <TrackingContent />
+        <TrackingContent transitGuide={transitGuideData} />
       </form>
     </FormProvider>
   );

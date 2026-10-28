@@ -1,0 +1,38 @@
+{
+  "trackingId": "TRK-987654321",
+  "transitGuide": {
+    "recordPoints": 36,
+    "originTransitAvgDays": 34,
+    "freightTransitAvgDays": 37,
+    "customClearanceAvgDays": 12,
+    "destinationTransitAvgDays": 11,
+    "dtdTransitAvgDays": 92,
+    "originTransitDaysRange": "24 - 43",
+    "freightTransitDaysRange": "20 - 55",
+    "customClearanceDaysRange": "5 - 18",
+    "destinationTransitDaysRange": "3 - 19",
+    "dtdTransitDaysRange": "75 - 110",
+    "creationUser": "Syed Sahul",
+    "modificationUser": null,
+    "creationTime": "27/10/2026",
+    "modificationTime": null
+  },
+  "trackingInformation": {
+    "masterSCACCode": "SCAC123",
+    "vesselName": "MSC Gulsun",
+    "masterOBL": "OBL987654321",
+    "voyageNumber": "V1234",
+    "originalScheduledDepartureDate": "opt1",
+    "scheduledDepartureDate": "opt2",
+    "actualDepartureDate": "",
+    "varianceAtDeparture": "1",
+    "estimatedSailingTime": "15",
+    "varianceOfSailingTimeVsEstimated": "0",
+    "originalScheduledArrivalDate": "opt1",
+    "scheduledArrivalDate": "opt2",
+    "predictedArrivalDate": "opt2",
+    "actualArrivalDate": "",
+    "totalSailingTime": "15",
+    "varianceAtArrival": "1"
+  }
+}

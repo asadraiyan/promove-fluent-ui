@@ -30,6 +30,8 @@ interface DataTableProps<T> {
   showEmptyState?: boolean;
   compact?: boolean;
   onRowClick?: (item: T) => void;
+  headerCellClassName?: string;
+  emptyStateClassName?: string;
 }
 
 const useStyles = makeStyles({
@@ -104,6 +106,8 @@ export const ModalTable = <T extends Record<string, any>>({
   showEmptyState = true,
   compact = false,
   onRowClick,
+  headerCellClassName,
+  emptyStateClassName,
 }: DataTableProps<T>) => {
   const styles = useStyles();
   const compactColumnSizingOptions = useMemo(
@@ -198,9 +202,8 @@ export const ModalTable = <T extends Record<string, any>>({
             >
               {({ renderHeaderCell }) => (
                 <DataGridHeaderCell
-                  className={
-                    compact ? styles.compactHeaderCell : undefined
-                  }
+                  className={`${compact ? styles.compactHeaderCell : ""} ${headerCellClassName ?? ""
+                    }`}
                 >
                   <Text weight="semibold" wrap={!compact}>
                     {renderHeaderCell()}
@@ -234,7 +237,7 @@ export const ModalTable = <T extends Record<string, any>>({
         </DataGrid>
       </div>
       {showEmptyState && items.length === 0 && (
-        <div className={styles.emptyState}>
+        <div className={`${styles.emptyState} ${emptyStateClassName ?? ""}`}>
           {emptyState || <Text>No records match your search criteria.</Text>}
         </div>
       )}

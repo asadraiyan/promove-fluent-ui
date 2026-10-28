@@ -8,6 +8,7 @@ import { ShipmentChangeHistory } from "./features/shipmentService/ShipmentChange
 import ShipmentNotes from "./features/shipmentNotes/ShipmentNotes";
 import DatesNode from "./features/datesNode/datesNode";
 import { Tracking } from "./features/tracking/Tracking";
+import ShipmentContent from "./features/shipmentContent/ShipmentContent";
 import TrackAndTrace from "./features/Intrra/TrackAndTrace";
 import ShippingInstructions from "./features/Intrra/ShippingInstructions";
 
@@ -16,6 +17,7 @@ function App() {
     <div>
       <AddressDetails />
       <SeaContainerDetails />
+      <ShipmentContent />
       <ShipmentNotes />
       {/* <ServiceEngineDataInitiation /> */}
       <PersonDashboard />

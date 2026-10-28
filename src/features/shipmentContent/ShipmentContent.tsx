@@ -24,6 +24,12 @@ interface MoveTypeOption {
   group: string;
   questWebNumber: string;
   isfConfirmationNumber: string;
+  quote: string;
+  transportModeCode: string;
+  isfErrorDescription: string;
+  variation: string;
+  tradeLane: string;
+  goodsLeftAtBranch: string;
 }
 
 interface ShipmentContentValues {
@@ -60,6 +66,12 @@ const moveTypeOptions: MoveTypeOption[] = [
     group: "1",
     questWebNumber: "",
     isfConfirmationNumber: "",
+    quote: "",
+    transportModeCode: "SEA",
+    isfErrorDescription: "",
+    variation: "",
+    tradeLane: "",
+    goodsLeftAtBranch: "",
   },
 ];
 
@@ -77,6 +89,16 @@ const columns: GridColumnDef<MoveTypeOption>[] = [
     label: "ISF Confirmation #",
     minWidth: 160,
   },
+  { key: "quote", label: "Quote", minWidth: 100 },
+  { key: "transportModeCode", label: "Transport Mode Code", minWidth: 170 },
+  { key: "isfErrorDescription", label: "ISF_ERROR_DESC", minWidth: 170 },
+  { key: "variation", label: "VARIATION", minWidth: 120 },
+  { key: "tradeLane", label: "TRADE_LANE", minWidth: 130 },
+  {
+    key: "goodsLeftAtBranch",
+    label: "GOODS_LEFT_AT_BRANCH",
+    minWidth: 190,
+  },
 ];
 
 const useStyles = makeStyles({
@@ -89,6 +111,11 @@ const useStyles = makeStyles({
     border: `1px solid ${tokens.colorNeutralStroke1}`,
     borderRadius: tokens.borderRadiusSmall,
     backgroundColor: tokens.colorNeutralBackground1,
+    "@media (max-width: 560px)": {
+      width: "calc(100% - 16px)",
+      margin: "12px auto",
+      padding: tokens.spacingVerticalS,
+    },
   },
   heading: {
     margin: 0,
@@ -109,7 +136,7 @@ const useStyles = makeStyles({
     display: "grid",
     gridTemplateColumns: "minmax(0, 1.3fr) minmax(320px, 1fr)",
     gap: tokens.spacingHorizontalL,
-    "@media (max-width: 760px)": {
+    "@media (max-width: 900px)": {
       gridTemplateColumns: "minmax(0, 1fr)",
     },
   },
@@ -131,13 +158,21 @@ const useStyles = makeStyles({
   checkbox: {
     minWidth: 0,
   },
-  multiline: {
-    minHeight: "56px",
-  },
   inlineFields: {
     gridTemplateColumns: "minmax(0, 1fr) minmax(100px, 0.7fr)",
     columnGap: tokens.spacingHorizontalS,
     alignItems: "center",
+  },
+  mileageRow: {
+    display: "grid",
+    gridTemplateColumns: "auto minmax(70px, 1fr) auto auto",
+    alignItems: "center",
+    columnGap: tokens.spacingHorizontalS,
+    minWidth: 0,
+    "@media (max-width: 560px)": {
+      gridTemplateColumns: "auto minmax(56px, 1fr) auto auto",
+      columnGap: tokens.spacingHorizontalXS,
+    },
   },
   field: {
     minWidth: 0,
@@ -152,12 +187,32 @@ const useStyles = makeStyles({
     fontSize: tokens.fontSizeBase300,
     fontWeight: tokens.fontWeightSemibold,
   },
+  contentLayout: {
+    display: "grid",
+    gridTemplateColumns: "minmax(0, 1fr) minmax(140px, 0.8fr)",
+    alignItems: "start",
+    gap: tokens.spacingHorizontalM,
+    "@media (max-width: 560px)": {
+      gridTemplateColumns: "minmax(0, 1fr)",
+    },
+  },
   contentGrid: {
     display: "grid",
     gridTemplateColumns: "minmax(110px, 1fr) repeat(2, minmax(70px, 0.7fr))",
     alignItems: "center",
     columnGap: tokens.spacingHorizontalS,
     rowGap: tokens.spacingVerticalS,
+    "@media (max-width: 560px)": {
+      gridTemplateColumns: "minmax(90px, 1fr) repeat(2, minmax(0, 0.7fr))",
+      columnGap: tokens.spacingHorizontalXS,
+      rowGap: tokens.spacingVerticalXS,
+    },
+  },
+  tridentActions: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalS,
+    minWidth: 0,
   },
   columnTitle: {
     color: tokens.colorNeutralForeground2,
@@ -166,11 +221,6 @@ const useStyles = makeStyles({
   contentLabel: {
     color: tokens.colorNeutralForeground1,
   },
-  buttonStack: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalS,
-  },
   interfaceHeader: {
     margin: 0,
     fontSize: tokens.fontSizeBase300,
@@ -178,11 +228,31 @@ const useStyles = makeStyles({
   },
   interfaceGrid: {
     display: "grid",
-    gridTemplateColumns: "auto minmax(0, 1fr) minmax(70px, 0.6fr)",
+    gridTemplateColumns: "auto repeat(2, minmax(70px, 0.6fr))",
     alignItems: "end",
     gap: tokens.spacingVerticalS,
     "@media (max-width: 560px)": {
       gridTemplateColumns: "minmax(0, 1fr)",
+    },
+  },
+  interfaceActions: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalS,
+    gridRow: "1 / span 3",
+    "@media (max-width: 560px)": {
+      gridRow: "auto",
+      flexDirection: "row",
+      flexWrap: "wrap",
+      "& > button": {
+        flex: "1 1 120px",
+      },
+    },
+  },
+  interfaceFinalRow: {
+    gridRow: 3,
+    "@media (max-width: 560px)": {
+      gridRow: "auto",
     },
   },
   interfaceInput: {
@@ -274,77 +344,76 @@ const ShipmentContent: React.FC = () => {
 
           <div>
             <h4 className={styles.contentTitle}>Contents</h4>
-            <div className={styles.contentGrid}>
-              <span className={styles.contentLabel}>Furniture</span>
-              <span className={styles.columnTitle}>Number</span>
-              <span className={styles.columnTitle}>Volume</span>
-              <span className={styles.contentLabel}>Cartons/Pieces:</span>
-              <FormInput
-                name="cartonsPieces"
-                control={control}
-                className={styles.field}
-                type="number"
-              />
-              <FormInput
-                name="cartonsVolume"
-                control={control}
-                className={styles.field}
-                type="number"
-              />
-              <span className={styles.contentLabel}>Owner prepacked:</span>
-              <span />
-              <FormInput
-                name="ownerPrepackedVolume"
-                control={control}
-                className={styles.field}
-                type="number"
-              />
-              <span className={styles.contentLabel}>Total number, volume:</span>
-              <FormInput
-                name="totalNumber"
-                control={control}
-                className={styles.field}
-                type="number"
-              />
-              <FormInput
-                name="totalVolume"
-                control={control}
-                className={styles.field}
-                type="number"
-              />
+            <div className={styles.contentLayout}>
+              <div className={styles.contentGrid}>
+                <span className={styles.contentLabel}>Furniture</span>
+                <span className={styles.columnTitle}>Number</span>
+                <span className={styles.columnTitle}>Volume</span>
+                <span className={styles.contentLabel}>Cartons/Pieces:</span>
+                <FormInput
+                  name="cartonsPieces"
+                  control={control}
+                  className={styles.field}
+                  type="number"
+                />
+                <FormInput
+                  name="cartonsVolume"
+                  control={control}
+                  className={styles.field}
+                  type="number"
+                />
+                <span className={styles.contentLabel}>Owner prepacked:</span>
+                <span />
+                <FormInput
+                  name="ownerPrepackedVolume"
+                  control={control}
+                  className={styles.field}
+                  type="number"
+                />
+                <span className={styles.contentLabel}>
+                  Total number, volume:
+                </span>
+                <FormInput
+                  name="totalNumber"
+                  control={control}
+                  className={styles.field}
+                  type="number"
+                />
+                <FormInput
+                  name="totalVolume"
+                  control={control}
+                  className={styles.field}
+                  type="number"
+                />
+              </div>
+              <div className={styles.tridentActions}>
+                <Button type="button" appearance="secondary">
+                  Create Trident File
+                </Button>
+                <FormInput
+                  name="tridentFile"
+                  control={control}
+                  className={styles.field}
+                />
+                <ResponsiveGrid className={styles.inlineFields}>
+                  <ResponsiveGridLabel>STS:</ResponsiveGridLabel>
+                  <FormInput
+                    name="sts"
+                    control={control}
+                    className={styles.field}
+                  />
+                </ResponsiveGrid>
+              </div>
             </div>
-          </div>
-
-          <div className={styles.buttonStack}>
-            <Button type="button" appearance="secondary">
-              Create Trident File
-            </Button>
-            <FormInput
-              name="tridentFile"
-              control={control}
-              className={styles.field}
-            />
-            <ResponsiveGrid className={styles.inlineFields}>
-              <ResponsiveGridLabel>STS:</ResponsiveGridLabel>
-              <FormInput
-                name="sts"
-                control={control}
-                className={styles.field}
-              />
-            </ResponsiveGrid>
           </div>
         </div>
 
         <div className={styles.detailColumn}>
           <div className={styles.detailColumn}>
-            <ResponsiveGrid className={styles.inlineFields}>
+            <div className={styles.mileageRow}>
               <ResponsiveGridLabel>Mileage:</ResponsiveGridLabel>
               <div className={styles.field}>
-                <FormInput
-                  name="mileage"
-                  control={control}
-                  type="number"
-                />
+                <FormInput name="mileage" control={control} type="number" />
               </div>
               <span>Miles</span>
               <Checkbox
@@ -352,7 +421,7 @@ const ShipmentContent: React.FC = () => {
                 checked={Boolean(imperialField.value)}
                 onChange={(_, data) => imperialField.onChange(data.checked)}
               />
-            </ResponsiveGrid>
+            </div>
             <FormInput
               name="releaseValue"
               control={control}
@@ -374,12 +443,15 @@ const ShipmentContent: React.FC = () => {
           <div>
             <h4 className={styles.interfaceHeader}>Interfaces</h4>
             <div className={styles.interfaceGrid}>
-              <div className={styles.buttonStack}>
+              <div className={styles.interfaceActions}>
                 <Button type="button" appearance="secondary">
                   Create Quote
                 </Button>
                 <Button type="button" appearance="secondary">
                   File Export EEI
+                </Button>
+                <Button type="button" appearance="secondary">
+                  File ISF
                 </Button>
               </div>
               <FormInput
@@ -396,7 +468,6 @@ const ShipmentContent: React.FC = () => {
                 labelPosition="left"
                 className={styles.interfaceInput}
               />
-              <span />
               <FormInput
                 name="itnNumber"
                 control={control}
@@ -404,21 +475,19 @@ const ShipmentContent: React.FC = () => {
                 labelPosition="left"
                 className={styles.interfaceInput}
               />
-              <span />
-              <span />
               <FormInput
                 name="questWebNumber"
                 control={control}
                 label="Questweb #"
-                labelPosition="left"
-                className={styles.interfaceInput}
+                labelPosition="top"
+                className={`${styles.interfaceInput} ${styles.interfaceFinalRow}`}
               />
               <FormInput
                 name="isfConfirmationNumber"
                 control={control}
                 label="ISF Confirmation #"
-                labelPosition="left"
-                className={styles.interfaceInput}
+                labelPosition="top"
+                className={`${styles.interfaceInput} ${styles.interfaceFinalRow}`}
               />
               <TextAreaField
                 name="interfaceNotes"

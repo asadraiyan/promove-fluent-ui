@@ -8,12 +8,14 @@ import { ShipmentChangeHistory } from "./features/shipmentService/ShipmentChange
 import ShipmentNotes from "./features/shipmentNotes/ShipmentNotes";
 import DatesNode from "./features/datesNode/datesNode";
 import { Tracking } from "./features/tracking/Tracking";
+import ShipmentContent from "./features/shipmentContent/ShipmentContent";
 
 function App() {
   return (
     <div>
       <AddressDetails />
       <SeaContainerDetails />
+      <ShipmentContent />
       <ShipmentNotes />
       {/* <ServiceEngineDataInitiation /> */}
       <PersonDashboard />

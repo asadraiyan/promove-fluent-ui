@@ -8,6 +8,8 @@ import { ShipmentChangeHistory } from "./features/shipmentService/ShipmentChange
 import ShipmentNotes from "./features/shipmentNotes/ShipmentNotes";
 import DatesNode from "./features/datesNode/datesNode";
 import { Tracking } from "./features/tracking/Tracking";
+import TrackAndTrace from "./features/Intrra/TrackAndTrace";
+import ShippingInstructions from "./features/Intrra/ShippingInstructions";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
       <ShipmentChangeHistory />
       <DatesNode />
       <Tracking />
+      <TrackAndTrace/>
+      <ShippingInstructions/>
     </div>
   );
 }

@@ -115,8 +115,7 @@ const useStyles = makeStyles({
   },
   cellContent: {
     whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    overflow: "visible",
     width: "100%",
     display: "block",
   },

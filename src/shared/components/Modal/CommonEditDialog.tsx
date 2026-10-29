@@ -30,8 +30,10 @@ interface CommonEditDialogProps {
   heading: React.ReactNode;
   content: React.ReactNode;
   actions?: CommonEditDialogAction[];
+  actionsPosition?: "start" | "end";
   onClose: () => void;
   showCloseButton?: boolean;
+  maxWidth?: React.CSSProperties["maxWidth"];
 }
 
 const useStyles = makeStyles({
@@ -95,8 +97,10 @@ export const CommonEditDialog: React.FC<CommonEditDialogProps> = ({
   heading,
   content,
   actions = [],
+  actionsPosition = "end",
   onClose,
   showCloseButton = false,
+  maxWidth,
 }) => {
   const styles = useStyles();
   const startActions = actions.filter((action) => action.position === "start");
@@ -127,7 +131,7 @@ export const CommonEditDialog: React.FC<CommonEditDialogProps> = ({
         if (!data.open) onClose();
       }}
     >
-      <DialogSurface>
+      <DialogSurface style={{ maxWidth }}>
         <DialogBody className={styles.body}>
           <div className={styles.header}>
             <DialogTitle className={styles.heading}>{heading}</DialogTitle>
@@ -144,9 +148,14 @@ export const CommonEditDialog: React.FC<CommonEditDialogProps> = ({
               </Button>
             )}
           </div>
-          <DialogContent className={styles.dialogContent}>{content}</DialogContent>
+          <DialogContent className={styles.dialogContent}>
+            {content}
+          </DialogContent>
           {actions.length > 0 && (
-            <DialogActions className={styles.dialogActions} position="end">
+            <DialogActions
+              className={styles.dialogActions}
+              position={actionsPosition}
+            >
               <div className={styles.actions}>
                 <div className={styles.actionGroup}>
                   {renderActions(startActions)}

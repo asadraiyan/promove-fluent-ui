@@ -25,6 +25,7 @@ type DropdownProps = {
   placeholder?: string;
   id?: string;
   className?: string;
+  disabled?: boolean;
   labelPosition?: FieldLabelPosition;
   labelClassName?: string;
 }
@@ -60,6 +61,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   placeholder,
   id,
   className,
+  disabled,
   labelPosition = 'top',
   labelClassName,
 }) => {
@@ -79,6 +81,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         onChange?.((e.target as HTMLSelectElement).value)
       }
       value={value}
+      disabled={disabled}
       appearance="outline"
       className={styles.select}
     >
@@ -127,6 +130,8 @@ type FormDropdownProps = {
   defaultValue?: string;
   placeholder?: string;
   onChange?: (value: string) => void;
+  disabled?: boolean;
+  className?: string;
   labelPosition?: FieldLabelPosition;
   labelClassName?: string;
 }
@@ -139,6 +144,8 @@ export const FormDropdown: React.FC<FormDropdownProps> = ({
   defaultValue,
   placeholder,
   onChange,
+  disabled,
+  className,
   labelPosition = 'top',
   labelClassName,
 }) => {
@@ -152,10 +159,12 @@ export const FormDropdown: React.FC<FormDropdownProps> = ({
     <div>
       <Dropdown
         label={label}
+        className={className}
         labelPosition={labelPosition}
         labelClassName={labelClassName}
         options={options}
         value={field.value}
+        disabled={disabled}
         onChange={(value) => {
           field.onChange(value);
           onChange?.(value);

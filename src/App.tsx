@@ -11,6 +11,7 @@ import { Tracking } from "./features/tracking/Tracking";
 import ShipmentContent from "./features/shipmentContent/ShipmentContent";
 import TrackAndTrace from "./features/Intrra/TrackAndTrace";
 import ShippingInstructions from "./features/Intrra/ShippingInstructions";
+import OverseasSummary from "./features/FreightInformation/OverseasSummary";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
       <Tracking />
       <TrackAndTrace/>
       <ShippingInstructions/>
+      <OverseasSummary/>
+
     </div>
   );
 }

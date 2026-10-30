@@ -22,11 +22,25 @@ type InputFieldProps = {
   placeholder?: string;
   id?: string;
   type?: InputProps["type"];
+  disabled?: boolean;
+  readOnly?: boolean;
   className?: string;
 };
 
 export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
-  ({ value, onChange, placeholder, id, type = "text", className }, ref) => {
+  (
+    {
+      value,
+      onChange,
+      placeholder,
+      id,
+      type = "text",
+      disabled,
+      readOnly,
+      className,
+    },
+    ref,
+  ) => {
     const inputValue =
       value === undefined || value === null ? "" : String(value);
 
@@ -37,6 +51,8 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
         value={inputValue}
         onChange={(e) => onChange?.((e.target as HTMLInputElement).value)}
         placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
         className={className}
         // Fluent Input's ref may be to the underlying input element; cast to any to satisfy types
         ref={ref as any}
@@ -55,6 +71,8 @@ type FormInputProps = {
   placeholder?: string;
   defaultValue?: string;
   type?: InputProps["type"];
+  disabled?: boolean;
+  readOnly?: boolean;
 };
 
 const useStyles = makeStyles({
@@ -92,6 +110,8 @@ export const FormInput: React.FC<FormInputProps> = ({
   placeholder,
   defaultValue,
   type,
+  disabled,
+  readOnly,
 }) => {
   const { field, fieldState } = useController({
     name,
@@ -112,6 +132,8 @@ export const FormInput: React.FC<FormInputProps> = ({
       placeholder={placeholder}
       id={name}
       type={type}
+      disabled={disabled}
+      readOnly={readOnly}
       className={styles.input}
     />
   );

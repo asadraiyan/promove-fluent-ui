@@ -14,6 +14,7 @@ interface FormDateProps {
   rules?: RegisterOptions;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
   orientation?: "vertical" | "horizontal";
 }
 
@@ -24,6 +25,7 @@ export const FormDate: React.FC<FormDateProps> = ({
   rules,
   placeholder,
   className,
+  disabled,
   orientation,
 }) => {
   const { control } = useFormContext();
@@ -82,6 +84,7 @@ export const FormDate: React.FC<FormDateProps> = ({
         minDate={minDateObj}
         formatDate={onFormatDate}
         placeholder={placeholder}
+        disabled={disabled}
         onSelectDate={(date) => {
           if (date) {
             const yyyy = date.getFullYear();

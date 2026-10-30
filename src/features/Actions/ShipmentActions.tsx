@@ -9,6 +9,11 @@ import {
   type GridColumnDef,
 } from "@/shared";
 import { AdhocGlobalcoActions } from "../actionButtons/AdhocGlobalcoActions";
+import {
+  NegativeMarginDetailsDialog,
+  ShipmentQuotesDialog,
+  UploadToSistrsDialog,
+} from "./ShipmentActionDialogs";
 
 interface ShipmentActionRow {
   id: string;
@@ -143,6 +148,9 @@ const ShipmentActions: React.FC = () => {
   const [showCompleted, setShowCompleted] = useState(false);
   const [showOpen, setShowOpen] = useState(true);
   const [showCancelled, setShowCancelled] = useState(false);
+  const [activeDialog, setActiveDialog] = useState<
+    "negative-margin" | "quotes" | "upload" | null
+  >(null);
 
   const visibleActions = useMemo(
     () =>
@@ -155,63 +163,92 @@ const ShipmentActions: React.FC = () => {
   );
 
   return (
-    <section className={styles.section}>
-      <h2 className={styles.heading}>Shipment Action details</h2>
-      <p className={styles.description}>
-        The actions below are specific to this shipment. For enquiry related
-        actions (e.g. Quotes), please choose Actions on the third line in the
-        preview on the left.
-      </p>
+    <>
+      <section className={styles.section}>
+        <h2 className={styles.heading}>Shipment Action details</h2>
+        <p className={styles.description}>
+          The actions below are specific to this shipment. For enquiry related
+          actions (e.g. Quotes), please choose Actions on the third line in the
+          preview on the left.
+        </p>
 
-      <ResponsiveGrid className={styles.topActions}>
-        <div className={styles.filters}>
-          <Checkbox
-            label="Completed actions"
-            checked={showCompleted}
-            onChange={(_, data) => setShowCompleted(Boolean(data.checked))}
-          />
-          <Checkbox
-            label="Open actions"
-            checked={showOpen}
-            onChange={(_, data) => setShowOpen(Boolean(data.checked))}
-          />
-          <Checkbox
-            label="Cancelled actions"
-            checked={showCancelled}
-            onChange={(_, data) => setShowCancelled(Boolean(data.checked))}
-          />
-        </div>
+        <ResponsiveGrid className={styles.topActions}>
+          <div className={styles.filters}>
+            <Checkbox
+              label="Completed actions"
+              checked={showCompleted}
+              onChange={(_, data) => setShowCompleted(Boolean(data.checked))}
+            />
+            <Checkbox
+              label="Open actions"
+              checked={showOpen}
+              onChange={(_, data) => setShowOpen(Boolean(data.checked))}
+            />
+            <Checkbox
+              label="Cancelled actions"
+              checked={showCancelled}
+              onChange={(_, data) => setShowCancelled(Boolean(data.checked))}
+            />
+          </div>
+          <div className={styles.workflow}>
+            <Button
+              appearance="secondary"
+              onClick={() => setActiveDialog("negative-margin")}
+            >
+              Negative Margin Details
+            </Button>
+            <Button
+              appearance="secondary"
+              onClick={() => setActiveDialog("quotes")}
+            >
+              Enter Quote Data
+            </Button>
+            <Button appearance="secondary" disabled>
+              Process Survey Request
+            </Button>
+          </div>
+        </ResponsiveGrid>
+
         <div className={styles.workflow}>
-          <Button appearance="secondary">Negative Margin Details</Button>
-          <Button appearance="secondary">Enter Quote Data</Button>
-          <Button appearance="secondary" disabled>
-            Process Survey Request
-          </Button>
+          <span className={styles.workflowLabel}>
+            Actions For Workflow... Intl Mil - Codes 4 &gt; Outbound Shipment
+            Workflow
+          </span>
         </div>
-      </ResponsiveGrid>
 
-      <div className={styles.workflow}>
-        <span className={styles.workflowLabel}>
-          Actions For Workflow... Intl Mil - Codes 4 &gt; Outbound Shipment
-          Workflow
-        </span>
-      </div>
+        <div className={styles.actionButtons}>
+          <Button appearance="secondary">Retrieve from SISTRS</Button>
+          <Button
+            appearance="secondary"
+            onClick={() => setActiveDialog("upload")}
+          >
+            Upload to SISTRS
+          </Button>
+          <AdhocGlobalcoActions />
+          <Button appearance="subtle">+</Button>
+        </div>
 
-      <div className={styles.actionButtons}>
-        <Button appearance="secondary">Retrieve from SISTRS</Button>
-        <Button appearance="secondary">Upload to SISTRS</Button>
-        <AdhocGlobalcoActions />
-        <Button appearance="subtle">+</Button>
-      </div>
-
-      <SharedDataGrid
-        items={visibleActions}
-        columns={columns}
-        getRowId={(action) => action.id}
-        showSearch={false}
-        emptyState="No shipment actions match the selected filters."
+        <SharedDataGrid
+          items={visibleActions}
+          columns={columns}
+          getRowId={(action) => action.id}
+          showSearch={false}
+          emptyState="No shipment actions match the selected filters."
+        />
+      </section>
+      <NegativeMarginDetailsDialog
+        open={activeDialog === "negative-margin"}
+        onClose={() => setActiveDialog(null)}
       />
-    </section>
+      <ShipmentQuotesDialog
+        open={activeDialog === "quotes"}
+        onClose={() => setActiveDialog(null)}
+      />
+      <UploadToSistrsDialog
+        open={activeDialog === "upload"}
+        onClose={() => setActiveDialog(null)}
+      />
+    </>
   );
 };
 

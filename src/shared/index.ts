@@ -9,7 +9,7 @@ export type {
   FieldLabelPosition,
   FieldLabelProps,
 } from './components/FieldLabel/FieldLabel';
-export { FormInput } from './components/Input/Input';
+export { FormInput, InputField } from './components/Input/Input';
 export { FormDate } from './components/Date/FormDate';
 export {
   ActionDetailsFields,
@@ -45,5 +45,5 @@ export type {
   ResponsiveGridProps,
   ResponsiveGridLabelProps,
 } from "./components/layout/ResponsiveGrid";
-export { FormRadioGroup } from './components/RadioButton/RadioButton';
+export { FormRadioGroup, RadioGroup } from './components/RadioButton/RadioButton';
 export { Typography } from './components/Typography/Typography';

@@ -7,14 +7,8 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import { useController } from "react-hook-form";
-import {
-  FieldLabel,
-  type FieldLabelPosition,
-} from "../FieldLabel/FieldLabel";
-import {
-  ResponsiveGrid,
-  ResponsiveGridLabel,
-} from "../layout/ResponsiveGrid";
+import { FieldLabel, type FieldLabelPosition } from "../FieldLabel/FieldLabel";
+import { ResponsiveGrid, ResponsiveGridLabel } from "../layout/ResponsiveGrid";
 
 type InputFieldProps = {
   value?: string | number;
@@ -25,6 +19,7 @@ type InputFieldProps = {
   disabled?: boolean;
   readOnly?: boolean;
   className?: string;
+  ariaLabel?: string;
 };
 
 export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
@@ -35,9 +30,10 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
       placeholder,
       id,
       type = "text",
-      disabled,
-      readOnly,
       className,
+      readOnly,
+      disabled,
+      ariaLabel,
     },
     ref,
   ) => {
@@ -54,6 +50,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
         disabled={disabled}
         readOnly={readOnly}
         className={className}
+        aria-label={ariaLabel}
         // Fluent Input's ref may be to the underlying input element; cast to any to satisfy types
         ref={ref as any}
       />
@@ -71,8 +68,9 @@ type FormInputProps = {
   placeholder?: string;
   defaultValue?: string;
   type?: InputProps["type"];
-  disabled?: boolean;
   readOnly?: boolean;
+  disabled?: boolean;
+  ariaLabel?: string;
 };
 
 const useStyles = makeStyles({
@@ -110,8 +108,9 @@ export const FormInput: React.FC<FormInputProps> = ({
   placeholder,
   defaultValue,
   type,
-  disabled,
   readOnly,
+  disabled,
+  ariaLabel,
 }) => {
   const { field, fieldState } = useController({
     name,
@@ -135,6 +134,7 @@ export const FormInput: React.FC<FormInputProps> = ({
       disabled={disabled}
       readOnly={readOnly}
       className={styles.input}
+      ariaLabel={ariaLabel}
     />
   );
   const error = fieldState.error?.message && (
@@ -142,7 +142,9 @@ export const FormInput: React.FC<FormInputProps> = ({
   );
 
   return inline ? (
-    <ResponsiveGrid className={`${styles.rootInline} ${className ?? ""}`.trim()}>
+    <ResponsiveGrid
+      className={`${styles.rootInline} ${className ?? ""}`.trim()}
+    >
       {fieldLabel && <ResponsiveGridLabel>{fieldLabel}</ResponsiveGridLabel>}
       <div>{input}</div>
       {error}

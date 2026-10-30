@@ -5,7 +5,7 @@ import {
 } from '@fluentui/react-components';
 
 export type ButtonProps = FluentButtonProps & {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export const Button: React.FC<ButtonProps> = ({

@@ -170,6 +170,8 @@ const OverseasSummary: React.FC = () => {
                 columns={actionHistoryColumns}
                 getRowId={(action) => action.id}
                 compact
+                fillWidth
+                wrapCellContent
                 emptyState="No shipment actions found."
               />
             </div>

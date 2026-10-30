@@ -29,6 +29,8 @@ interface DataTableProps<T> {
   emptyState?: React.ReactNode;
   showEmptyState?: boolean;
   compact?: boolean;
+  fillWidth?: boolean;
+  wrapCellContent?: boolean;
   onRowClick?: (item: T) => void;
   headerCellClassName?: string;
   emptyStateClassName?: string;
@@ -95,6 +97,14 @@ const useStyles = makeStyles({
     width: "100%",
     display: "block",
   },
+  wrappedCellContent: {
+    whiteSpace: "normal",
+    overflow: "visible",
+    overflowWrap: "break-word",
+    textOverflow: "clip",
+    width: "100%",
+    display: "block",
+  },
 });
 
 export const ModalTable = <T extends Record<string, any>>({
@@ -105,6 +115,8 @@ export const ModalTable = <T extends Record<string, any>>({
   emptyState,
   showEmptyState = true,
   compact = false,
+  fillWidth = false,
+  wrapCellContent = false,
   onRowClick,
   headerCellClassName,
   emptyStateClassName,
@@ -157,7 +169,11 @@ export const ModalTable = <T extends Record<string, any>>({
               : String(item[col.key] ?? "");
             return (
               <span
-                className={styles.cellContent}
+                className={
+                  wrapCellContent
+                    ? styles.wrappedCellContent
+                    : styles.cellContent
+                }
                 title={String(item[col.key] ?? "")}
               >
                 {content}
@@ -166,7 +182,7 @@ export const ModalTable = <T extends Record<string, any>>({
           },
         }),
       ),
-    [columns, styles.cellContent],
+    [columns, styles.cellContent, styles.wrappedCellContent, wrapCellContent],
   );
 
   return (
@@ -184,12 +200,21 @@ export const ModalTable = <T extends Record<string, any>>({
             compact ? compactColumnSizingOptions : undefined
           }
           style={
-            compactTableWidth
+            fillWidth
               ? {
-                width: `${compactTableWidth}px`,
-                minWidth: `${compactTableWidth}px`,
-              }
-              : undefined
+                  width: compactTableWidth
+                    ? `max(100%, ${compactTableWidth}px)`
+                    : "100%",
+                  minWidth: compactTableWidth
+                    ? `${compactTableWidth}px`
+                    : "100%",
+                }
+              : compactTableWidth
+                ? {
+                    width: `${compactTableWidth}px`,
+                    minWidth: `${compactTableWidth}px`,
+                  }
+                : undefined
           }
         >
           <DataGridHeader>

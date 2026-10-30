@@ -7,14 +7,8 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import { useController } from "react-hook-form";
-import {
-  FieldLabel,
-  type FieldLabelPosition,
-} from "../FieldLabel/FieldLabel";
-import {
-  ResponsiveGrid,
-  ResponsiveGridLabel,
-} from "../layout/ResponsiveGrid";
+import { FieldLabel, type FieldLabelPosition } from "../FieldLabel/FieldLabel";
+import { ResponsiveGrid, ResponsiveGridLabel } from "../layout/ResponsiveGrid";
 
 type InputFieldProps = {
   value?: string | number;
@@ -22,9 +16,9 @@ type InputFieldProps = {
   placeholder?: string;
   id?: string;
   type?: InputProps["type"];
-  className?: string;
-  readOnly?: boolean;
   disabled?: boolean;
+  readOnly?: boolean;
+  className?: string;
   ariaLabel?: string;
 };
 
@@ -53,9 +47,9 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
         value={inputValue}
         onChange={(e) => onChange?.((e.target as HTMLInputElement).value)}
         placeholder={placeholder}
-        className={className}
-        readOnly={readOnly}
         disabled={disabled}
+        readOnly={readOnly}
+        className={className}
         aria-label={ariaLabel}
         // Fluent Input's ref may be to the underlying input element; cast to any to satisfy types
         ref={ref as any}
@@ -137,9 +131,9 @@ export const FormInput: React.FC<FormInputProps> = ({
       placeholder={placeholder}
       id={name}
       type={type}
-      className={styles.input}
-      readOnly={readOnly}
       disabled={disabled}
+      readOnly={readOnly}
+      className={styles.input}
       ariaLabel={ariaLabel}
     />
   );
@@ -148,7 +142,9 @@ export const FormInput: React.FC<FormInputProps> = ({
   );
 
   return inline ? (
-    <ResponsiveGrid className={`${styles.rootInline} ${className ?? ""}`.trim()}>
+    <ResponsiveGrid
+      className={`${styles.rootInline} ${className ?? ""}`.trim()}
+    >
       {fieldLabel && <ResponsiveGridLabel>{fieldLabel}</ResponsiveGridLabel>}
       <div>{input}</div>
       {error}

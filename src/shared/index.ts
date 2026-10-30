@@ -10,6 +10,7 @@ export type {
   FieldLabelProps,
 } from './components/FieldLabel/FieldLabel';
 export { FormInput, InputField } from './components/Input/Input';
+export { FormDate } from './components/Date/FormDate';
 export { SearchableInput } from './components/Input/SearchableInput';
 export type { SearchableInputProps } from './components/Input/SearchableInput';
 export {

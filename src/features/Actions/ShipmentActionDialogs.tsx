@@ -1,18 +1,30 @@
 import React, { useRef, useState } from "react";
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import {
+  FormProvider,
+  useFieldArray,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 import { makeStyles, tokens } from "@fluentui/react-components";
-
 import {
   Button,
+  Checkbox,
   CommonEditDialog,
   type CommonEditDialogAction,
   FieldLabel,
+  FormDate,
   FormDropdown,
   FormInput,
   RadioGroup,
   SharedDataGrid,
   type GridColumnDef,
 } from "@/shared";
+import {
+  AddRegular,
+  ChevronRightRegular,
+  DismissRegular,
+  MoreHorizontalRegular,
+} from "@fluentui/react-icons";
 
 interface DialogProps {
   open: boolean;
@@ -159,22 +171,20 @@ export const ShipmentQuotesDialog: React.FC<DialogProps> = ({
   const toolbarActions = (
     <div className={styles.toolbar}>
       <Button
+        icon={<AddRegular />}
         appearance="subtle"
         aria-label="Add quote"
-        onClick={() =>
-          append({ quoteNumber: "", amount: "", description: "" })
-        }
-      >
-        +
-      </Button>
+        // onClick={() =>
+        //   append({ quoteNumber: "", amount: "", description: "" })
+        // }
+      />
       <Button
+        icon={<DismissRegular />}
         appearance="subtle"
         aria-label="Delete last quote"
         disabled={fields.length === 0}
-        onClick={() => remove(fields.length - 1)}
-      >
-        ×
-      </Button>
+        // onClick={() => remove(fields.length - 1)}
+      />
     </div>
   );
 
@@ -356,4 +366,112 @@ export const UploadToSistrsDialog: React.FC<DialogProps> = ({
       maxWidth="700px"
     />
   );
+};
+
+interface NewActionFormValues {
+  actionType: string;
+  shipment: string;
+  assignedTo: string;
+  runNow: boolean;
+  dueDate: string;
+  comment: string;
+}
+
+const newActionDefaults: NewActionFormValues = {
+  actionType: "adhoc",
+  shipment: "INT, A 1085 cuft, DTD, LCL",
+  assignedTo: "syed-sahul",
+  runNow: false,
+  dueDate: "",
+  comment: "",
+};
+
+const useNewActionStyles = makeStyles({
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalM,
+    minWidth: "min(100%, 560px)",
+    paddingTop: tokens.spacingVerticalM,
+  },
+});
+
+export const NewActionDialog: React.FC<DialogProps> = ({ open, onClose }) => {
+  const styles = useNewActionStyles();
+  const methods = useForm<NewActionFormValues>({
+    defaultValues: newActionDefaults,
+  });
+  const runNow = useWatch({ control: methods.control, name: "runNow" });
+
+  const actions: CommonEditDialogAction[] = [
+    { label: "OK", appearance: "primary", onClick: onClose },
+    { label: "Cancel", appearance: "secondary", onClick: onClose },
+  ];
+
+  return (
+    <FormProvider {...methods}>
+      <CommonEditDialog
+        open={open}
+        heading="New Action"
+        content={
+          <div className={styles.content}>
+            <FormDropdown
+              name="actionType"
+              control={methods.control}
+              label="Action Type:"
+              labelPosition="left"
+              options={[
+                { label: "Ad hoc", value: "adhoc" },
+                { label: "Add Notes to Globalco", value: "notes" },
+              ]}
+            />
+            <FormInput
+              name="shipment"
+              control={methods.control}
+              label="Shipment:"
+              labelPosition="left"
+              disabled
+            />
+            <FormDropdown
+              name="assignedTo"
+              control={methods.control}
+              label="By:"
+              labelPosition="left"
+              options={[{ label: "Syed Sahul (1)", value: "syed-sahul" }]}
+            />
+            <Checkbox
+              label="Run now"
+              checked={Boolean(runNow)}
+              onChange={(_, data) =>
+                methods.setValue("runNow", Boolean(data.checked), {
+                  shouldDirty: true,
+                })
+              }
+            />
+            <FormDate
+              name="dueDate"
+              label="Due date-time:"
+              placeholder="Select date"
+              orientation="horizontal"
+            />
+            <FormInput
+              name="comment"
+              control={methods.control}
+              label="Comment:"
+              labelPosition="left"
+            />
+          </div>
+        }
+        actions={actions}
+        onClose={onClose}
+        showCloseButton
+        maxWidth="760px"
+      />
+    </FormProvider>
+  );
+};
+
+export const actionRowIcons = {
+  more: <MoreHorizontalRegular />,
+  open: <ChevronRightRegular />,
 };

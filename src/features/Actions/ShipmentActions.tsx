@@ -11,9 +11,12 @@ import {
 import { AdhocGlobalcoActions } from "../actionButtons/AdhocGlobalcoActions";
 import {
   NegativeMarginDetailsDialog,
+  NewActionDialog,
   ShipmentQuotesDialog,
   UploadToSistrsDialog,
+  actionRowIcons,
 } from "./ShipmentActionDialogs";
+import { AddRegular } from "@fluentui/react-icons";
 
 interface ShipmentActionRow {
   id: string;
@@ -23,6 +26,8 @@ interface ShipmentActionRow {
   date: string;
   assignedTo: string;
   comment: string;
+  moreActions: string;
+  openAction: string;
   createdBy: string;
 }
 
@@ -35,6 +40,8 @@ const sampleActions: ShipmentActionRow[] = [
     date: "21/10/2026 07:21:53",
     assignedTo: "Vilas Palve",
     comment: "",
+    moreActions: "",
+    openAction: "",
     createdBy: "Vilas Palve",
   },
   {
@@ -45,6 +52,8 @@ const sampleActions: ShipmentActionRow[] = [
     date: "21/10/2026 07:22:03",
     assignedTo: "Vilas Palve",
     comment: "",
+    moreActions: "",
+    openAction: "",
     createdBy: "Vilas Palve",
   },
   {
@@ -55,6 +64,8 @@ const sampleActions: ShipmentActionRow[] = [
     date: "20/10/2026 14:36:18",
     assignedTo: "Vilas Palve",
     comment: "Confirmed shipment details",
+    moreActions: "",
+    openAction: "",
     createdBy: "Vilas Palve",
   },
 ];
@@ -140,6 +151,32 @@ const columns: GridColumnDef<ShipmentActionRow>[] = [
   { key: "date", label: "Date", minWidth: 175 },
   { key: "assignedTo", label: "Assigned To", minWidth: 150 },
   { key: "comment", label: "Comment", minWidth: 220 },
+  {
+    key: "moreActions",
+    label: "",
+    minWidth: 44,
+    sortable: false,
+    renderCell: (action) => (
+      <Button
+        appearance="subtle"
+        icon={actionRowIcons.more}
+        aria-label={`More actions for ${action.description}`}
+      />
+    ),
+  },
+  {
+    key: "openAction",
+    label: "",
+    minWidth: 44,
+    sortable: false,
+    renderCell: (action) => (
+      <Button
+        appearance="subtle"
+        icon={actionRowIcons.open}
+        aria-label={`Open ${action.description}`}
+      />
+    ),
+  },
   { key: "createdBy", label: "Created By", minWidth: 150 },
 ];
 
@@ -149,7 +186,7 @@ const ShipmentActions: React.FC = () => {
   const [showOpen, setShowOpen] = useState(true);
   const [showCancelled, setShowCancelled] = useState(false);
   const [activeDialog, setActiveDialog] = useState<
-    "negative-margin" | "quotes" | "upload" | null
+    "negative-margin" | "quotes" | "upload" | "new-action" | null
   >(null);
 
   const visibleActions = useMemo(
@@ -225,7 +262,12 @@ const ShipmentActions: React.FC = () => {
             Upload to SISTRS
           </Button>
           <AdhocGlobalcoActions />
-          <Button appearance="subtle">+</Button>
+          <Button
+            icon={<AddRegular />}
+            appearance="subtle"
+            aria-label="Add action"
+            onClick={() => setActiveDialog("new-action")}
+          />
         </div>
 
         <SharedDataGrid
@@ -246,6 +288,10 @@ const ShipmentActions: React.FC = () => {
       />
       <UploadToSistrsDialog
         open={activeDialog === "upload"}
+        onClose={() => setActiveDialog(null)}
+      />
+      <NewActionDialog
+        open={activeDialog === "new-action"}
         onClose={() => setActiveDialog(null)}
       />
     </>

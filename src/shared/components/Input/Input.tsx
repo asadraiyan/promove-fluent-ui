@@ -24,6 +24,7 @@ type InputFieldProps = {
   type?: InputProps["type"];
   className?: string;
   readOnly?: boolean;
+  disabled?: boolean;
   ariaLabel?: string;
 };
 
@@ -37,6 +38,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
       type = "text",
       className,
       readOnly,
+      disabled,
       ariaLabel,
     },
     ref,
@@ -53,6 +55,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
         placeholder={placeholder}
         className={className}
         readOnly={readOnly}
+        disabled={disabled}
         aria-label={ariaLabel}
         // Fluent Input's ref may be to the underlying input element; cast to any to satisfy types
         ref={ref as any}
@@ -72,6 +75,7 @@ type FormInputProps = {
   defaultValue?: string;
   type?: InputProps["type"];
   readOnly?: boolean;
+  disabled?: boolean;
   ariaLabel?: string;
 };
 
@@ -111,6 +115,7 @@ export const FormInput: React.FC<FormInputProps> = ({
   defaultValue,
   type,
   readOnly,
+  disabled,
   ariaLabel,
 }) => {
   const { field, fieldState } = useController({
@@ -134,6 +139,7 @@ export const FormInput: React.FC<FormInputProps> = ({
       type={type}
       className={styles.input}
       readOnly={readOnly}
+      disabled={disabled}
       ariaLabel={ariaLabel}
     />
   );

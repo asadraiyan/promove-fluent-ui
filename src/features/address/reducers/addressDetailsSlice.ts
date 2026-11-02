@@ -29,7 +29,7 @@ export const loadAddressDetails = createAsyncThunk<
 >("addressDetails/load", async (addressId, { rejectWithValue }) => {
   try {
     const response = await fetch(
-      `/addressDetails.json?addressId=${encodeURIComponent(addressId)}`,
+      `/api/addresses/${encodeURIComponent(addressId)}`,
     );
     if (!response.ok) {
       return rejectWithValue(
@@ -45,7 +45,9 @@ export const loadAddressDetails = createAsyncThunk<
       : responseData;
 
     if (!details || details.addressId !== addressId) {
-      return rejectWithValue(`No address details found for address ${addressId}.`);
+      return rejectWithValue(
+        `No address details found for address ${addressId}.`,
+      );
     }
 
     return details;
@@ -83,8 +85,7 @@ export const createAddressDetails = createAsyncThunk<
         );
       }
 
-      const responseData =
-        (await response.json()) as AddressDetailsResponse;
+      const responseData = (await response.json()) as AddressDetailsResponse;
 
       return responseData;
     } catch (error) {

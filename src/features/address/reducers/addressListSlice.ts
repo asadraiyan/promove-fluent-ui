@@ -31,7 +31,7 @@ export const loadAddressList = createAsyncThunk<
 >("addressList/load", async (salesFileId, { rejectWithValue }) => {
   const endpoint =
     salesFileId === undefined
-      ? "/enquiryAddresses.json"
+      ? "/enquiryAddresses"
       : `/api/enquiries/${salesFileId}/addresses`;
 
   try {

@@ -1,4 +1,8 @@
 import { healthHandlers } from "./health";
-import { countriesHandler } from "./locationData";
-
-export const handlers = [...healthHandlers, ...countriesHandler];
+import { locationHandler } from "./location/locationHandler";
+import { addressHandler } from "./location/addressHandler";
+export const handlers = [
+  ...healthHandlers,
+  ...locationHandler,
+  ...addressHandler,
+];

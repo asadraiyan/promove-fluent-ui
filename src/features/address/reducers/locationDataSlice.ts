@@ -67,7 +67,7 @@ export const loadStates = createAsyncThunk<
   { rejectValue: string }
 >("locationData/loadStates", async (countryCode, { rejectWithValue }) => {
   const response = await fetch(
-    `/states.json?countryCode=${encodeURIComponent(countryCode)}`,
+    `/states?countryCode=${encodeURIComponent(countryCode)}`,
   );
   if (!response.ok) {
     return rejectWithValue(`Unable to load states (${response.status}).`);
@@ -86,7 +86,7 @@ export const loadCities = createAsyncThunk<
   if (params.stateCode) query.set("stateCode", params.stateCode);
   if (params.search?.trim()) query.set("search", params.search.trim());
 
-  const response = await fetch(`/cities.json?${query.toString()}`);
+  const response = await fetch(`/cities?${query.toString()}`);
   if (!response.ok) {
     return rejectWithValue(`Unable to load cities (${response.status}).`);
   }

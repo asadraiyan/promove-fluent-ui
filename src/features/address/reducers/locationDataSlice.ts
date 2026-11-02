@@ -51,7 +51,7 @@ export const loadCountries = createAsyncThunk<
   void,
   { state: { locationData: LocationDataState }; rejectValue: string }
 >("locationData/loadCountries", async (_, { rejectWithValue }) => {
-  const response = await fetch("/countries.json");
+  const response = await fetch("/countries");
   if (!response.ok) {
     return rejectWithValue(`Unable to load countries (${response.status}).`);
   }

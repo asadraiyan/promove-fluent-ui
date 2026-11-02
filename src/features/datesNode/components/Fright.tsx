@@ -161,6 +161,7 @@ export const Freight: React.FC = () => {
                 labelPosition="left"
                 options={[
                   { label: "Select a reason...", value: "" },
+                  { label: "Arrival", value: "Arrival" },
                   { label: "Option 1", value: "opt1" },
                   { label: "Option 2", value: "opt2" },
                 ]}

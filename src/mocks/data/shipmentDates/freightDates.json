@@ -1,0 +1,32 @@
+{
+  "origin": {
+    "scheduledDepartureDate": "2014-09-10T00:00:00",
+    "actualDepartureDate": "2014-09-10T00:00:00",
+    "bookHaulageDate": null,
+    "documentCutoffDate": null,
+    "bookContainerDate": null,
+    "dropEmptyContainerDate": null,
+    "etaAtOriginalPort": "2014-10-03T00:00:00",
+    "lastFreeDateAtOrigin": null,
+    "portCutoffDate": null,
+    "inlandCutoffDate": null
+  },
+  "destination": {
+    "scheduledArrivalDate": "2014-11-10T00:00:00",
+    "actualArrivalDate": "2014-11-10T00:00:00",
+    "freightReleaseDate": null,
+    "lastFreeAtPort": null,
+    "lastFreeDateAtDestination": null,
+    "dailyChargeSchedule": null,
+    "dailyChargeAmount": null,
+    "outGateDate": null,
+    "inGateDate": null
+  },
+  "otherSit": {
+    "otherSitInDate": "2014-10-03T00:00:00",
+    "scheduledotherSitoutDate": "2014-11-04T00:00:00",
+    "actualotherSitoutDate": "2014-11-04T00:00:00",
+    "reason": "Arrival",
+    "containerReturned": null
+  }
+}

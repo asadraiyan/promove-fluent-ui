@@ -5,6 +5,9 @@ import {
   FreightDatesResponse,
   OriginDatesResponse,
   PermStorageDatesResponse,
+  saveShipmentDates,
+  SaveShipmentDatesPayload,
+  SaveShipmentDatesResponse,
 } from "../api/datesApi";
 
 export interface ShipmentDatesGoodsIds {
@@ -29,6 +32,10 @@ export interface DatesNodeState {
   error: string | null;
   requestId: string | null;
   requestedGoodsIds: ShipmentDatesGoodsIds | null;
+
+  saveStatus: RequestStatus;
+  saveError: string | null;
+  saveSuccess: boolean;
 }
 
 const initialState: DatesNodeState = {
@@ -37,6 +44,10 @@ const initialState: DatesNodeState = {
   error: null,
   requestId: null,
   requestedGoodsIds: null,
+
+  saveStatus: "idle",
+  saveError: null,
+  saveSuccess: false,
 };
 
 const getErrorMessage = (error: unknown): string =>
@@ -92,6 +103,24 @@ export const loadShipmentDates = createAsyncThunk<
   },
 );
 
+export const saveShipmentDatesThunk = createAsyncThunk<
+  SaveShipmentDatesResponse,
+  {
+    goodsId: number;
+    payload: SaveShipmentDatesPayload;
+  },
+  { rejectValue: string }
+>(
+  "datesNode/saveShipmentDates",
+  async ({ goodsId, payload }, { rejectWithValue }) => {
+    try {
+      return await saveShipmentDates(goodsId, payload);
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error));
+    }
+  },
+);
+
 const datesNodeSlice = createSlice({
   name: "datesNode",
   initialState,
@@ -116,7 +145,29 @@ const datesNodeSlice = createSlice({
         state.error =
           action.payload ?? action.error.message ?? "Unable to load shipment dates.";
         state.requestId = null;
+      })
+
+      .addCase(saveShipmentDatesThunk.pending, (state) => {
+        state.saveStatus = "loading";
+        state.saveError = null;
+        state.saveSuccess = false;
+      })
+
+      .addCase(saveShipmentDatesThunk.fulfilled, (state) => {
+        state.saveStatus = "succeeded";
+        state.saveSuccess = true;
+      })
+
+      .addCase(saveShipmentDatesThunk.rejected, (state, action) => {
+        state.saveStatus = "failed";
+        state.saveError =
+          action.payload ??
+          action.error.message ??
+          "Unable to save shipment dates.";
+
+        state.saveSuccess = false;
       });
+
   },
 });
 

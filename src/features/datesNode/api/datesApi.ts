@@ -92,6 +92,17 @@ export interface PermStorageDatesResponse {
   codConversionDate: ApiDate;
 }
 
+export interface SaveShipmentDatesPayload {
+  origin: OriginDatesResponse;
+  freight: FreightDatesResponse;
+  destination: DestinationDatesResponse;
+  permStorage: PermStorageDatesResponse;
+}
+
+export interface SaveShipmentDatesResponse {
+  goodsId: number;
+}
+
 export const fetchShipmentDates = async <T>(
   goodsId: number,
   resource: string,
@@ -107,4 +118,30 @@ export const fetchShipmentDates = async <T>(
   }
 
   return (await response.json()) as T;
+};
+
+export const saveShipmentDates = async (
+  goodsId: number,
+  payload: SaveShipmentDatesPayload,
+): Promise<SaveShipmentDatesResponse> => {
+  const response = await fetch(
+    getApiUrl(
+      `/api/shipments/${encodeURIComponent(goodsId)}/dates`,
+    ),
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to save shipment dates (${response.status}).`,
+    );
+  }
+
+  return (await response.json()) as SaveShipmentDatesResponse;
 };

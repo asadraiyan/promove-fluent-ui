@@ -13,6 +13,7 @@ import TrackAndTrace from "./features/Intrra/TrackAndTrace";
 import ShippingInstructions from "./features/Intrra/ShippingInstructions";
 import ShipmentActions from "./features/Actions/ShipmentActions";
 import OverseasSummary from "./features/FreightInformation/OverseasSummary";
+import Invoicing from "./features/Invoicing/Invoicing";
 import { PaymentsView } from "./features/payments/PaymentsView";
 
 function App() {
@@ -31,8 +32,9 @@ function App() {
       <TrackAndTrace/>
       <ShippingInstructions/>
       <ShipmentActions />
-      <OverseasSummary />
-      <PaymentsView/>
+      <OverseasSummary/>
+      <Invoicing />
+      <PaymentsView />
 
     </div>
   );

@@ -1,0 +1,40 @@
+{
+  "651097": {
+    "trackingId": null,
+    "transitGuide": {
+      "recordPoints": 25,
+      "originTransitAvgDays": 12,
+      "freightTransitAvgDays": 2,
+      "customClearanceAvgDays": 3,
+      "destinationTransitAvgDays": 11,
+      "dtdTransitAvgDays": 27,
+      "originTransitDaysRange": "5 - 18",
+      "freightTransitDaysRange": "1 - 4",
+      "customClearanceDaysRange": "1 - 6",
+      "destinationTransitDaysRange": "3 - 19",
+      "dtdTransitDaysRange": "16 - 38",
+      "creationUser": "Poonam Shingi",
+      "modificationUser": null,
+      "creationTime": "2026-09-23T05:02:42.573",
+      "modificationTime": null
+    },
+    "trackingInformation": {
+      "masterScacCode": "SCAC123",
+      "masterOblAwbNumber": "OBL5463789",
+      "vesselAirlineName": "Air India",
+      "voyageFlightNumber": "AR 456",
+      "originalScheduledDepartureDate": "2026-10-29T15:42:43.447",
+      "scheduledDepartureDate": "2026-10-29T15:42:43.493",
+      "actualDepartureDate": "2026-10-29T15:42:43.54",
+      "varianceAtDeparture": null,
+      "estimatedSailingFlightTime": null,
+      "varianceOfSailingFlightTimeVsEstimated": null,
+      "originalScheduledArrivalDate": "2026-10-29T15:42:43.46",
+      "scheduledArrivalDate": "2026-10-29T15:42:43.523",
+      "predictedArrivalDate": "2026-10-29T15:42:43.57",
+      "actualArrivalDate": "2026-10-29T15:42:43.603",
+      "totalSailingFlightTime": null,
+      "varianceAtArrival": null
+    }
+  }
+}

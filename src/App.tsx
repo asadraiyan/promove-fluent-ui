@@ -14,6 +14,7 @@ import ShippingInstructions from "./features/Intrra/ShippingInstructions";
 import ShipmentActions from "./features/Actions/ShipmentActions";
 import OverseasSummary from "./features/FreightInformation/OverseasSummary";
 import { PaymentsView } from "./features/payments/PaymentsView";
+import { LostView } from "./features/Lost/LostView";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
       <ShipmentActions />
       <OverseasSummary />
       <PaymentsView/>
+      <LostView/>
 
     </div>
   );

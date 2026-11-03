@@ -1,0 +1,34 @@
+[
+  {
+    "id": "exp-1",
+    "promoveShipment": "SHP-90210",
+    "vendorInvoiceNumber": "INV-V-001",
+    "invoiceDate": "2023-10-01",
+    "accountCode": "6001",
+    "accountName": "Freight Expense",
+    "journalType": "AP",
+    "description": "Standard delivery charge",
+    "baseAmount": 150.0,
+    "transactionAmount": 150.0,
+    "transactionCurrencyCode": "USD",
+    "allocation": "Cost Center A",
+    "checkNumber": "CHK-10045",
+    "paymentType": "ACH"
+  },
+  {
+    "id": "exp-2",
+    "promoveShipment": "SHP-90211",
+    "vendorInvoiceNumber": "INV-V-002",
+    "invoiceDate": "2023-10-03",
+    "accountCode": "6002",
+    "accountName": "Handling Fees",
+    "journalType": "AP",
+    "description": "Specialized handling fee",
+    "baseAmount": 75.5,
+    "transactionAmount": 75.5,
+    "transactionCurrencyCode": "USD",
+    "allocation": "Cost Center B",
+    "checkNumber": "CHK-10046",
+    "paymentType": "Wire"
+  }
+]

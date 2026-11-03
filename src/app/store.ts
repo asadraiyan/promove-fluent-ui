@@ -4,6 +4,7 @@ import addressDetailsReducer from "../features/address/reducers/addressDetailsSl
 import locationDataReducer from "../features/address/reducers/locationDataSlice";
 import datesNodeReducer from "../features/datesNode/reducers/datesNodeSlice";
 import trackingReducer from "../features/tracking/slices/trackingSlice";
+import paymentsReducer from "../features/payments/reducers/paymentSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     locationData: locationDataReducer,
     datesNode: datesNodeReducer,
     tracking: trackingReducer,
+    payments: paymentsReducer,
   },
 });
 

@@ -4,8 +4,10 @@ import { DatePicker } from "@fluentui/react-datepicker-compat";
 import {
   useController,
   useFormContext,
+  type Control,
   type RegisterOptions,
 } from "react-hook-form";
+
 
 interface FormDateProps {
   name: string;
@@ -16,6 +18,7 @@ interface FormDateProps {
   className?: string;
   disabled?: boolean;
   orientation?: "vertical" | "horizontal";
+  control?: Control<any>;
 }
 
 export const FormDate: React.FC<FormDateProps> = ({
@@ -27,11 +30,18 @@ export const FormDate: React.FC<FormDateProps> = ({
   className,
   disabled,
   orientation,
+  control,
 }) => {
-  const { control } = useFormContext();
+  const formContext = useFormContext();
+  const activeControl = control ?? formContext?.control;
+
+  if (!activeControl) {
+    return null;
+  }
+
   const { field, fieldState } = useController({
     name,
-    control,
+    control: activeControl,
     rules: {
       required: required ? `${label} is required` : false,
       ...rules,

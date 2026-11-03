@@ -26,7 +26,7 @@ function App() {
       <TaskDashboard />
       <ShipmentChangeHistory />
       <DatesNode />
-      <Tracking />
+      <Tracking goodsId="651097" />
       <TrackAndTrace/>
       <ShippingInstructions/>
       <ShipmentActions />

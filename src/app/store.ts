@@ -3,6 +3,7 @@ import addressListReducer from "../features/address/reducers/addressListSlice";
 import addressDetailsReducer from "../features/address/reducers/addressDetailsSlice";
 import locationDataReducer from "../features/address/reducers/locationDataSlice";
 import datesNodeReducer from "../features/datesNode/reducers/datesNodeSlice";
+import trackingReducer from "../features/tracking/slices/trackingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     addressDetails: addressDetailsReducer,
     locationData: locationDataReducer,
     datesNode: datesNodeReducer,
+    tracking: trackingReducer,
   },
 });
 

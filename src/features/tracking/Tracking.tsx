@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { makeStyles, tokens, Button } from "@fluentui/react-components";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { FormInput } from "@/shared/components/Input/Input";
-import { FormDropdown } from "@/shared/components/Dropdown/Dropdown";
-import { ResponsiveGrid } from "@/shared";
-import mockData from "../../dummyJson/trackingData.json";
+import { FormDate, ResponsiveGrid } from "@/shared";
+import { fetchTrackingData, updateTrackingData } from "./slices/trackingSlice";
 
 interface TransitGuideData {
   recordPoints: number;
@@ -120,12 +120,6 @@ const useStyles = makeStyles({
     fontSize: tokens.fontSizeBase300,
   },
 });
-
-const defaultOptions = [
-  { label: "Select...", value: "" },
-  { label: "Option 1", value: "opt1" },
-  { label: "Option 2", value: "opt2" },
-];
 
 const TrackingContent: React.FC<{ transitGuide: TransitGuideData | null }> = ({
   transitGuide,
@@ -269,43 +263,43 @@ const TrackingContent: React.FC<{ transitGuide: TransitGuideData | null }> = ({
         <div className={styles.column}>
           <FormInput
             className={styles.field}
-            name="masterSCACCode"
+            name="masterScacCode"
             control={control}
             label="Master SCAC Code:"
             labelPosition="left"
           />
           <FormInput
             className={styles.field}
-            name="vesselName"
+            name="vesselAirlineName"
             control={control}
             label="Vessel Name:"
             labelPosition="left"
           />
           <div className={styles.field}>
-            <FormDropdown
+            <FormDate
               name="originalScheduledDepartureDate"
               control={control}
               label="Original Scheduled Departure Date:"
-              labelPosition="left"
-              options={defaultOptions}
+              orientation="horizontal"
+              disabled
             />
           </div>
           <div className={styles.field}>
-            <FormDropdown
+            <FormDate
               name="scheduledDepartureDate"
               control={control}
               label="Scheduled Departure Date:"
-              labelPosition="left"
-              options={defaultOptions}
+              orientation="horizontal"
+              disabled
             />
           </div>
           <div className={styles.field}>
-            <FormDropdown
+            <FormDate
               name="actualDepartureDate"
               control={control}
               label="Actual Departure Date:"
-              labelPosition="left"
-              options={defaultOptions}
+              orientation="horizontal"
+              disabled
             />
           </div>
           <FormInput
@@ -318,7 +312,7 @@ const TrackingContent: React.FC<{ transitGuide: TransitGuideData | null }> = ({
           />
           <FormInput
             className={styles.field}
-            name="estimatedSailingTime"
+            name="estimatedSailingFlightTime"
             control={control}
             label="Estimated Sailing Time:"
             labelPosition="left"
@@ -326,7 +320,7 @@ const TrackingContent: React.FC<{ transitGuide: TransitGuideData | null }> = ({
           />
           <FormInput
             className={styles.field}
-            name="varianceOfSailingTimeVsEstimated"
+            name="varianceOfSailingFlightTimeVsEstimated"
             control={control}
             label="Variance of Sailing Time vs Estimated:"
             labelPosition="left"
@@ -337,57 +331,57 @@ const TrackingContent: React.FC<{ transitGuide: TransitGuideData | null }> = ({
         <div className={styles.column}>
           <FormInput
             className={styles.field}
-            name="masterOBL"
+            name="masterOblAwbNumber"
             control={control}
             label="Master OBL #:"
             labelPosition="left"
           />
           <FormInput
             className={styles.field}
-            name="voyageNumber"
+            name="voyageFlightNumber"
             control={control}
             label="Voyage #:"
             labelPosition="left"
           />
           <div className={styles.field}>
-            <FormDropdown
+            <FormDate
               name="originalScheduledArrivalDate"
               control={control}
               label="Original Scheduled Arrival Date:"
-              labelPosition="left"
-              options={defaultOptions}
+              orientation="horizontal"
+              disabled
             />
           </div>
           <div className={styles.field}>
-            <FormDropdown
+            <FormDate
               name="scheduledArrivalDate"
               control={control}
               label="Scheduled Arrival Date:"
-              labelPosition="left"
-              options={defaultOptions}
+              orientation="horizontal"
+              disabled
             />
           </div>
           <div className={styles.field}>
-            <FormDropdown
+            <FormDate
               name="predictedArrivalDate"
               control={control}
               label="Predicted Arrival Date:"
-              labelPosition="left"
-              options={defaultOptions}
+              orientation="horizontal"
+              disabled
             />
           </div>
           <div className={styles.field}>
-            <FormDropdown
+            <FormDate
               name="actualArrivalDate"
               control={control}
               label="Actual Arrival Date:"
-              labelPosition="left"
-              options={defaultOptions}
+              orientation="horizontal"
+              disabled
             />
           </div>
           <FormInput
             className={styles.field}
-            name="totalSailingTime"
+            name="totalSailingFlightTime"
             control={control}
             label="Total Sailing Time:"
             labelPosition="left"
@@ -403,55 +397,76 @@ const TrackingContent: React.FC<{ transitGuide: TransitGuideData | null }> = ({
           />
         </div>
       </ResponsiveGrid>
+      <div
+        style={{
+          marginTop: tokens.spacingVerticalL,
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button type="submit" appearance="primary">
+          Save Tracking Details
+        </Button>
+      </div>
     </div>
   );
 };
+const defaultTrackingInformation = {
+  masterScacCode: "",
+  vesselAirlineName: "",
+  varianceAtDeparture: null,
+  estimatedSailingFlightTime: null,
+  varianceOfSailingFlightTimeVsEstimated: null,
+  masterOblAwbNumber: "",
+  voyageFlightNumber: "",
+  totalSailingFlightTime: null,
+  varianceAtArrival: null,
+  originalScheduledDepartureDate: null,
+  scheduledDepartureDate: null,
+  actualDepartureDate: null,
+  originalScheduledArrivalDate: null,
+  scheduledArrivalDate: null,
+  predictedArrivalDate: null,
+  actualArrivalDate: null,
+};
 
-export const Tracking: React.FC = () => {
-  const [transitGuideData, setTransitGuideData] =
-    useState<TransitGuideData | null>(null);
+export const Tracking: React.FC<{ goodsId?: string }> = ({ goodsId }) => {
+  const dispatch = useDispatch();
+  const { data: apiData } = useSelector((state: any) => state.tracking ?? {});
 
   const methods = useForm({
-    defaultValues: {
-      masterSCACCode: "",
-      vesselName: "",
-      varianceAtDeparture: "",
-      estimatedSailingTime: "",
-      varianceOfSailingTimeVsEstimated: "",
-      masterOBL: "",
-      voyageNumber: "",
-      totalSailingTime: "",
-      varianceAtArrival: "",
-      originalScheduledDepartureDate: "",
-      scheduledDepartureDate: "",
-      actualDepartureDate: "",
-      originalScheduledArrivalDate: "",
-      scheduledArrivalDate: "",
-      predictedArrivalDate: "",
-      actualArrivalDate: "",
-    },
+    defaultValues: defaultTrackingInformation,
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      setTimeout(() => {
-        setTransitGuideData(mockData.transitGuide);
+    if (goodsId) {
+      dispatch(fetchTrackingData(goodsId) as any);
+    }
+    console.log("Tracking component mounted or goodsId changed:", goodsId);
+  }, [dispatch, goodsId]);
 
-        methods.reset(mockData.trackingInformation);
-      }, 500);
+  useEffect(() => {
+    if (apiData?.trackingInformation) {
+      methods.reset(apiData.trackingInformation);
+    }
+  }, [apiData, methods]);
+
+  const onSubmit = (formData: any) => {
+    if (!goodsId) {
+      return;
+    }
+
+    const payload = {
+      trackingInformation: formData,
     };
 
-    fetchData();
-  }, [methods]);
-
-  const onSubmit = (data: any) => {
-    console.log("Form Submitted Data:", data);
+    dispatch(updateTrackingData({ goodsId, payload }) as any);
   };
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <TrackingContent transitGuide={transitGuideData} />
+        <TrackingContent transitGuide={apiData?.transitGuide || null} />
       </form>
     </FormProvider>
   );

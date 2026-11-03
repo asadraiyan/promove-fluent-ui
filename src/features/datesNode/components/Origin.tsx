@@ -196,6 +196,18 @@ export const Origin: React.FC = () => {
               orientation="horizontal"
               label="Counseling Date:"
             />
+            <FormDate
+              className={styles.field}
+              name="originFromDate"
+              orientation="horizontal"
+              label="Origin From Date:"
+            />
+            <FormDate
+              className={styles.field}
+              name="originToDate"
+              orientation="horizontal"
+              label="Origin To Date:"
+            />
           </div>
         </div>
 

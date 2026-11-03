@@ -22,4 +22,25 @@ export const datesHandler = [
     getApiUrl("/api/shipments/:goodsId/perm-storage-dates"),
     () => HttpResponse.json(permStorageDates),
   ),
+
+  // POST API
+  http.post(
+    getApiUrl("/api/shipments/:goodsId/dates"),
+    async ({ params, request }) => {
+      const { goodsId } = params;
+
+      const payload = await request.json();
+
+      console.log("POST Shipment Dates API");
+      console.log("Goods ID:", goodsId);
+      console.log("Request Payload:", payload);
+
+      return HttpResponse.json(
+        {
+          goodsId: Number(goodsId),
+        },
+        { status: 200 },
+      );
+    },
+  ),
 ];

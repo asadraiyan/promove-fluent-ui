@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, tokens } from "@fluentui/react-components";
+import { makeStyles, tokens, Button } from "@fluentui/react-components";
 import { FormProvider, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import Destination from "./components/Destination";
@@ -9,6 +9,8 @@ import { Freight } from "./components/Fright";
 import { loadShipmentDates } from "./reducers/datesNodeSlice";
 import { mapShipmentDates } from "./dateNodeFormMapping";
 import { DateNodeFormValues } from "./datesNode.types";
+import { saveShipmentDatesThunk } from "./reducers/datesNodeSlice";
+import { mapFormValuesToShipmentDates } from "./dateNodePayloadMapping";
 
 export interface DatesNodeGoodsIds {
   origin: number;
@@ -34,6 +36,16 @@ const useStyles = makeStyles({
     maxWidth: "1400px",
     margin: "24px auto",
   },
+
+  saveContainer: {
+  display: "flex",
+  justifyContent: "flex-end",
+  marginTop: tokens.spacingVerticalL,
+},
+
+saveButton: {
+  minWidth: "120px",
+},
 });
 
 const DEFAULT_DATE_VALUES: DateNodeFormValues = {
@@ -122,7 +134,7 @@ const DatesNode: React.FC<DatesNodeProps> = ({ goodsIds = {} }) => {
   const methods = useForm<DateNodeFormValues>({
     defaultValues: DEFAULT_DATE_VALUES,
   });
-  const { status, error } = useAppSelector((state) => state.datesNode);
+  const { status, error, saveStatus, saveError, saveSuccess } = useAppSelector((state) => state.datesNode);
   const originGoodsId = goodsIds.origin ?? DEFAULT_GOODS_IDS.origin;
   const freightGoodsId = goodsIds.freight ?? DEFAULT_GOODS_IDS.freight;
   const destinationGoodsId =
@@ -167,21 +179,65 @@ const DatesNode: React.FC<DatesNodeProps> = ({ goodsIds = {} }) => {
     permStorageGoodsId,
   ]);
 
-  return (
-    <FormProvider {...methods}>
+  const onSave = async (values: DateNodeFormValues) => {
+  const payload = mapFormValuesToShipmentDates(values);
+
+  try {
+    await dispatch(
+      saveShipmentDatesThunk({
+        goodsId: 89,
+        payload,
+      }),
+    ).unwrap();
+  } catch (error) {
+    console.error("Failed to save shipment dates:", error);
+  }
+};
+
+return (
+  <FormProvider {...methods}>
+    <form onSubmit={methods.handleSubmit(onSave)}>
       <div className={styles.root}>
         <h2>Dates Node</h2>
+
         {status === "loading" && (
           <div role="status">Loading shipment dates...</div>
         )}
+
         {error && <div role="alert">{error}</div>}
+
         <Origin />
         <Freight />
         <Destination />
         <PermStorage />
+
+        {/* Save button */}
+        <div className={styles.saveContainer}>
+          <Button
+            appearance="primary"
+            type="submit"
+            className={styles.saveButton}
+            disabled={saveStatus === "loading"}
+          >
+            {saveStatus === "loading" ? "Saving..." : "Save"}
+          </Button>
+        </div>
+
+        {saveSuccess && (
+          <div role="status">
+            Shipment dates saved successfully!
+          </div>
+        )}
+
+        {saveError && (
+          <div role="alert">
+            {saveError}
+          </div>
+        )}
       </div>
-    </FormProvider>
-  );
+    </form>
+  </FormProvider>
+);
 };
 
 export default DatesNode;

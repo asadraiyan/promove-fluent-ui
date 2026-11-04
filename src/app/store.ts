@@ -5,6 +5,7 @@ import locationDataReducer from "../features/address/reducers/locationDataSlice"
 import datesNodeReducer from "../features/datesNode/reducers/datesNodeSlice";
 import trackingReducer from "../features/tracking/slices/trackingSlice";
 import paymentsReducer from "../features/payments/reducers/paymentSlice";
+import seaContainerDetailsReducer from "../features/seaContainerDetails/reducers/seaContainerDetailsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     datesNode: datesNodeReducer,
     tracking: trackingReducer,
     payments: paymentsReducer,
+    seaContainerDetails: seaContainerDetailsReducer,
   },
 });
 

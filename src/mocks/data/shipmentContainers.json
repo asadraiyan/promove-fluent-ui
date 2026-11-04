@@ -1,0 +1,71 @@
+{
+  "80900": {
+    "goodsDropDetails": {
+      "dropDate": "2026-11-03T22:27:29.3682",
+      "waitAndLoadDateTime": "2026-11-03T22:27:29.3682",
+      "dropAt": "Residence"
+    },
+    "containers": [
+      {
+        "movingUnitsId": 37022,
+        "goodsDescription": null,
+        "type": 10442,
+        "contReg": "ABCDEF1234",
+        "sealNo": "AM20034368",
+        "actualNetVolumeCuft": 459,
+        "actualNetWeightLbs": 2984,
+        "actualNetVolumeM3": 13,
+        "actualNetWeightKg": 1353.5,
+        "noOfPieces": 60,
+        "noofLiftVans": null,
+        "actualGrossVolumeCuft": null,
+        "actualGrossWeightLbs": null,
+        "actualGrossVolumeM3": null,
+        "actualGrossWeightKg": null,
+        "tareWeightLbs": null,
+        "tareWeightKg": null,
+        "noofFreeDays": null
+      },
+      {
+        "movingUnitsId": 250971,
+        "goodsDescription": null,
+        "type": 18444,
+        "contReg": "ffdgfdg3545",
+        "sealNo": "csdfsf567",
+        "actualNetVolumeCuft": 4,
+        "actualNetWeightLbs": 55,
+        "actualNetVolumeM3": 4,
+        "actualNetWeightKg": 34.9,
+        "noOfPieces": 6,
+        "noofLiftVans": null,
+        "actualGrossVolumeCuft": null,
+        "actualGrossWeightLbs": null,
+        "actualGrossVolumeM3": null,
+        "actualGrossWeightKg": null,
+        "tareWeightLbs": 78,
+        "tareWeightKg": 6,
+        "noofFreeDays": 5
+      },
+      {
+        "movingUnitsId": 250973,
+        "goodsDescription": null,
+        "type": 10444,
+        "contReg": "ABC11234",
+        "sealNo": "BDCF3456",
+        "actualNetVolumeCuft": 4,
+        "actualNetWeightLbs": 55,
+        "actualNetVolumeM3": 4,
+        "actualNetWeightKg": 34.9,
+        "noOfPieces": 6,
+        "noofLiftVans": null,
+        "actualGrossVolumeCuft": null,
+        "actualGrossWeightLbs": null,
+        "actualGrossVolumeM3": null,
+        "actualGrossWeightKg": null,
+        "tareWeightLbs": 78,
+        "tareWeightKg": 6,
+        "noofFreeDays": 5
+      }
+    ]
+  }
+}

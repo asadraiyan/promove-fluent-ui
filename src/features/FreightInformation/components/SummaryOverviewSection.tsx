@@ -35,15 +35,20 @@ const useStyles = makeStyles({
     rowGap: tokens.spacingVerticalS,
   },
   generalSecondRow: {
-    gridTemplateColumns:
-      "minmax(150px, 0.65fr) minmax(270px, 1.2fr) repeat(6, max-content)",
+    display: "flex",
+    flexWrap: "wrap",
     alignItems: "center",
-    columnGap: tokens.spacingHorizontalS,
+    columnGap: tokens.spacingHorizontalL,
     rowGap: tokens.spacingVerticalS,
     marginTop: tokens.spacingVerticalS,
+    width: "100%",
+    minWidth: 0,
+    boxSizing: "border-box",
   },
   compactField: {
     maxWidth: "180px",
+    minWidth: 0,
+
     "& input": {
       maxWidth: "100%",
     },
@@ -65,9 +70,21 @@ const useStyles = makeStyles({
     },
   },
   checkboxField: {
-    display: "flex",
+    display: "inline-flex",
     alignItems: "center",
+    flex: "0 0 auto",
     minWidth: 0,
+    maxWidth: "100%",
+    whiteSpace: "nowrap",
+    boxSizing: "border-box",
+
+    "& label": {
+      whiteSpace: "nowrap",
+    },
+
+    "& [class*='Checkbox__label']": {
+      whiteSpace: "nowrap",
+    },
   },
   narrowAmount: {
     minWidth: 0,
@@ -126,6 +143,7 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
 
   return (
     <>
+      {/* Coordinator Section */}
       <section className={styles.section}>
         <ResponsiveGrid className={styles.coordinatorGrid}>
           <FormDropdown
@@ -153,6 +171,8 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
             options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.billingCoordinator}
           />
         </ResponsiveGrid>
+
+        {/* Branch Section */}
         <ResponsiveGrid className={styles.branchGrid}>
           <FormDropdown
             name="controllingBranch"
@@ -169,6 +189,7 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
         </ResponsiveGrid>
       </section>
 
+      {/* General Section */}
       <section className={styles.section}>
         <h3 className={styles.generalHeading}>General</h3>
         <ResponsiveGrid className={styles.generalFirstRow}>
@@ -222,7 +243,7 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
           />
         </ResponsiveGrid>
 
-        <ResponsiveGrid className={styles.generalSecondRow}>
+        <div className={styles.generalSecondRow}>
           <div className={styles.compactField}>
             {textField("tradeLane", "Trade Lane")}
           </div>
@@ -235,25 +256,47 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
             options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.freightLane}
             disabled
           />
-          <FormCheckbox control={control} name="vip" label="VIP" />
-          <FormCheckbox control={control} name="seaFlag" label="SN Sea Flag" />
-          <FormCheckbox
-            control={control}
-            name="partialAllowance"
-            label="Partial Allowance"
-          />
-          <FormCheckbox
-            control={control}
-            name="confidential"
-            label="Confidential"
-          />
-          <FormCheckbox
-            control={control}
-            name="diplomaticDesignation"
-            label="Diplomatic Designation"
-          />
-          <FormCheckbox control={control} name="spoc" label="SPOC" />
-        </ResponsiveGrid>
+
+          <div className={styles.checkboxField}>
+            <FormCheckbox control={control} name="vip" label="VIP" />
+          </div>
+
+          <div className={styles.checkboxField}>
+            <FormCheckbox
+              control={control}
+              name="seaFlag"
+              label="SN Sea Flag"
+            />
+          </div>
+
+          <div className={styles.checkboxField}>
+            <FormCheckbox
+              control={control}
+              name="partialAllowance"
+              label="Partial Allowance"
+            />
+          </div>
+
+          <div className={styles.checkboxField}>
+            <FormCheckbox
+              control={control}
+              name="confidential"
+              label="Confidential"
+            />
+          </div>
+
+          <div className={styles.checkboxField}>
+            <FormCheckbox
+              control={control}
+              name="diplomaticDesignation"
+              label="Diplomatic Designation"
+            />
+          </div>
+
+          <div className={styles.checkboxField}>
+            <FormCheckbox control={control} name="spoc" label="SPOC" />
+          </div>
+        </div>
       </section>
     </>
   );

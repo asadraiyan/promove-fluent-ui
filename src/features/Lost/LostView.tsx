@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { makeStyles, tokens, Button, Text } from "@fluentui/react-components";
 import { useForm } from "react-hook-form";
-// import { FormInput } from "./FormInput"; // Adjust import path
-// import { FormDropdown } from "./Dropdown"; // Adjust import path
-// import { CommonEditDialog } from "./CommonEditDialog"; // Adjust import path
 import {
   SharedDataGrid,
   type GridColumnDef,
-} from "../../shared/components/Table/SharedDataGrid"; // Adjust import path
+} from "../../shared/components/Table/SharedDataGrid";
 import { CommonEditDialog, FormDropdown, FormInput } from "@/shared";
+
+import type { CompetitorData, HistoryData } from "./lostView.types";
+import viewData from "../../mocks/data/lost/lostData.json";
 
 const useStyles = makeStyles({
   container: {
@@ -23,6 +23,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     gap: tokens.spacingVerticalM,
+    overflow: "hidden",
   },
   sectionTitle: {
     fontWeight: "bold",
@@ -30,22 +31,33 @@ const useStyles = makeStyles({
   },
   row: {
     display: "flex",
-    alignItems: "center",
+    alignItems: "end",
     gap: tokens.spacingHorizontalM,
+    flexWrap: "wrap",
   },
-  competitorGrid: {
-    display: "grid",
-    gridTemplateColumns: "1fr 300px",
+  competitorLayout: {
+    display: "flex",
+    flexWrap: "wrap",
     gap: tokens.spacingHorizontalL,
     alignItems: "start",
   },
+  tableWrapper: {
+    flex: "1 1 300px",
+    maxWidth: "800px",
+    width: "100%",
+    overflowX: "auto",
+  },
   competitorForm: {
+    flex: "1 1 250px",
+    maxWidth: "350px",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     gap: tokens.spacingVerticalM,
     padding: tokens.spacingHorizontalM,
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground2,
+    boxSizing: "border-box",
   },
   formActions: {
     display: "flex",
@@ -57,24 +69,25 @@ const useStyles = makeStyles({
     padding: tokens.spacingVerticalM,
     color: tokens.colorNeutralForeground3,
   },
+  clickableCell: {
+    cursor: "pointer",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+  },
 });
-
-type CompetitorData = {
-  id: string;
-  competitor: string;
-  price: string;
-  description: string;
-};
 
 export const LostView = () => {
   const styles = useStyles();
 
-  // State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLostConfirmed, setIsLostConfirmed] = useState(false);
   const [competitors, setCompetitors] = useState<CompetitorData[]>([]);
+  const [history, setHistory] = useState<HistoryData[]>(
+    viewData.initialHistory,
+  );
 
-  // Forms
   const mainForm = useForm({
     defaultValues: {
       currentStatus: "Enquiry",
@@ -92,7 +105,6 @@ export const LostView = () => {
     },
   });
 
-  // Handlers
   const handleLostClick = () => {
     setIsModalOpen(true);
   };
@@ -100,6 +112,37 @@ export const LostView = () => {
   const handleModalConfirm = () => {
     setIsLostConfirmed(true);
     setIsModalOpen(false);
+    mainForm.setValue("currentStatus", "Lost");
+
+    setHistory((prev) => [
+      {
+        id: Date.now().toString(),
+        status: "Enquiry status to Lost",
+        by: "Current User",
+        date: new Date().toLocaleString(),
+      },
+      ...prev,
+    ]);
+  };
+
+  const handleUndoClick = () => {
+    setIsLostConfirmed(false);
+    mainForm.setValue("currentStatus", "Enquiry");
+    mainForm.resetField("lossReason");
+    mainForm.resetField("ourPrice");
+
+    setCompetitors([]);
+    compForm.reset({ id: "", competitor: "", price: "", description: "" });
+
+    setHistory((prev) => [
+      {
+        id: Date.now().toString(),
+        status: "Lost status to Enquiry",
+        by: "Current User",
+        date: new Date().toLocaleString(),
+      },
+      ...prev,
+    ]);
   };
 
   const handleModalCancel = () => {
@@ -108,10 +151,8 @@ export const LostView = () => {
 
   const handleSaveCompetitor = (data: CompetitorData) => {
     if (data.id) {
-      // Update existing
       setCompetitors((prev) => prev.map((c) => (c.id === data.id ? data : c)));
     } else {
-      // Add new
       const newComp = { ...data, id: Date.now().toString() };
       setCompetitors((prev) => [...prev, newComp]);
     }
@@ -126,62 +167,73 @@ export const LostView = () => {
     compForm.reset(item);
   };
 
-  // DataGrid Configurations
   const competitorColumns: GridColumnDef<CompetitorData>[] = [
-    { key: "competitor", label: "Competitor" },
-    { key: "price", label: "Price" },
-    { key: "description", label: "Description" },
-    // {
-    //   key: "actions",
-    //   label: "",
-    //   sortable: false,
-    //   renderCell: (item) => (
-    //     <Button size="small" onClick={() => handleEditCompetitor(item)}>
-    //       Edit
-    //     </Button>
-    //   ),
-    // },
-  ];
-
-  const dummyHistory = [
     {
-      id: "1",
-      status: "Enquiry status to Lost",
-      by: "Vias Palve",
-      date: "03/11/2026 03:09:56",
+      key: "competitor",
+      minWidth: 150,
+      label: "Competitor",
+      renderCell: (item) => (
+        <div
+          className={styles.clickableCell}
+          onClick={() => handleEditCompetitor(item)}
+        >
+          {item.competitor}
+        </div>
+      ),
     },
     {
-      id: "2",
-      status: "Enquiry status to Lost",
-      by: "Antoinette Watson",
-      date: "20/11/2018 17:36:20",
+      key: "price",
+      minWidth: 100,
+      label: "Price",
+      renderCell: (item) => (
+        <div
+          className={styles.clickableCell}
+          onClick={() => handleEditCompetitor(item)}
+        >
+          {item.price}
+        </div>
+      ),
+    },
+    {
+      key: "description",
+      minWidth: 150,
+      label: "Description",
+      renderCell: (item) => (
+        <div
+          className={styles.clickableCell}
+          onClick={() => handleEditCompetitor(item)}
+        >
+          {item.description}
+        </div>
+      ),
     },
   ];
 
-  const historyColumns: GridColumnDef<any>[] = [
-    { key: "status", label: "Status", minWidth: 200 },
-    { key: "by", label: "By", minWidth: 150 },
-    { key: "date", label: "Date", minWidth: 200 },
+  const historyColumns: GridColumnDef<HistoryData>[] = [
+    { key: "status", label: "Status", minWidth: 150 },
+    { key: "by", label: "By", minWidth: 120 },
+    { key: "date", label: "Date", minWidth: 150 },
   ];
 
   return (
     <div className={styles.container}>
-      {/* 1. Status Section */}
       <div className={styles.section}>
         <Text className={styles.sectionTitle}>- Status</Text>
         <div className={styles.row}>
-          <FormDropdown
+          <FormInput
             name="currentStatus"
             control={mainForm.control}
             label="Current Status"
             labelPosition="left"
-            options={[{ label: "Enquiry", value: "Enquiry" }]}
           />
-          <Button onClick={handleLostClick}>Lost...</Button>
+          {!isLostConfirmed ? (
+            <Button onClick={handleLostClick}>Lost...</Button>
+          ) : (
+            <Button onClick={handleUndoClick}>Undo</Button>
+          )}
         </div>
       </div>
 
-      {/* 2. Details Section */}
       <div className={styles.section}>
         <Text className={styles.sectionTitle}>- Details</Text>
 
@@ -197,10 +249,7 @@ export const LostView = () => {
                 control={mainForm.control}
                 label="Main reason for loss"
                 labelPosition="left"
-                options={[
-                  { label: "Appt Cancelled", value: "Appt Cancelled" },
-                  { label: "Budget", value: "Budget" },
-                ]}
+                options={viewData.lossReasonOptions}
               />
               <FormInput
                 name="ourPrice"
@@ -211,20 +260,24 @@ export const LostView = () => {
             </div>
 
             <Text>Competitors:</Text>
-            <div className={styles.competitorGrid}>
-              <SharedDataGrid
-                items={competitors}
-                columns={competitorColumns}
-                getRowId={(item) => item.id}
-                showSearch={false}
-              />
+            <div className={styles.competitorLayout}>
+              <div className={styles.tableWrapper}>
+                <SharedDataGrid
+                  items={competitors}
+                  columns={competitorColumns}
+                  getRowId={(item) => item.id}
+                  showSearch={false}
+                  selectionMode="single"
+                />
+              </div>
 
               <div className={styles.competitorForm}>
                 <FormDropdown
                   name="competitor"
                   control={compForm.control}
                   label="Competitor"
-                  options={[{ label: "Britannia", value: "Britannia" }]}
+                  placeholder="Select a competitor"
+                  options={viewData.competitorOptions}
                 />
                 <FormInput
                   name="price"
@@ -252,18 +305,16 @@ export const LostView = () => {
         )}
       </div>
 
-      {/* 3. Status Change History */}
       <div className={styles.section}>
         <Text className={styles.sectionTitle}>- Status Change History</Text>
         <SharedDataGrid
-          items={dummyHistory}
+          items={history}
           columns={historyColumns}
           getRowId={(item) => item.id}
           showSearch={false}
         />
       </div>
 
-      {/* 4. Lost Confirmation Modal */}
       <CommonEditDialog
         open={isModalOpen}
         onClose={handleModalCancel}
@@ -276,10 +327,7 @@ export const LostView = () => {
               control={mainForm.control}
               label="Main reason for loss"
               labelPosition="left"
-              options={[
-                { label: "Appt Cancelled", value: "Appt Cancelled" },
-                { label: "Budget", value: "Budget" },
-              ]}
+              options={viewData.lossReasonOptions}
             />
             <Text size={200} color="neutralForeground3">
               Note: you will be able to add information on competitors in the

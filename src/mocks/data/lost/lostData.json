@@ -1,0 +1,35 @@
+{
+  "lossReasonOptions": [
+    { "label": "Appt Cancelled", "value": "Appt Cancelled" },
+    { "label": "Budget", "value": "Budget" },
+    {
+      "label": "International Military Cancellation",
+      "value": "International Military Cancellation"
+    },
+    { "label": "Move Cancelled", "value": "Move Cancelled" },
+    { "label": "Moving themselves", "value": "Moving themselves" },
+    { "label": "Mystery Shopper", "value": "Mystery Shopper" },
+    { "label": "Preference", "value": "Preference" },
+    { "label": "Rough Price", "value": "Rough Price" }
+  ],
+  "competitorOptions": [
+    { "label": "Britannia", "value": "Britannia" },
+    { "label": "Allied Van Lines", "value": "Allied Van Lines" },
+    { "label": "Atlas Van Lines", "value": "Atlas Van Lines" },
+    { "label": "Mayflower", "value": "Mayflower" }
+  ],
+  "initialHistory": [
+    {
+      "id": "1",
+      "status": "Enquiry status to Lost",
+      "by": "Vias Palve",
+      "date": "03/11/2026 03:09:56"
+    },
+    {
+      "id": "2",
+      "status": "Enquiry status to Lost",
+      "by": "Antoinette Watson",
+      "date": "20/11/2018 17:36:20"
+    }
+  ]
+}

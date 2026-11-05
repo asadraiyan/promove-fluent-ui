@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { getApiUrl } from "../../../api/config";
-import shipmentContainers from "../../data/shipmentContainers.json";
+import shipmentContainers from "../../../mocks/data/seaContainerDetails/shipmentContainers.json";
 import {
   ContainerApiRecord,
   ContainerRequestPayload,

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { DatePicker } from "@fluentui/react-datepicker-compat";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { DeleteRegular, EditRegular } from "@fluentui/react-icons";
@@ -13,8 +13,23 @@ import {
   ResponsiveGridLabel,
 } from "@/shared";
 import { ModalTable, type GridColumnDef } from "@/shared/components/Table/ModalTable";
-import type { ContainerDetails, ContainerRow, GoodsDropDetails } from "./SeaContainerDetails.types";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import {
+  ContainerApiRecord,
+  ContainerDetails,
+  ContainerRequestPayload,
+  ContainerRow,
+  GoodsDropDetails,
+  SeaContainerResponse,
+} from "./SeaContainerDetails.types";
 import { CONTAINER_COLUMNS, CONTAINER_TYPE_OPTIONS, DROP_AT_OPTIONS, EMPTY_CONTAINER, EMPTY_GOODS_DROP_DETAILS } from "./constants";
+import {
+  createSeaContainer,
+  deleteSeaContainer,
+  loadSeaContainerDetails,
+  updateSeaContainer,
+} from "./reducers/seaContainerDetailsSlice";
+import type { ShipmentDirection } from "./api/containersApi";
 
 const useStyles = makeStyles({
   root: {
@@ -124,11 +139,91 @@ const formatDate = (date: Date): string =>
 const toDate = (value: string): Date | null =>
   value ? new Date(`${value}T00:00:00`) : null;
 
-const SeaContainerDetails: React.FC = () => {
+const dateOnly = (value: string | null): string =>
+  value ? value.slice(0, 10) : "";
+
+const nullableString = (value: string | number | null | undefined): string =>
+  value == null ? "" : String(value);
+
+const mapRecordToForm = (record: ContainerApiRecord): ContainerDetails => ({
+  type: nullableString(record.type),
+  contReg: nullableString(record.contReg),
+  sealNo: nullableString(record.sealNo),
+  goodsDescription: nullableString(record.goodsDescription),
+  freeDays: nullableString(record.noofFreeDays),
+  actualNetVolumeCft: nullableString(record.actualNetVolumeCuft),
+  actualNetWeightLbs: nullableString(record.actualNetWeightLbs),
+  actualNetVolumeM3: nullableString(record.actualNetVolumeM3),
+  actualNetWeightKg: nullableString(record.actualNetWeightKg),
+  actualGrossVolumeCft: nullableString(record.actualGrossVolumeCuft),
+  actualGrossWeightLbs: nullableString(record.actualGrossWeightLbs),
+  actualGrossVolumeM3: nullableString(record.actualGrossVolumeM3),
+  actualGrossWeightKg: nullableString(record.actualGrossWeightKg),
+  tareWeightLbs: nullableString(record.tareWeightLbs),
+  tareWeightKg: nullableString(record.tareWeightKg),
+  noOfPieces: nullableString(record.noOfPieces),
+  noOfLiftVans: nullableString(record.noofLiftVans),
+});
+
+const mapResponseToGoodsDropDetails = (
+  response: SeaContainerResponse,
+): GoodsDropDetails => ({
+  dropDate: dateOnly(response.goodsDropDetails.dropDate),
+  waitAndLoadDateTime: dateOnly(
+    response.goodsDropDetails.waitAndLoadDateTime,
+  ),
+  dropAt: response.goodsDropDetails.dropAt ?? "",
+});
+
+const toNullableNumber = (value: string): number | null => {
+  if (!value.trim()) return null;
+  const parsedValue = Number(value);
+  return Number.isFinite(parsedValue) ? parsedValue : null;
+};
+
+const mapFormToPayload = (
+  values: ContainerDetails,
+): ContainerRequestPayload => {
+  const numericType = toNullableNumber(values.type);
+  return {
+    type:
+      numericType === null && values.type.trim()
+        ? values.type
+        : numericType,
+    contReg: values.contReg || null,
+    sealNo: values.sealNo || null,
+    actualNetVolumeCuft: toNullableNumber(values.actualNetVolumeCft),
+    actualNetWeightLbs: toNullableNumber(values.actualNetWeightLbs),
+    actualNetVolumeM3: toNullableNumber(values.actualNetVolumeM3),
+    actualNetWeightKg: toNullableNumber(values.actualNetWeightKg),
+    noOfPieces: toNullableNumber(values.noOfPieces),
+    noofLiftVans: toNullableNumber(values.noOfLiftVans),
+    actualGrossVolumeCuft: toNullableNumber(values.actualGrossVolumeCft),
+    actualGrossWeightLbs: toNullableNumber(values.actualGrossWeightLbs),
+    actualGrossVolumeM3: toNullableNumber(values.actualGrossVolumeM3),
+    actualGrossWeightKg: toNullableNumber(values.actualGrossWeightKg),
+    tareWeightLbs: toNullableNumber(values.tareWeightLbs),
+    tareWeightKg: toNullableNumber(values.tareWeightKg),
+    noOfFreeDays: toNullableNumber(values.freeDays),
+  };
+};
+
+interface SeaContainerDetailsProps {
+  goodsId?: number;
+  direction?: ShipmentDirection;
+}
+
+const SeaContainerDetails: React.FC<SeaContainerDetailsProps> = ({
+  goodsId = 80900,
+  direction = "import",
+}) => {
   const styles = useStyles();
-  const [containers, setContainers] = useState<ContainerRow[]>([]);
-  const [editingContainerId, setEditingContainerId] = useState<string | null>(null);
-  const nextContainerId = useRef(0);
+  const dispatch = useAppDispatch();
+  const { data, loadStatus, loadError, saveStatus, saveError } =
+    useAppSelector((state) => state.seaContainerDetails);
+  const [editingContainerId, setEditingContainerId] = useState<number | null>(
+    null,
+  );
   const goodsDropForm = useForm<GoodsDropDetails>({
     defaultValues: EMPTY_GOODS_DROP_DETAILS,
   });
@@ -148,43 +243,117 @@ const SeaContainerDetails: React.FC = () => {
     (value) => typeof value === "string" && value.trim().length > 0,
   );
 
-  const addContainer = (values: ContainerDetails) => {
-    nextContainerId.current += 1;
-    setContainers((currentContainers) => [
-      ...currentContainers,
-      { ...values, id: String(nextContainerId.current) },
-    ]);
-    containerForm.reset(EMPTY_CONTAINER);
+  const containers: ContainerRow[] = (data?.containers ?? []).map(
+    (record) => ({
+      ...mapRecordToForm(record),
+      id: String(record.movingUnitsId),
+      movingUnitsId: record.movingUnitsId,
+    }),
+  );
+  const containerTypeOptions = useMemo(() => {
+    const options = [...CONTAINER_TYPE_OPTIONS];
+    (data?.containers ?? []).forEach((container) => {
+      if (
+        container.type !== null &&
+        !options.some((option) => option.value === String(container.type))
+      ) {
+        options.push({
+          value: String(container.type),
+          label: String(container.type),
+        });
+      }
+    });
+    return options;
+  }, [data?.containers]);
+
+  useEffect(() => {
+    let active = true;
+    const loadDetails = async () => {
+      const result = await dispatch(loadSeaContainerDetails({ goodsId }));
+      if (!active || !loadSeaContainerDetails.fulfilled.match(result)) return;
+
+      goodsDropForm.reset(mapResponseToGoodsDropDetails(result.payload));
+      if (result.payload.containerDetails) {
+        const selected = result.payload.containerDetails;
+        containerForm.reset(mapRecordToForm(selected));
+        setEditingContainerId(selected.movingUnitsId);
+      } else {
+        containerForm.reset(EMPTY_CONTAINER);
+        setEditingContainerId(null);
+      }
+    };
+    void loadDetails();
+    return () => {
+      active = false;
+    };
+  }, [containerForm.reset, dispatch, goodsDropForm.reset, goodsId]);
+
+  const refreshContainers = async () => {
+    await dispatch(loadSeaContainerDetails({ goodsId }));
   };
 
-  const editContainer = (container: ContainerRow) => {
-    const { id, ...values } = container;
-    setEditingContainerId(id);
-    containerForm.reset(values);
-  };
-
-  const updateContainer = (values: ContainerDetails) => {
-    if (editingContainerId === null) return;
-
-    setContainers((currentContainers) =>
-      currentContainers.map((container) =>
-        container.id === editingContainerId
-          ? { ...values, id: editingContainerId }
-          : container,
-      ),
+  const addContainer = async (values: ContainerDetails) => {
+    const result = await dispatch(
+      createSeaContainer({
+        goodsId,
+        direction,
+        payload: mapFormToPayload(values),
+      }),
     );
+    if (!createSeaContainer.fulfilled.match(result)) return;
+    containerForm.reset(EMPTY_CONTAINER);
+    setEditingContainerId(null);
+    await refreshContainers();
+  };
+
+  const editContainer = async (container: ContainerRow) => {
+    const result = await dispatch(
+      loadSeaContainerDetails({
+        goodsId,
+        movingUnitsId: container.movingUnitsId,
+      }),
+    );
+    if (!loadSeaContainerDetails.fulfilled.match(result)) return;
+    const selected =
+      result.payload.containerDetails ??
+      result.payload.containers.find(
+        (record) => record.movingUnitsId === container.movingUnitsId,
+      );
+    if (!selected) return;
+    setEditingContainerId(selected.movingUnitsId);
+    containerForm.reset(mapRecordToForm(selected));
+  };
+
+  const updateContainer = async (values: ContainerDetails) => {
+    if (editingContainerId === null) return;
+    const result = await dispatch(
+      updateSeaContainer({
+        goodsId,
+        movingUnitsId: editingContainerId,
+        direction,
+        payload: mapFormToPayload(values),
+      }),
+    );
+    if (!updateSeaContainer.fulfilled.match(result)) return;
     setEditingContainerId(null);
     containerForm.reset(EMPTY_CONTAINER);
+    await refreshContainers();
   };
 
-  const deleteContainer = (container: ContainerRow) => {
-    setContainers((currentContainers) =>
-      currentContainers.filter((currentContainer) => currentContainer.id !== container.id),
+  const deleteContainer = async (container: ContainerRow) => {
+    const result = await dispatch(
+      deleteSeaContainer({
+        goodsId,
+        movingUnitsId: container.movingUnitsId,
+        direction,
+      }),
     );
-    if (editingContainerId === container.id) {
+    if (!deleteSeaContainer.fulfilled.match(result)) return;
+    if (editingContainerId === container.movingUnitsId) {
       setEditingContainerId(null);
       containerForm.reset(EMPTY_CONTAINER);
     }
+    await refreshContainers();
   };
 
   const containerColumns: GridColumnDef<ContainerRow>[] = [
@@ -201,7 +370,7 @@ const SeaContainerDetails: React.FC = () => {
             className={styles.editButton}
             aria-label={`Edit container ${container.contReg || container.id}`}
             title="Edit container"
-            onClick={() => editContainer(container)}
+            onClick={() => void editContainer(container)}
           >
             <EditRegular />
           </Button>
@@ -211,7 +380,7 @@ const SeaContainerDetails: React.FC = () => {
             className={styles.deleteButton}
             aria-label={`Delete container ${container.contReg || container.id}`}
             title="Delete container"
-            onClick={() => deleteContainer(container)}
+            onClick={() => void deleteContainer(container)}
           >
             <DeleteRegular />
           </Button>
@@ -223,6 +392,14 @@ const SeaContainerDetails: React.FC = () => {
   return (
     <div className={styles.root}>
       <h2 className={styles.heading}>Sea Container details</h2>
+      {loadStatus === "loading" && (
+        <div role="status">Loading shipment containers...</div>
+      )}
+      {loadError && <div role="alert">{loadError}</div>}
+      {saveStatus === "loading" && (
+        <div role="status">Saving shipment container...</div>
+      )}
+      {saveError && <div role="alert">{saveError}</div>}
 
       <section className={styles.section}>
         <h3 className={styles.sectionTitle}>Goods Drop Details</h3>
@@ -271,7 +448,10 @@ const SeaContainerDetails: React.FC = () => {
             label="Drop at"
             labelPosition="left"
             placeholder="Select drop location"
-            options={DROP_AT_OPTIONS}
+            options={[
+              ...DROP_AT_OPTIONS,
+              { value: "Residence", label: "Residence" },
+            ]}
           />
         </ResponsiveGrid>
       </section>
@@ -305,7 +485,7 @@ const SeaContainerDetails: React.FC = () => {
                 label="Type"
                 labelPosition="left"
                 placeholder="Select type"
-                options={CONTAINER_TYPE_OPTIONS}
+                options={containerTypeOptions}
               />
               <FormInput
                 name="contReg"
@@ -429,7 +609,11 @@ const SeaContainerDetails: React.FC = () => {
               type="submit"
               appearance="primary"
               className={styles.saveButton}
-              disabled={!hasContainerValues || editingContainerId !== null}
+              disabled={
+                !hasContainerValues ||
+                editingContainerId !== null ||
+                saveStatus === "loading"
+              }
             >
               Save
             </Button>
@@ -437,7 +621,9 @@ const SeaContainerDetails: React.FC = () => {
               type="button"
               appearance="primary"
               className={styles.saveButton}
-              disabled={editingContainerId === null}
+              disabled={
+                editingContainerId === null || saveStatus === "loading"
+              }
               onClick={containerForm.handleSubmit(updateContainer)}
             >
               Update

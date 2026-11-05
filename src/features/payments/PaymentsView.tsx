@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { makeStyles, tokens, Text, Spinner } from "@fluentui/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchExpenses, fetchRevenues } from "./reducers/paymentSlice";
+import { fetchPayments } from "./reducers/paymentSlice";
 import {
   SharedDataGrid,
   GridColumnDef,
@@ -27,7 +27,11 @@ const useStyles = makeStyles({
 });
 
 const expensePaidColumns: GridColumnDef<ExpensePaidItem>[] = [
-  { key: "promoveShipment", label: "Promove Shipment and #", minWidth: 180 },
+  {
+    key: "promoveShipmentNumber",
+    label: "Promove Shipment and #",
+    minWidth: 180,
+  },
   { key: "vendorInvoiceNumber", label: "Vendor Invoice Number", minWidth: 160 },
   { key: "invoiceDate", label: "Invoice Date", minWidth: 120 },
   { key: "accountCode", label: "Account Code", minWidth: 120 },
@@ -48,16 +52,20 @@ const expensePaidColumns: GridColumnDef<ExpensePaidItem>[] = [
 
 const revenueReceivedColumns: GridColumnDef<RevenueReceivedItem>[] = [
   { key: "registration", label: "Registration", minWidth: 120 },
-  { key: "transRefInvoice", label: "Trans Ref / Invoice#", minWidth: 160 },
+  {
+    key: "transRefInvoiceNumber",
+    label: "Trans Ref / Invoice#",
+    minWidth: 160,
+  },
   { key: "invoiceDate", label: "InvoiceDate", minWidth: 120 },
   { key: "accountCode", label: "Account Code", minWidth: 120 },
   { key: "accountName", label: "Account Name", minWidth: 150 },
   { key: "journalType", label: "Journal Type", minWidth: 120 },
   { key: "description", label: "Description", minWidth: 200 },
   { key: "baseAmount", label: "Base Amount", minWidth: 120 },
-  { key: "baseCurrency", label: "Base Currency", minWidth: 120 },
+  { key: "baseCurrencyCode", label: "Base Currency", minWidth: 120 },
   { key: "transactionAmount", label: "Transaction Amount", minWidth: 150 },
-  { key: "invoiceCurrency", label: "Invoice Currency", minWidth: 140 },
+  { key: "invoiceCurrencyCode", label: "Invoice Currency", minWidth: 140 },
   { key: "allocation", label: "Allocation", minWidth: 120 },
   { key: "checkNumber", label: "Check Number", minWidth: 120 },
   { key: "paymentType", label: "Payment Type", minWidth: 120 },
@@ -77,8 +85,8 @@ export const PaymentsView: React.FC = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchExpenses());
-    dispatch(fetchRevenues());
+    const salesId = "12345";
+    dispatch(fetchPayments(salesId));
   }, [dispatch]);
 
   if (loading && expenses.length === 0 && revenues.length === 0) {

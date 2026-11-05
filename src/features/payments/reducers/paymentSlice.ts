@@ -15,20 +15,11 @@ const initialState: PaymentsState = {
   error: null,
 };
 
-export const fetchExpenses = createAsyncThunk(
-  "payments/fetchExpenses",
-  async () => {
-    const response = await fetch("/api/expenses");
-    if (!response.ok) throw new Error("Failed to fetch expenses");
-    return await response.json();
-  },
-);
-
-export const fetchRevenues = createAsyncThunk(
-  "payments/fetchRevenues",
-  async () => {
-    const response = await fetch("/api/revenues");
-    if (!response.ok) throw new Error("Failed to fetch revenues");
+export const fetchPayments = createAsyncThunk(
+  "payments/fetchPayments",
+  async (salesId: string) => {
+    const response = await fetch(`/api/payments/${salesId}`);
+    if (!response.ok) throw new Error("Failed to fetch payments");
     return await response.json();
   },
 );
@@ -39,33 +30,25 @@ const paymentsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchExpenses.pending, (state) => {
+      .addCase(fetchPayments.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(
-        fetchExpenses.fulfilled,
-        (state, action: PayloadAction<ExpensePaidItem[]>) => {
+        fetchPayments.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            expensePaid: ExpensePaidItem[];
+            revenueReceived: RevenueReceivedItem[];
+          }>,
+        ) => {
           state.loading = false;
-          state.expenses = action.payload;
+          state.expenses = action.payload.expensePaid || [];
+          state.revenues = action.payload.revenueReceived || [];
         },
       )
-      .addCase(fetchExpenses.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "An error occurred";
-      })
-      .addCase(fetchRevenues.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        fetchRevenues.fulfilled,
-        (state, action: PayloadAction<RevenueReceivedItem[]>) => {
-          state.loading = false;
-          state.revenues = action.payload;
-        },
-      )
-      .addCase(fetchRevenues.rejected, (state, action) => {
+      .addCase(fetchPayments.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "An error occurred";
       });

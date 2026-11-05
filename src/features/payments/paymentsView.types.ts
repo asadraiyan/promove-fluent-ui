@@ -1,35 +1,35 @@
 export interface ExpensePaidItem {
   id: string;
-  promoveShipment: string;
+  promoveShipmentNumber: string;
   vendorInvoiceNumber: string;
   invoiceDate: string;
-  accountCode: string;
-  accountName: string;
-  journalType: string;
+  accountCode: string | null;
+  accountName: string | null;
+  journalType: string | null;
   description: string;
   baseAmount: number;
   transactionAmount: number;
   transactionCurrencyCode: string;
-  allocation: string;
-  checkNumber: string;
-  paymentType: string;
+  allocation: string | null;
+  checkNumber: string | null;
+  paymentType: string | null;
 }
 
 export interface RevenueReceivedItem {
   id: string;
   registration: string;
-  transRefInvoice: string;
+  transRefInvoiceNumber: string;
   invoiceDate: string;
-  accountCode: string;
-  accountName: string;
-  journalType: string;
+  accountCode: string | null;
+  accountName: string | null;
+  journalType: string | null;
   description: string;
   baseAmount: number;
-  baseCurrency: string;
+  baseCurrencyCode: string;
   transactionAmount: number;
-  invoiceCurrency: string;
-  allocation: string;
-  checkNumber: string;
-  paymentType: string;
-  originatorOperatorCode: string;
+  invoiceCurrencyCode: string;
+  allocation: string | null;
+  checkNumber: string | null;
+  paymentType: string | null;
+  originatorOperatorCode: string | null;
 }

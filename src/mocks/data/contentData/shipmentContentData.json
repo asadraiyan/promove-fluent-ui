@@ -1,0 +1,51 @@
+{
+  "groupNumber": 1,
+  "contents": {
+    "cartonsPiecesNumber": 10,
+    "cartonsPiecesVolume": 2,
+    "ownerPrepackedVolume": 20,
+    "totalNumber": 10,
+    "totalVolume": 22,
+    "cratesNumber": 50
+  },
+  "interfaces": {
+    "quoteNumber": null,
+    "variation": null,
+    "itnNumber": null,
+    "questwebNumber": null,
+    "isfConfirmationNumber": null,
+    "isfErrorDescription": null,
+    "transportModeCode": "AIR"
+  },
+  "vehicle": {
+    "mileage": 0,
+    "declaredValueOfVehicles": null,
+    "releaseValueOfGoods": null
+  },
+  "summary": {
+    "liftVans": null,
+    "crates": null,
+    "overflow": null,
+    "airContainers": null
+  },
+  "moveTypeOptions": [
+    {
+      "id": "1",
+      "from": "GB, London",
+      "to": "US, New York, Glepine street",
+      "mileage": 0,
+      "cartons": 10,
+      "volume": 22,
+      "cans": null,
+      "groupNumber": 1,
+      "questwebNumber": null,
+      "isfConfirmationNumber": null,
+      "quoteNumber": null,
+      "transportModeCode": "AIR",
+      "isfErrorDescription": null,
+      "variation": null,
+      "tradeLane": null,
+      "goodsLeftAtBranchDate": null
+    }
+  ]
+}

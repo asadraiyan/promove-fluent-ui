@@ -5,6 +5,8 @@ import { datesHandler } from "./shipment/datesHandler";
 import { trackingHandlers } from "./transitGuide/trackingHandler";
 import { paymentsHandler } from "./payments/paymentsHandler";
 import { containersHandler } from "./shipment/containersHandler";
+import { contentHandlers } from "./content/contentHandlers";
+
 export const handlers = [
   ...healthHandlers,
   ...locationHandler,
@@ -13,4 +15,5 @@ export const handlers = [
   ...trackingHandlers,
   ...paymentsHandler,
   ...containersHandler,
+  ...contentHandlers,
 ];

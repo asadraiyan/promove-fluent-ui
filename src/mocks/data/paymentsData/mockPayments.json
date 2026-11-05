@@ -1,0 +1,56 @@
+{
+  "expensePaid": [
+    {
+      "id": "1",
+      "promoveShipmentNumber": "4283321",
+      "vendorInvoiceNumber": "01019943",
+      "invoiceDate": "2019-11-15T00:00:00",
+      "accountCode": null,
+      "accountName": null,
+      "journalType": null,
+      "description": "Chassis Rental",
+      "baseAmount": 45,
+      "transactionAmount": 45,
+      "transactionCurrencyCode": "USD",
+      "allocation": null,
+      "checkNumber": "042021132",
+      "paymentType": "EFT"
+    },
+    {
+      "id": "2",
+      "promoveShipmentNumber": "4283321",
+      "vendorInvoiceNumber": "01019943",
+      "invoiceDate": "2019-11-15T00:00:00",
+      "accountCode": null,
+      "accountName": null,
+      "journalType": null,
+      "description": "Inland Haulage",
+      "baseAmount": 461.26,
+      "transactionAmount": 461.26,
+      "transactionCurrencyCode": "USD",
+      "allocation": null,
+      "checkNumber": "042021132",
+      "paymentType": "EFT"
+    }
+  ],
+  "revenueReceived": [
+    {
+      "id": "1",
+      "registration": "4283321",
+      "transRefInvoiceNumber": "201900228256",
+      "invoiceDate": "2019-11-26T00:00:00",
+      "accountCode": "000083",
+      "accountName": "ABC Moving & Storage Co",
+      "journalType": "SIPRO",
+      "description": "ABC Moving & Storage Leominster MA",
+      "baseAmount": -8957.25,
+      "baseCurrencyCode": "USD",
+      "transactionAmount": -8957.25,
+      "invoiceCurrencyCode": "USD",
+      "allocation": "A",
+      "checkNumber": null,
+      "paymentType": null,
+      "originatorOperatorCode": "PM1"
+    }
+  ]
+}

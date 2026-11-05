@@ -8,9 +8,11 @@ import { defaultShipmentContentValues, moveTypeColumns } from "./constants";
 import { useShipmentContentStyles } from "./ShipmentContent.styles";
 import type { ShipmentContentValues } from "./ShipmentContent.types";
 import ShipmentDetails from "./components/ShipmentDetails";
-import { fetchShipmentContents } from "./reducers/shipmentContentSlice";
+import {
+  fetchShipmentContents,
+  updateShipmentContents,
+} from "./reducers/shipmentContentSlice";
 import { Spinner } from "@fluentui/react-components";
-// import { fetchShipmentContents } from "./shipmentContentSlice";
 
 const ShipmentContent: React.FC = () => {
   const styles = useShipmentContentStyles();
@@ -22,7 +24,7 @@ const ShipmentContent: React.FC = () => {
     error,
   } = useSelector((state: RootState) => state.shipmentContent);
 
-  const { control, reset } = useForm<ShipmentContentValues>({
+  const { control, reset, getValues } = useForm<ShipmentContentValues>({
     defaultValues: defaultShipmentContentValues,
   });
 
@@ -58,6 +60,21 @@ const ShipmentContent: React.FC = () => {
       });
     }
   }, [apiData, reset]);
+
+  // Added function to handle the PUT request payload execution
+  const handleUpdateContents = () => {
+    const values = getValues();
+    const payload = {
+      cartonsPiecesNumber: Number(values.cartonsPieces),
+      cartonsPiecesVolume: Number(values.cartonsVolume),
+      ownerPrepackedVolume: Number(values.ownerPrepackedVolume),
+      totalNumber: Number(values.totalNumber),
+      totalVolume: Number(values.totalVolume),
+      cratesNumber: 50, // Static placeholder based on the payload example, adjust if added to form
+    };
+
+    dispatch(updateShipmentContents({ goodsId, payload }));
+  };
 
   if (loading && !apiData) {
     return <Spinner label="Loading shipment contents..." />;
@@ -107,6 +124,13 @@ const ShipmentContent: React.FC = () => {
         </span>
         <Button type="button" appearance="secondary">
           Vans
+        </Button>
+        <Button
+          type="button"
+          appearance="secondary"
+          onClick={handleUpdateContents}
+        >
+          Save Contents
         </Button>
       </div>
     </section>

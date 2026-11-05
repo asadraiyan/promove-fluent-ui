@@ -5,12 +5,16 @@ interface ShipmentContentState {
   data: ShipmentContentApiResponse | null;
   loading: boolean;
   error: string | null;
+  isUpdating: boolean;
+  updateError: string | null;
 }
 
 const initialState: ShipmentContentState = {
   data: null,
   loading: false,
   error: null,
+  isUpdating: false,
+  updateError: null,
 };
 
 export const fetchShipmentContents = createAsyncThunk(
@@ -19,7 +23,20 @@ export const fetchShipmentContents = createAsyncThunk(
     const response = await fetch(`/api/shipments/${goodsId}/contents`);
     if (!response.ok) throw new Error("Failed to fetch shipment contents");
     return await response.json();
-  }
+  },
+);
+
+export const updateShipmentContents = createAsyncThunk(
+  "shipmentContent/updateContents",
+  async ({ goodsId, payload }: { goodsId: string; payload: any }) => {
+    const response = await fetch(`/api/shipments/${goodsId}/contents`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error("Failed to update shipment contents");
+    return await response.json();
+  },
 );
 
 const shipmentContentSlice = createSlice({
@@ -37,11 +54,22 @@ const shipmentContentSlice = createSlice({
         (state, action: PayloadAction<ShipmentContentApiResponse>) => {
           state.loading = false;
           state.data = action.payload;
-        }
+        },
       )
       .addCase(fetchShipmentContents.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "An error occurred";
+      })
+      .addCase(updateShipmentContents.pending, (state) => {
+        state.isUpdating = true;
+        state.updateError = null;
+      })
+      .addCase(updateShipmentContents.fulfilled, (state) => {
+        state.isUpdating = false;
+      })
+      .addCase(updateShipmentContents.rejected, (state, action) => {
+        state.isUpdating = false;
+        state.updateError = action.error.message || "Failed to update contents";
       });
   },
 });

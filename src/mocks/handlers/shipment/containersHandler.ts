@@ -124,8 +124,8 @@ export const containersHandler = [
         );
       }
 
-      data.containers.splice(index, 1);
-      return new HttpResponse(null, { status: 204 });
+      const result = data.containers.splice(index, 1);
+      return HttpResponse.json(result, { status: 200 });
     },
   ),
 ];

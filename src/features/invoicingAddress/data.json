@@ -1,0 +1,121 @@
+{
+  "accountAddresses": [
+    {
+      "label": "Americas Quality Van Lines, Ft Wayne, United States of America",
+      "value": "americas_quality"
+    }
+  ],
+  "customerAddresses": [
+    {
+      "label": "Rochester (US), 150 S Main St, 03867",
+      "value": "rochester_main"
+    }
+  ],
+  "addressDetails": {
+    "owner": "North American International",
+    "number": "129984",
+    "status": "Active",
+    "private": "No",
+    "debtorType": "Agent type 1",
+    "name": "Americas Quality Van Lines",
+    "namePart2": "",
+    "country": "",
+    "address1": "POB 11325",
+    "address2": "",
+    "address3": "",
+    "city": "Ft Wayne",
+    "stateCounty": "Indiana",
+    "postalCode": "46857",
+    "telephone": "1",
+    "fax": "1",
+    "email": "",
+    "vatRegistration": "Not Registered in the EC",
+    "vatNumber": "",
+    "vatRegistrationNumber": "",
+    "dunsNumber": "010721178",
+    "invoicePrintMode": "",
+    "collectionMode": "",
+    "termsOfPayment": "0 day",
+    "defaultCurrency": "USD",
+    "fxEffectiveDate": "",
+    "defaultLanguage": "English",
+    "invoiceRole": "",
+    "contactTitle": "",
+    "contactName": "",
+    "contactEmail": "",
+    "contactTel": "",
+    "contactMobile": "",
+    "contactFax": "",
+    "lookupCode": "AMERICASQUALITY",
+    "accountGroupParent": "",
+    "modificationUser": "IT",
+    "modificationDate": "02/11/2012 22:56"
+  },
+  "modalOptions": {
+    "ownerOptions": [
+      {
+        "label": "North American International",
+        "value": "North American International"
+      }
+    ],
+    "statusOptions": [
+      { "label": "Active", "value": "Active" },
+      { "label": "Inactive", "value": "Inactive" }
+    ],
+    "privateOptions": [
+      { "label": "No", "value": "No" },
+      { "label": "Yes", "value": "Yes" }
+    ],
+    "debtorTypeOptions": [
+      { "label": "Agent type 1", "value": "Agent type 1" },
+      { "label": "Agent type 2", "value": "Agent type 2" }
+    ],
+    "vatRegistrationOptions": [
+      {
+        "label": "Not Registered in the EC",
+        "value": "Not Registered in the EC"
+      },
+      { "label": "Registered", "value": "Registered" }
+    ],
+    "invoicePrintModeOptions": [
+      { "label": "Standard", "value": "Standard" },
+      { "label": "Detailed", "value": "Detailed" }
+    ],
+    "collectionModeOptions": [
+      { "label": "Direct Debit", "value": "Direct Debit" },
+      { "label": "Transfer", "value": "Transfer" }
+    ],
+    "termsOfPaymentOptions": [
+      { "label": "0 day", "value": "0 day" },
+      { "label": "30 days", "value": "30 days" }
+    ],
+    "defaultCurrencyOptions": [
+      { "label": "USD", "value": "USD" },
+      { "label": "EUR", "value": "EUR" }
+    ],
+    "fxEffectiveDateOptions": [
+      { "label": "Invoice Date", "value": "Invoice Date" },
+      { "label": "Current Date", "value": "Current Date" }
+    ],
+    "defaultLanguageOptions": [
+      { "label": "English", "value": "English" },
+      { "label": "Spanish", "value": "Spanish" }
+    ],
+    "countryOptions": [
+      {
+        "label": "United States of America",
+        "value": "United States of America"
+      },
+      { "label": "Canada", "value": "Canada" }
+    ],
+    "stateOptions": [
+      { "label": "Indiana", "value": "Indiana" },
+      { "label": "New York", "value": "New York" }
+    ],
+    "titleOptions": [
+      { "label": "Mr.", "value": "Mr." },
+      { "label": "Mrs.", "value": "Mrs." },
+      { "label": "Ms.", "value": "Ms." }
+    ]
+  }
+}

@@ -16,10 +16,12 @@ import OverseasSummary from "./features/FreightInformation/OverseasSummary";
 import Invoicing from "./features/Invoicing/Invoicing";
 import { PaymentsView } from "./features/payments/PaymentsView";
 import { LostView } from "./features/Lost/LostView";
+import { InvoicingAddress } from "./features/invoicingAddress";
 
 function App() {
   return (
     <div>
+      <InvoicingAddress/>
       <AddressDetails />
       <SeaContainerDetails />
       <ShipmentContent />

@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { MoreHorizontalRegular } from "@fluentui/react-icons";
 import { FormProvider, useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import type { GridColumnDef } from "@/shared/components/Table/ModalTable";
 
 import {
@@ -12,6 +13,9 @@ import {
   FormInput,
   ResponsiveGrid,
 } from "@/shared";
+import type {
+  FreightDropdownQuery,
+} from "./api/freightInformationApi";
 import { ModalTable } from "@/shared/components/Table/ModalTable";
 import {
   ACTION_DETAILS_FIELDS,
@@ -30,6 +34,22 @@ import {
 } from "./components/SummaryFormFields";
 import SummaryOverviewSection from "./components/SummaryOverviewSection";
 import VolumeWeightSection from "./components/VolumeWeightSection";
+import {
+  loadFreightInformation,
+  loadFreightInformationDropdowns,
+  saveFreightInformationThunk,
+} from "./reducers/freightInformationSlice";
+import {
+  mapFormToFreightInformation,
+  mapFreightInformationToForm,
+} from "./freightInformationMapping";
+
+interface OverseasSummaryProps {
+  goodsId?: number;
+  companyId?: string | number;
+  ownerCode?: string | number;
+  addressId?: string | number;
+}
 
 const useStyles = makeStyles({
   root: {
@@ -70,10 +90,25 @@ const useStyles = makeStyles({
     overflowY: "auto",
     padding: `${tokens.spacingVerticalM} 0`,
   },
+  saveContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: tokens.spacingHorizontalS,
+    marginTop: tokens.spacingVerticalL,
+  },
+  saveButton: {
+    minWidth: "120px",
+  },
 });
 
-const OverseasSummary: React.FC = () => {
+const OverseasSummary: React.FC<OverseasSummaryProps> = ({
+  goodsId = 89,
+  companyId = 104213383,
+  ownerCode = 67,
+  addressId = 21,
+}) => {
   const styles = useStyles();
+  const dispatch = useAppDispatch();
   const [actionHistoryOpen, setActionHistoryOpen] = React.useState(false);
   const [actionDetailsOpen, setActionDetailsOpen] = React.useState(false);
   const [selectedAction, setSelectedAction] =
@@ -81,15 +116,61 @@ const OverseasSummary: React.FC = () => {
   const methods = useForm<OverseasSummaryFormValues>({
     defaultValues: EMPTY_OVERSEAS_SUMMARY,
   });
+  const {
+    data,
+    dropdowns,
+    status,
+    error,
+    dropdownStatus,
+    dropdownError,
+    saveStatus,
+    saveError,
+    saveSuccess,
+  } = useAppSelector((state) => state.freightInformation);
   const actionDetailsMethods = useForm<ActionDetailsValues>({
     defaultValues: SHIPMENT_ACTION_HISTORY[0].actionDetails,
   });
   const { control } = methods;
+  const serviceMode = methods.watch("serviceMode");
+
+  React.useEffect(() => {
+    let isCurrent = true;
+    const loadInformation = async () => {
+      const result = await dispatch(loadFreightInformation(goodsId));
+      if (!isCurrent || !loadFreightInformation.fulfilled.match(result)) return;
+      methods.reset(mapFreightInformationToForm(result.payload));
+    };
+
+    void loadInformation();
+    return () => {
+      isCurrent = false;
+    };
+  }, [dispatch, goodsId, methods.reset]);
+
+  React.useEffect(() => {
+    const query: FreightDropdownQuery = {
+      mode: serviceMode,
+      companyId,
+      ownerCode,
+      addressId,
+    };
+    void dispatch(loadFreightInformationDropdowns(query));
+  }, [dispatch, serviceMode, companyId, ownerCode, addressId]);
 
   const openActionDetails = (action: ShipmentActionHistoryRow) => {
     setSelectedAction(action);
     actionDetailsMethods.reset(action.actionDetails);
     setActionDetailsOpen(true);
+  };
+
+  const onSave = (values: OverseasSummaryFormValues) => {
+    if (!data) return;
+    void dispatch(
+      saveFreightInformationThunk({
+        goodsId,
+        payload: mapFormToFreightInformation(values, data),
+      }),
+    );
   };
 
   const textField: SummaryTextFieldRenderer = (
@@ -146,20 +227,56 @@ const OverseasSummary: React.FC = () => {
 
   return (
     <FormProvider {...methods}>
-      <div className={styles.root}>
-        <h2 className={styles.heading}>Overseas Summary</h2>
-        <SummaryOverviewSection control={control} textField={textField} />
+      <form onSubmit={methods.handleSubmit(onSave)}>
+        <div className={styles.root}>
+          <h2 className={styles.heading}>Overseas Summary</h2>
+          {status === "loading" && (
+            <div role="status">Loading freight information...</div>
+          )}
+          {error && <div role="alert">{error}</div>}
+          {dropdownStatus === "loading" && (
+            <div role="status">Loading freight dropdowns...</div>
+          )}
+          {dropdownError && <div role="alert">{dropdownError}</div>}
+          {saveError && <div role="alert">{saveError}</div>}
+          {saveSuccess && <div role="status">Freight information saved.</div>}
 
-        <ResponsiveGrid className={styles.primaryGrid}>
-          <VolumeWeightSection
+          <SummaryOverviewSection
+            control={control}
             textField={textField}
-            onOpenActionHistory={() => setActionHistoryOpen(true)}
+            dropdowns={dropdowns}
           />
-          <AccountSpecificSection control={control} textField={textField} />
-        </ResponsiveGrid>
 
-        <OtherKeyServiceSection control={control} textField={textField} />
+          <ResponsiveGrid className={styles.primaryGrid}>
+            <VolumeWeightSection
+              textField={textField}
+              onOpenActionHistory={() => setActionHistoryOpen(true)}
+            />
+            <AccountSpecificSection
+              control={control}
+              textField={textField}
+              dropdowns={dropdowns}
+            />
+          </ResponsiveGrid>
 
+          <OtherKeyServiceSection
+            control={control}
+            textField={textField}
+            dropdowns={dropdowns}
+          />
+
+          <div className={styles.saveContainer}>
+            <Button
+              appearance="primary"
+              type="submit"
+              className={styles.saveButton}
+              disabled={!data || saveStatus === "loading"}
+            >
+              {saveStatus === "loading" ? "Saving..." : "Save"}
+            </Button>
+          </div>
+        </div>
+      </form>
         <CommonEditDialog
           open={actionHistoryOpen}
           heading="Shipment Actions History"
@@ -218,7 +335,6 @@ const OverseasSummary: React.FC = () => {
           showCloseButton
           maxWidth="min(96vw, 720px)"
         />
-      </div>
     </FormProvider>
   );
 };

@@ -8,6 +8,7 @@ import type {
 import type { ActionDetailsFieldDefinition } from "@/shared";
 
 export const EMPTY_OVERSEAS_SUMMARY: OverseasSummaryFormValues = {
+  serviceMode: "air",
   serviceCoordinator: "james-porter",
   supportCoordinator: "james-porter",
   billingCoordinator: "billing-coordinator",
@@ -18,7 +19,7 @@ export const EMPTY_OVERSEAS_SUMMARY: OverseasSummaryFormValues = {
   requiredThroughGc: "",
   cod: false,
   amount: "",
-  currency: "usd",
+  currency: "USD",
   tradeLane: "",
   freightLane: "",
   vip: false,
@@ -62,6 +63,7 @@ export const EMPTY_OVERSEAS_SUMMARY: OverseasSummaryFormValues = {
   employeePersonnelNumber: "",
   affiliateCode: "",
   entitledWeight: "",
+  entitledWeightDescription: "",
   endingAssignmentDate: "",
   housingSpendableWaiver: false,
   housingSpendableWaiverDate: "",
@@ -70,9 +72,10 @@ export const EMPTY_OVERSEAS_SUMMARY: OverseasSummaryFormValues = {
   sitNumber: "",
   origin: "",
   serviceType: "lcl",
+  deliveryType: "DTD",
+  shipmentMode: "AIR",
   serviceTypeDetails: "",
   pricingType: "contract-fixed",
-  deliveryType: "door-to-door",
   packingType: "full",
   furnitureWrap: "export-wrap",
   commodityType: "household-goods",
@@ -107,9 +110,9 @@ export const OVERSEAS_SUMMARY_DROPDOWN_OPTIONS = {
     { value: "no", label: "No" },
   ],
   currency: [
-    { value: "usd", label: "USD" },
-    { value: "eur", label: "EUR" },
-    { value: "gbp", label: "GBP" },
+    { value: "USD", label: "USD" },
+    { value: "EUR", label: "EUR" },
+    { value: "GBP", label: "GBP" },
   ],
   freightLane: [
     { value: "north-america-europe", label: "North America - Europe" },
@@ -134,11 +137,7 @@ export const OVERSEAS_SUMMARY_DROPDOWN_OPTIONS = {
     { value: "spot", label: "Spot" },
     { value: "tariff", label: "Tariff" },
   ],
-  deliveryType: [
-    { value: "door-to-door", label: "Door to Door" },
-    { value: "door-to-port", label: "Door to Port" },
-    { value: "port-to-port", label: "Port to Port" },
-  ],
+
   packingType: [
     { value: "full", label: "Full" },
     { value: "partial", label: "Partial" },

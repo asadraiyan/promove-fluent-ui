@@ -1,4 +1,5 @@
 export interface OverseasSummaryFormValues {
+  serviceMode: "air" | "sea" | "road";
   serviceCoordinator: string;
   supportCoordinator: string;
   billingCoordinator: string;
@@ -53,6 +54,7 @@ export interface OverseasSummaryFormValues {
   employeePersonnelNumber: string;
   affiliateCode: string;
   entitledWeight: string;
+  entitledWeightDescription: string;
   endingAssignmentDate: string;
   housingSpendableWaiver: boolean;
   housingSpendableWaiverDate: string;
@@ -61,9 +63,10 @@ export interface OverseasSummaryFormValues {
   sitNumber: string;
   origin: string;
   serviceType: string;
+  deliveryType: string;
+  shipmentMode: string;
   serviceTypeDetails: string;
   pricingType: string;
-  deliveryType: string;
   packingType: string;
   furnitureWrap: string;
   commodityType: string;

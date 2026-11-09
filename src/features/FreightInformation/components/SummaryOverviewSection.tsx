@@ -8,6 +8,7 @@ import {
   SearchableInput,
 } from "@/shared";
 import { OVERSEAS_SUMMARY_DROPDOWN_OPTIONS } from "../constants";
+import type { FreightInformationDropdowns } from "../api/freightInformationApi";
 import type { OverseasSummaryFormValues } from "../OverseasSummary.types";
 import { FormCheckbox, type SummaryTextFieldRenderer } from "./SummaryFormFields";
 
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
     minWidth: 0,
   },
   coordinatorGrid: {
-    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
     columnGap: tokens.spacingHorizontalL,
     rowGap: tokens.spacingVerticalS,
   },
@@ -125,11 +126,13 @@ const useStyles = makeStyles({
 interface SummaryOverviewSectionProps {
   control: Control<OverseasSummaryFormValues>;
   textField: SummaryTextFieldRenderer;
+  dropdowns: FreightInformationDropdowns | null;
 }
 
 const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
   control,
   textField,
+  dropdowns,
 }) => {
   const styles = useStyles();
   const { field: originAgentField } = useController({
@@ -147,12 +150,24 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
       <section className={styles.section}>
         <ResponsiveGrid className={styles.coordinatorGrid}>
           <FormDropdown
+            name="serviceMode"
+            control={control}
+            label="Service Mode"
+            labelPosition="left"
+            className={styles.coordinatorField}
+            options={[
+              { value: "air", label: "Air" },
+              { value: "sea", label: "Sea" },
+              { value: "road", label: "Road" },
+            ]}
+          />
+          <FormDropdown
             name="serviceCoordinator"
             control={control}
             label="SC"
             labelPosition="left"
             className={styles.coordinatorField}
-            options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.coordinator}
+            options={dropdowns?.salesCoordinators ?? []}
           />
           <FormDropdown
             name="supportCoordinator"
@@ -160,7 +175,7 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
             label="Support"
             labelPosition="left"
             className={styles.coordinatorField}
-            options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.coordinator}
+            options={dropdowns?.supportCoordinators ?? []}
           />
           <FormDropdown
             name="billingCoordinator"
@@ -168,7 +183,7 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
             label="Billing"
             labelPosition="left"
             className={styles.coordinatorField}
-            options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.billingCoordinator}
+            options={dropdowns?.billing ?? []}
           />
         </ResponsiveGrid>
 
@@ -180,8 +195,7 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
             label="Controlling Branch"
             labelPosition="left"
             className={styles.branchField}
-            options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.controllingBranch}
-            disabled
+            options={dropdowns?.controllingBranches ?? []}
           />
           <div className={styles.compactField}>
             {textField("revenueBranch", "Rev Branch")}
@@ -239,7 +253,6 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
             labelPosition="left"
             className={styles.currencyField}
             options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.currency}
-            disabled
           />
         </ResponsiveGrid>
 
@@ -253,8 +266,7 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
             label="Freight Lane"
             labelPosition="left"
             placeholder="Select Freight Lane"
-            options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.freightLane}
-            disabled
+            options={dropdowns?.freightLanes ?? []}
           />
 
           <div className={styles.checkboxField}>

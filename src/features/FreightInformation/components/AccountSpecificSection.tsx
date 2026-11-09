@@ -3,6 +3,7 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import { type Control } from "react-hook-form";
 import { FormDropdown, ResponsiveGrid } from "@/shared";
 import { OVERSEAS_SUMMARY_DROPDOWN_OPTIONS } from "../constants";
+import type { FreightInformationDropdowns } from "../api/freightInformationApi";
 import type { OverseasSummaryFormValues } from "../OverseasSummary.types";
 import { FormCheckbox, type SummaryTextFieldRenderer } from "./SummaryFormFields";
 
@@ -44,11 +45,13 @@ const useStyles = makeStyles({
 interface AccountSpecificSectionProps {
   control: Control<OverseasSummaryFormValues>;
   textField: SummaryTextFieldRenderer;
+  dropdowns: FreightInformationDropdowns | null;
 }
 
 const AccountSpecificSection: React.FC<AccountSpecificSectionProps> = ({
   control,
   textField,
+  dropdowns,
 }) => {
   const styles = useStyles();
 
@@ -56,33 +59,27 @@ const AccountSpecificSection: React.FC<AccountSpecificSectionProps> = ({
     <section className={`${styles.section} ${styles.accountPanel}`}>
       <h3 className={styles.sectionTitle}>Account Specific:</h3>
       <ResponsiveGrid className={styles.accountFields}>
-        {textField("costCenter", "Cost Center", "text", true)}
-        {textField("employeePersonnelNumber", "Employee Personnel No:", "text", true)}
-        {textField("affiliateCode", "Affiliate Code:", "text", true)}
-        {textField("entitledWeight", "Entitled Weight:", "number", true)}
-        {textField("endingAssignmentDate", "Ending Assignment Date:", "date", true)}
+        {textField("costCenter", "Cost Center")}
+        {textField("employeePersonnelNumber", "Employee Personnel No:")}
+        {textField("affiliateCode", "Affiliate Code:")}
+        {textField("entitledWeight", "Entitled Weight:", "number")}
+        {textField("entitledWeightDescription", "Entitled Weight Description:")}
+        {textField("endingAssignmentDate", "Ending Assignment Date:", "date")}
         <div className={styles.checkboxField}>
           <FormCheckbox
             control={control}
             name="housingSpendableWaiver"
             label="Housing Spendable Waiver?"
-            disabled
           />
         </div>
-        {textField(
-          "housingSpendableWaiverDate",
-          "Housing Spendable Waiver Date:",
-          "date",
-          true,
-        )}
+        {textField("housingSpendableWaiverDate", "Housing Spendable Waiver Date:", "date")}
         <FormDropdown
           name="removalType"
           control={control}
           label="Removal Type:"
           labelPosition="left"
-          disabled
           placeholder="Select"
-          options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.removalType}
+          options={dropdowns?.removalTypes ?? []}
         />
       </ResponsiveGrid>
 

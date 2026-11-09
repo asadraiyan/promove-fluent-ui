@@ -3,6 +3,7 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import { useController, type Control } from "react-hook-form";
 import { FieldLabel, FormDropdown, ResponsiveGrid, SearchableInput } from "@/shared";
 import { OVERSEAS_SUMMARY_DROPDOWN_OPTIONS } from "../constants";
+import type { FreightInformationDropdowns } from "../api/freightInformationApi";
 import type { OverseasSummaryFormValues } from "../OverseasSummary.types";
 import { FormCheckbox, type SummaryTextFieldRenderer } from "./SummaryFormFields";
 
@@ -59,11 +60,13 @@ const useStyles = makeStyles({
 interface OtherKeyServiceSectionProps {
   control: Control<OverseasSummaryFormValues>;
   textField: SummaryTextFieldRenderer;
+  dropdowns: FreightInformationDropdowns | null;
 }
 
 const OtherKeyServiceSection: React.FC<OtherKeyServiceSectionProps> = ({
   control,
   textField,
+  dropdowns,
 }) => {
   const styles = useStyles();
   const { field: portOfArrivalField } = useController({
@@ -85,7 +88,7 @@ const OtherKeyServiceSection: React.FC<OtherKeyServiceSectionProps> = ({
                 control={control}
                 label="Service Type"
                 labelPosition="left"
-                options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.serviceType}
+                options={dropdowns?.serviceTypes ?? []}
               />
               {textField("serviceTypeDetails", "", "text")}
             </ResponsiveGrid>
@@ -94,35 +97,35 @@ const OtherKeyServiceSection: React.FC<OtherKeyServiceSectionProps> = ({
               control={control}
               label="Pricing Type"
               labelPosition="left"
-              options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.pricingType}
+              options={dropdowns?.pricingTypes ?? []}
             />
             <FormDropdown
               name="deliveryType"
               control={control}
               label="Delivery Type"
               labelPosition="left"
-              options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.deliveryType}
+              options={dropdowns?.deliveryTypes ?? []}
             />
             <FormDropdown
               name="packingType"
               control={control}
               label="Packing Type"
               labelPosition="left"
-              options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.packingType}
+              options={dropdowns?.packingTypes ?? []}
             />
             <FormDropdown
               name="furnitureWrap"
               control={control}
               label="Furniture Wrap"
               labelPosition="left"
-              options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.furnitureWrap}
+              options={dropdowns?.furnitureWraps ?? []}
             />
             <FormDropdown
               name="commodityType"
               control={control}
               label="Commodity Type"
               labelPosition="left"
-              options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.commodityType}
+              options={dropdowns?.commodityTypes ?? []}
             />
             <ResponsiveGrid className={styles.serviceTypeRow}>
               {textField("consolCode", "Consol Code")}
@@ -134,7 +137,7 @@ const OtherKeyServiceSection: React.FC<OtherKeyServiceSectionProps> = ({
               label="Survey Type"
               labelPosition="left"
               placeholder="Select"
-              options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.surveyType}
+              options={dropdowns?.surveyTypes ?? []}
             />
           </ResponsiveGrid>
 
@@ -154,7 +157,7 @@ const OtherKeyServiceSection: React.FC<OtherKeyServiceSectionProps> = ({
                 control={control}
                 label="Workflow"
                 labelPosition="left"
-                options={OVERSEAS_SUMMARY_DROPDOWN_OPTIONS.workflow}
+                options={dropdowns?.workflows ?? []}
               />
             </div>
             <div className={styles.checkboxField}>

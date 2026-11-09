@@ -1,0 +1,97 @@
+
+{
+  "serviceTypes": [
+    { "value": "AIR", "label": "Air freight" },
+    { "value": "DIR", "label": "Direct Load" },
+    { "value": "EURO", "label": "Euro Road" },
+    { "value": "FCLC", "label": "Full Container Load Cased" },
+    { "value": "FCLL", "label": "Full Container Load" },
+    { "value": "FCLT", "label": "Container Top-Up Service" },
+    { "value": "GPGC", "label": "Groupage cased" },
+    { "value": "GPGL", "label": "Groupage loose" }
+  ],
+  "deliveryTypes": [
+    { "value": "DTD", "label": "Door to Door" },
+    { "value": "DDP", "label": "Door to Arrival Port" },
+    { "value": "APD", "label": "Arrival Port to Door" },
+    { "value": "DPDW", "label": "Departure Port to Destination" },
+    { "value": "DPD", "label": "Departure Port to Door" },
+    { "value": "DWD", "label": "Destination Warehouse to Door" },
+    { "value": "OPDP", "label": "Departure Port to Arrival Port" },
+    { "value": "DOP", "label": "Door to Departure Port" }
+  ],
+  "removalTypes": [
+    { "value": "Cross Border Hire", "label": "Cross Border Hire" },
+    { "value": "Domestic Hire", "label": "Domestic Hire" },
+    { "value": "Intl Local Hire", "label": "Intl Local Hire" },
+    { "value": "Long Term Assignee", "label": "Long Term Assignee" },
+    { "value": "Short Term Assignee", "label": "Short Term Assignee" },
+    { "value": "other", "label": "Other" }
+  ],
+  "pricingTypes": [
+    { "value": "1", "label": "Contract Cost Plus" },
+    { "value": "2", "label": "Contract Fixed" },
+    { "value": "3", "label": "Contract OTO" },
+    { "value": "4", "label": "Contract Pass Through" },
+    { "value": "5", "label": "Moveright" },
+    { "value": "6", "label": "Contract/Calculator" }
+  ],
+  "packingTypes": [
+    { "value": "CAV", "label": "Air Container" },
+    { "value": "FRAG", "label": "Fragile" },
+    { "value": "FULL", "label": "Full" },
+    { "value": "LV", "label": "Lift Van" }
+  ],
+  "furnitureWraps": [
+    { "value": "BLANKET", "label": "Blanket wrap" },
+    { "value": "EXPORT", "label": "Export wrap" }
+  ],
+  "commodityTypes": [
+    { "value": "0", "label": "Unknown (Inbound Globalcom)" },
+    { "value": "1001001", "label": "Household Goods" },
+    { "value": "1001002", "label": "Vehicles" },
+    { "value": "1001003", "label": "Pets" },
+    { "value": "1001005", "label": "Household Goods & Vehicles" }
+  ],
+  "surveyTypes": [
+    { "value": "In-Person", "label": "In-Person" },
+    { "value": "None", "label": "None" },
+    { "value": "Phone", "label": "Phone" },
+    { "value": "Virtual", "label": "Virtual" }
+  ],
+  "freightLanes": [
+    { "value": "NON-CONTRACT", "label": "NON-CONTRACT" },
+    {
+      "value": "Abu Dhabi, United Arab Emirates / Houston, USA",
+      "label": "Abu Dhabi, United Arab Emirates / Houston, USA"
+    },
+    {
+      "value": "Al Jubayl, Saudi Arabia / Baton Rouge, USA",
+      "label": "Al Jubayl, Saudi Arabia / Baton Rouge, USA"
+    },
+    {
+      "value": "Al Jubayl, Saudi Arabia / Brussels, Belgium",
+      "label": "Al Jubayl, Saudi Arabia / Brussels, Belgium"
+    },
+    {
+      "value": "Al Jubayl, Saudi Arabia / Houston, USA",
+      "label": "Al Jubayl, Saudi Arabia / Houston, USA"
+    }
+  ],
+  "salesCoordinators": [],
+  "supportCoordinators": [],
+  "controllingBranches": [
+    { "value": "66", "label": "Allied EMEA" },
+    { "value": "2", "label": "Allied International" },
+    { "value": "73", "label": "Allied International Asia Pacific" },
+    { "value": "4", "label": "Allied International Military" },
+    { "value": "6", "label": "Domestic Move Center" },
+    { "value": "61", "label": "Global Van Lines" },
+    { "value": "3", "label": "JDC International" },
+    { "value": "68", "label": "North American EMEA" }
+  ],
+  "workflows": [
+    { "value": "281", "label": "Commercial Workflow" }
+  ],
+  "billing": []
+}

@@ -1,6 +1,14 @@
 import { getApiUrl } from "@/api/config";
 
 export type FreightMode = "air" | "sea" | "road";
+export type FreightLookupType = "agent" | "seaport" | "airport";
+export type FreightLookupRecord = Record<string, string | null>;
+
+export interface FreightLookupQuery {
+  search: string;
+  ownerCode?: string | number;
+  region?: string;
+}
 
 export interface FreightDropdownOption {
   value: string;
@@ -93,6 +101,27 @@ export const fetchFreightInformation = async (
   }
 
   return (await response.json()) as FreightInformationResponse;
+};
+
+export const fetchFreightLookup = async (
+  lookupType: FreightLookupType,
+  query: FreightLookupQuery,
+): Promise<FreightLookupRecord[]> => {
+  const search = new URLSearchParams({
+    search: query.search,
+    ownerCode: String(query.ownerCode ?? -1),
+    region: query.region ?? "US",
+  });
+  const response = await fetch(
+    getApiUrl(
+      `/api/shipments/freight-information/lookups/${lookupType}?${search}`,
+    ),
+  );
+  if (!response.ok) {
+    throw new Error(getErrorMessage(response, "Unable to search freight lookups"));
+  }
+
+  return (await response.json()) as FreightLookupRecord[];
 };
 
 export const saveFreightInformation = async (

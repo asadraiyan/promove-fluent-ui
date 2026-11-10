@@ -8,8 +8,14 @@ import {
   SearchableInput,
 } from "@/shared";
 import { OVERSEAS_SUMMARY_DROPDOWN_OPTIONS } from "../constants";
-import type { FreightInformationDropdowns } from "../api/freightInformationApi";
-import type { OverseasSummaryFormValues } from "../OverseasSummary.types";
+import type {
+  FreightInformationDropdowns,
+  FreightLookupType,
+} from "../api/freightInformationApi";
+import type {
+  FreightLookupTarget,
+  OverseasSummaryFormValues,
+} from "../OverseasSummary.types";
 import { FormCheckbox, type SummaryTextFieldRenderer } from "./SummaryFormFields";
 
 const useStyles = makeStyles({
@@ -127,12 +133,18 @@ interface SummaryOverviewSectionProps {
   control: Control<OverseasSummaryFormValues>;
   textField: SummaryTextFieldRenderer;
   dropdowns: FreightInformationDropdowns | null;
+  onLookupSearch: (
+    lookupType: FreightLookupType,
+    search: string,
+    target: FreightLookupTarget,
+  ) => void;
 }
 
 const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
   control,
   textField,
   dropdowns,
+  onLookupSearch,
 }) => {
   const styles = useStyles();
   const { field: originAgentField } = useController({
@@ -214,7 +226,9 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
             className={styles.agentField}
             value={originAgentField.value}
             onChange={originAgentField.onChange}
-            onSearch={() => undefined}
+            onSearch={() =>
+              onLookupSearch("agent", originAgentField.value, "originAgent")
+            }
           />
           <SearchableInput
             id="destinationAgent"
@@ -223,7 +237,13 @@ const SummaryOverviewSection: React.FC<SummaryOverviewSectionProps> = ({
             className={styles.agentField}
             value={destinationAgentField.value}
             onChange={destinationAgentField.onChange}
-            onSearch={() => undefined}
+            onSearch={() =>
+              onLookupSearch(
+                "agent",
+                destinationAgentField.value,
+                "destinationAgent",
+              )
+            }
           />
           <FormDropdown
             name="requiredThroughGc"

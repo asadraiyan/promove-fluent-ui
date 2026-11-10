@@ -3,8 +3,14 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import { useController, type Control } from "react-hook-form";
 import { FieldLabel, FormDropdown, ResponsiveGrid, SearchableInput } from "@/shared";
 import { OVERSEAS_SUMMARY_DROPDOWN_OPTIONS } from "../constants";
-import type { FreightInformationDropdowns } from "../api/freightInformationApi";
-import type { OverseasSummaryFormValues } from "../OverseasSummary.types";
+import type {
+  FreightInformationDropdowns,
+  FreightLookupType,
+} from "../api/freightInformationApi";
+import type {
+  FreightLookupTarget,
+  OverseasSummaryFormValues,
+} from "../OverseasSummary.types";
 import { FormCheckbox, type SummaryTextFieldRenderer } from "./SummaryFormFields";
 
 const useStyles = makeStyles({
@@ -61,12 +67,18 @@ interface OtherKeyServiceSectionProps {
   control: Control<OverseasSummaryFormValues>;
   textField: SummaryTextFieldRenderer;
   dropdowns: FreightInformationDropdowns | null;
+  onLookupSearch: (
+    lookupType: FreightLookupType,
+    search: string,
+    target: FreightLookupTarget,
+  ) => void;
 }
 
 const OtherKeyServiceSection: React.FC<OtherKeyServiceSectionProps> = ({
   control,
   textField,
   dropdowns,
+  onLookupSearch,
 }) => {
   const styles = useStyles();
   const { field: portOfArrivalField } = useController({
@@ -148,7 +160,13 @@ const OtherKeyServiceSection: React.FC<OtherKeyServiceSectionProps> = ({
               labelPosition="left"
               value={portOfArrivalField.value}
               onChange={portOfArrivalField.onChange}
-              onSearch={() => undefined}
+              onSearch={() =>
+                onLookupSearch(
+                  "seaport",
+                  portOfArrivalField.value,
+                  "portOfArrival",
+                )
+              }
             />
             {textField("totalNumberOfLiftvans", "Total Number of Liftvans", "number")}
             <div className={styles.workflow}>

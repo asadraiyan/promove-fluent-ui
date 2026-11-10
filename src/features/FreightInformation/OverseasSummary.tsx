@@ -15,6 +15,8 @@ import {
 } from "@/shared";
 import type {
   FreightDropdownQuery,
+  FreightLookupRecord,
+  FreightLookupType,
 } from "./api/freightInformationApi";
 import { ModalTable } from "@/shared/components/Table/ModalTable";
 import {
@@ -24,6 +26,7 @@ import {
 } from "./constants";
 import type {
   ActionDetailsValues,
+  FreightLookupTarget,
   OverseasSummaryFormValues,
   ShipmentActionHistoryRow,
 } from "./OverseasSummary.types";
@@ -35,8 +38,10 @@ import {
 import SummaryOverviewSection from "./components/SummaryOverviewSection";
 import VolumeWeightSection from "./components/VolumeWeightSection";
 import {
+  clearFreightLookup,
   loadFreightInformation,
   loadFreightInformationDropdowns,
+  loadFreightLookup,
   saveFreightInformationThunk,
 } from "./reducers/freightInformationSlice";
 import {
@@ -90,6 +95,11 @@ const useStyles = makeStyles({
     overflowY: "auto",
     padding: `${tokens.spacingVerticalM} 0`,
   },
+  lookupContent: {
+    maxHeight: "min(70vh, 680px)",
+    overflow: "auto",
+    paddingTop: tokens.spacingVerticalM,
+  },
   saveContainer: {
     display: "flex",
     justifyContent: "flex-end",
@@ -111,6 +121,12 @@ const OverseasSummary: React.FC<OverseasSummaryProps> = ({
   const dispatch = useAppDispatch();
   const [actionHistoryOpen, setActionHistoryOpen] = React.useState(false);
   const [actionDetailsOpen, setActionDetailsOpen] = React.useState(false);
+  const [lookupDialogOpen, setLookupDialogOpen] = React.useState(false);
+  const [lookupType, setLookupType] =
+    React.useState<FreightLookupType>("agent");
+  const [lookupTarget, setLookupTarget] =
+    React.useState<FreightLookupTarget>("originAgent");
+  const [lookupSearchText, setLookupSearchText] = React.useState("");
   const [selectedAction, setSelectedAction] =
     React.useState<ShipmentActionHistoryRow | null>(null);
   const methods = useForm<OverseasSummaryFormValues>({
@@ -119,6 +135,9 @@ const OverseasSummary: React.FC<OverseasSummaryProps> = ({
   const {
     data,
     dropdowns,
+    lookupResults,
+    lookupStatus,
+    lookupError,
     status,
     error,
     dropdownStatus,
@@ -132,6 +151,71 @@ const OverseasSummary: React.FC<OverseasSummaryProps> = ({
   });
   const { control } = methods;
   const serviceMode = methods.watch("serviceMode");
+
+  const handleLookupSearch = (
+    type: FreightLookupType,
+    search: string,
+    target: FreightLookupTarget,
+  ) => {
+    const trimmedSearch = search.trim();
+    if (!trimmedSearch) {
+      alert("Search requires at least one character.");
+      return;
+    }
+
+    setLookupType(type);
+    setLookupTarget(target);
+    setLookupSearchText(trimmedSearch);
+    setLookupDialogOpen(true);
+    void dispatch(
+      loadFreightLookup({
+        lookupType: type,
+        query: { search: trimmedSearch, ownerCode: -1, region: "US" },
+      }),
+    );
+  };
+
+  const closeLookupDialog = () => {
+    setLookupDialogOpen(false);
+    dispatch(clearFreightLookup());
+  };
+
+  const selectLookupRow = (row: FreightLookupRecord) => {
+    const value =
+      lookupTarget === "portOfArrival"
+        ? row["Port Name"] ?? ""
+        : row.Name ?? row["GC Agent #"] ?? "";
+    methods.setValue(lookupTarget, value, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    closeLookupDialog();
+  };
+
+  const lookupColumns = React.useMemo<GridColumnDef<FreightLookupRecord>[]>(
+    () => {
+      const fields =
+        lookupType === "agent"
+          ? [
+              "Owner",
+              "Name",
+              "Address",
+              "city",
+              "State/County",
+              "SCAN Ref",
+              "Country",
+              "Currency Code",
+              "Zip code",
+              "Brand",
+              "Financial Ref #",
+              "GC Agent #",
+              "Ref# 2",
+            ]
+          : ["Port Name"];
+      return fields.map((field) => ({ key: field, label: field }));
+    },
+    [lookupType],
+  );
 
   React.useEffect(() => {
     let isCurrent = true;
@@ -225,6 +309,12 @@ const OverseasSummary: React.FC<OverseasSummaryProps> = ({
     { key: "createdBy", label: "Created By" },
   ];
 
+  const lookupHeadingType = lookupType === "agent" ? "Agent" : lookupType === "seaport" ? "Seaport" : "Airport";
+
+  const lookupHeading = `Search ${lookupHeadingType}: "${lookupSearchText}"`;
+
+  const lookupEmptyState = lookupStatus === "loading" ? "Searching..." : lookupError ? "Search failed." : `No results found for "${lookupSearchText}".`;
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSave)}>
@@ -245,6 +335,7 @@ const OverseasSummary: React.FC<OverseasSummaryProps> = ({
             control={control}
             textField={textField}
             dropdowns={dropdowns}
+            onLookupSearch={handleLookupSearch}
           />
 
           <ResponsiveGrid className={styles.primaryGrid}>
@@ -263,6 +354,7 @@ const OverseasSummary: React.FC<OverseasSummaryProps> = ({
             control={control}
             textField={textField}
             dropdowns={dropdowns}
+            onLookupSearch={handleLookupSearch}
           />
 
           <div className={styles.saveContainer}>
@@ -334,6 +426,39 @@ const OverseasSummary: React.FC<OverseasSummaryProps> = ({
           onClose={() => setActionDetailsOpen(false)}
           showCloseButton
           maxWidth="min(96vw, 720px)"
+        />
+        <CommonEditDialog
+          open={lookupDialogOpen}
+          heading={lookupHeading}
+          content={
+            <div className={styles.lookupContent}>
+              {lookupError && <div role="alert">{lookupError}</div>}
+              <ModalTable<FreightLookupRecord>
+                items={lookupResults}
+                columns={lookupColumns}
+                getRowId={(row) =>
+                  row["GC Agent #"] ??
+                  row["Port Name"] ??
+                  JSON.stringify(row)
+                }
+                onRowClick={selectLookupRow}
+                compact
+                fillWidth
+                wrapCellContent
+                emptyState={lookupEmptyState}
+              />
+            </div>
+          }
+          actions={[
+            {
+              label: "Close",
+              appearance: "secondary",
+              onClick: closeLookupDialog,
+            },
+          ]}
+          onClose={closeLookupDialog}
+          showCloseButton
+          maxWidth="content"
         />
     </FormProvider>
   );

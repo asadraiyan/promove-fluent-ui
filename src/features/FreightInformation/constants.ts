@@ -81,7 +81,7 @@ export const EMPTY_OVERSEAS_SUMMARY: OverseasSummaryFormValues = {
   commodityType: "household-goods",
   consolCode: "",
   surveyType: "",
-  portOfArrival: "BREMERHAVEN, Germany",
+  portOfArrival: "",
   totalNumberOfLiftvans: "",
   workflow: "mi-codes-4-7-outbound",
   shipmentOnHold: false,

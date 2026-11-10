@@ -1,0 +1,43 @@
+
+[
+  {
+    "Port Name": "GETANDAH, India",
+    "Port Code": "INGTZ"
+  },
+  {
+    "Port Name": "ISKANDARIYHA, Iraq",
+    "Port Code": "IQIKD"
+  },
+  {
+    "Port Name": "JINJA, Uganda",
+    "Port Code": "UGJEN"
+  },
+  {
+    "Port Name": "MUMBAI, India",
+    "Port Code": "INBOM"
+  },
+  {
+    "Port Name": "CHENNAI, India",
+    "Port Code": "INMAA"
+  },
+  {
+    "Port Name": "SINGAPORE, Singapore",
+    "Port Code": "SGSIN"
+  },
+  {
+    "Port Name": "DUBAI, United Arab Emirates",
+    "Port Code": "AEDXB"
+  },
+  {
+    "Port Name": "LONDON, United Kingdom",
+    "Port Code": "GBLON"
+  },
+  {
+    "Port Name": "NEW YORK, United States",
+    "Port Code": "USNYC"
+  },
+  {
+    "Port Name": "ROTTERDAM, Netherlands",
+    "Port Code": "NLRTM"
+  }
+]

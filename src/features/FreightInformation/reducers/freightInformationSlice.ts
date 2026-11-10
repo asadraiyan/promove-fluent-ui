@@ -6,6 +6,10 @@ import {
   FreightInformationDropdowns,
   FreightInformationPayload,
   FreightInformationResponse,
+  FreightLookupQuery,
+  FreightLookupRecord,
+  FreightLookupType,
+  fetchFreightLookup,
   saveFreightInformation,
 } from "../api/freightInformationApi";
 
@@ -14,6 +18,10 @@ type RequestStatus = "idle" | "loading" | "succeeded" | "failed";
 export interface FreightInformationState {
   data: FreightInformationResponse | null;
   dropdowns: FreightInformationDropdowns | null;
+  lookupResults: FreightLookupRecord[];
+  lookupStatus: RequestStatus;
+  lookupError: string | null;
+  lookupRequestId: string | null;
   status: RequestStatus;
   error: string | null;
   dropdownStatus: RequestStatus;
@@ -26,6 +34,10 @@ export interface FreightInformationState {
 const initialState: FreightInformationState = {
   data: null,
   dropdowns: null,
+  lookupResults: [],
+  lookupStatus: "idle",
+  lookupError: null,
+  lookupRequestId: null,
   status: "idle",
   error: null,
   dropdownStatus: "idle",
@@ -64,6 +76,23 @@ export const loadFreightInformationDropdowns = createAsyncThunk<
   }
 });
 
+export const loadFreightLookup = createAsyncThunk<
+  FreightLookupRecord[],
+  { lookupType: FreightLookupType; query: FreightLookupQuery },
+  { rejectValue: string }
+>(
+  "freightInformation/loadLookup",
+  async ({ lookupType, query }, { rejectWithValue }) => {
+    try {
+      return await fetchFreightLookup(lookupType, query);
+    } catch (error) {
+      return rejectWithValue(
+        errorMessage(error, "Unable to search freight lookups."),
+      );
+    }
+  },
+);
+
 export const saveFreightInformationThunk = createAsyncThunk<
   FreightInformationResponse,
   { goodsId: number; payload: FreightInformationPayload },
@@ -84,9 +113,37 @@ export const saveFreightInformationThunk = createAsyncThunk<
 const freightInformationSlice = createSlice({
   name: "freightInformation",
   initialState,
-  reducers: {},
+  reducers: {
+    clearFreightLookup: (state) => {
+      state.lookupResults = [];
+      state.lookupStatus = "idle";
+      state.lookupError = null;
+      state.lookupRequestId = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(loadFreightLookup.pending, (state, action) => {
+        state.lookupStatus = "loading";
+        state.lookupError = null;
+        state.lookupResults = [];
+        state.lookupRequestId = action.meta.requestId;
+      })
+      .addCase(loadFreightLookup.fulfilled, (state, action) => {
+        if (state.lookupRequestId !== action.meta.requestId) return;
+        state.lookupResults = action.payload;
+        state.lookupStatus = "succeeded";
+        state.lookupRequestId = null;
+      })
+      .addCase(loadFreightLookup.rejected, (state, action) => {
+        if (state.lookupRequestId !== action.meta.requestId) return;
+        state.lookupStatus = "failed";
+        state.lookupError =
+          action.payload ??
+          action.error.message ??
+          "Unable to search freight lookups.";
+        state.lookupRequestId = null;
+      })
       .addCase(loadFreightInformation.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -136,5 +193,7 @@ const freightInformationSlice = createSlice({
       });
   },
 });
+
+export const { clearFreightLookup } = freightInformationSlice.actions;
 
 export default freightInformationSlice.reducer;

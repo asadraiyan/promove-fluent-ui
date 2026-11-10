@@ -80,6 +80,11 @@ export interface OverseasSummaryFormValues {
   shipmentHoldReason: string;
 }
 
+export type FreightLookupTarget =
+  | "originAgent"
+  | "destinationAgent"
+  | "portOfArrival";
+
 export type OverseasSummaryTextFieldName = {
   [Name in keyof OverseasSummaryFormValues]: OverseasSummaryFormValues[Name] extends string
     ? Name

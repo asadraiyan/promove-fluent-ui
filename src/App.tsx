@@ -18,11 +18,13 @@ import { PaymentsView } from "./features/payments/PaymentsView";
 import { LostView } from "./features/Lost/LostView";
 import SupplierDetails from "./features/companies/SupplierDetails";
 import { InvoicingAddress } from "./features/invoicingAddress";
+import StaffSetup from "./features/staffSetup/StaffSetup";
 import DebtorsUI from "./features/debtors";
 
 function App() {
   return (
     <div>
+      <StaffSetup />
       <DebtorsUI />
       <InvoicingAddress />
       <AddressDetails />

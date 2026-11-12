@@ -24,6 +24,7 @@ type DropdownProps = {
   onChange?: (value: string) => void;
   placeholder?: string;
   id?: string;
+  ariaLabel?: string;
   className?: string;
   disabled?: boolean;
   labelPosition?: FieldLabelPosition;
@@ -60,6 +61,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   onChange,
   placeholder,
   id,
+  ariaLabel,
   className,
   disabled,
   labelPosition = 'top',
@@ -77,6 +79,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   const select = (
     <Select
       id={id}
+      aria-label={ariaLabel}
       onChange={(e) =>
         onChange?.((e.target as HTMLSelectElement).value)
       }

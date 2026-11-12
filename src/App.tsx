@@ -25,7 +25,6 @@ function App() {
   return (
     <div>
       <StaffSetup />
-      <InvoicingAddress/>
       <DebtorsUI />
       <InvoicingAddress />
       <AddressDetails />

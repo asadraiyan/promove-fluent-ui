@@ -1,0 +1,64 @@
+{
+  "dropdownOptions": {
+    "owner": [
+      { "label": "All", "value": "all" },
+      { "label": "Allied EMEA", "value": "allied_emea" }
+    ],
+    "status": [
+      { "label": "Active", "value": "active" },
+      { "label": "Inactive", "value": "inactive" }
+    ],
+    "private": [
+      { "label": "Yes", "value": "yes" },
+      { "label": "No", "value": "no" }
+    ],
+    "debtorType": [
+      { "label": "Corporate", "value": "corporate" },
+      { "label": "Individual", "value": "individual" }
+    ],
+    "title": [
+      { "label": "Mr.", "value": "mr" },
+      { "label": "Ms.", "value": "ms" },
+      { "label": "Mrs.", "value": "mrs" }
+    ],
+    "vatRegistration": [
+      { "label": "Registered", "value": "registered" },
+      { "label": "Not Registered", "value": "not_registered" }
+    ],
+    "invoicePrintMode": [
+      { "label": "Email", "value": "email" },
+      { "label": "Print", "value": "print" }
+    ],
+    "collectionMode": [
+      { "label": "Direct Debit", "value": "direct_debit" },
+      { "label": "Manual", "value": "manual" }
+    ],
+    "termsOfPayment": [
+      { "label": "30 Days", "value": "30_days" },
+      { "label": "60 Days", "value": "60_days" }
+    ],
+    "currency": [
+      { "label": "USD", "value": "usd" },
+      { "label": "EUR", "value": "eur" },
+      { "label": "INR", "value": "inr" }
+    ],
+    "language": [
+      { "label": "English", "value": "en" },
+      { "label": "Spanish", "value": "es" }
+    ],
+    "paymentTerms": [
+      { "label": "Net 30", "value": "net_30" },
+      { "label": "Due on Receipt", "value": "due_on_receipt" }
+    ],
+    "accountType": [
+      { "label": "Standard", "value": "standard" }
+    ],
+    "vendorPaymentStatus": [
+      { "label": "Active", "value": "active" }
+    ],
+    "vendorPaymentMethod": [
+      { "label": "Wire Transfer", "value": "wire" },
+      { "label": "Check", "value": "check" }
+    ]
+  }
+}

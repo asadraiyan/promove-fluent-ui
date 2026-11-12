@@ -19,12 +19,15 @@ import { LostView } from "./features/Lost/LostView";
 import SupplierDetails from "./features/companies/SupplierDetails";
 import { InvoicingAddress } from "./features/invoicingAddress";
 import StaffSetup from "./features/staffSetup/StaffSetup";
+import DebtorsUI from "./features/debtors";
 
 function App() {
   return (
     <div>
       <StaffSetup />
       <InvoicingAddress/>
+      <DebtorsUI />
+      <InvoicingAddress />
       <AddressDetails />
       <SeaContainerDetails />
       <ShipmentContent />
@@ -35,14 +38,14 @@ function App() {
       <ShipmentChangeHistory />
       <DatesNode />
       <Tracking goodsId="651097" />
-      <TrackAndTrace/>
-      <ShippingInstructions/>
+      <TrackAndTrace />
+      <ShippingInstructions />
       <ShipmentActions />
       <OverseasSummary />
-      <PaymentsView/>
-      <LostView/>
+      <PaymentsView />
+      <LostView />
       <Invoicing />
-      <SupplierDetails/>
+      <SupplierDetails />
     </div>
   );
 }

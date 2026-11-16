@@ -1,0 +1,41 @@
+[
+  {
+    "id": "trigger-action-1",
+    "actionCode": "TITLE",
+    "event": "ICS_BEGIN_PACKING_DATE",
+    "group": "EXPORT DTP CAR",
+    "dueDate": "-7",
+    "sequenceNumber": "160",
+    "modificationUser": "NA\\wmt1249",
+    "modificationDate": "28/Aug/2014 17:03:34",
+    "assignee": "SHIP",
+    "owner": "NA\\wmt1249",
+    "moveType": "Export"
+  },
+  {
+    "id": "trigger-action-2",
+    "actionCode": "TITLE",
+    "event": "ICS_BEGIN_PACKING_DATE",
+    "group": "EXPORT RO-RO",
+    "dueDate": "-7",
+    "sequenceNumber": "180",
+    "modificationUser": "NA\\wmt1249",
+    "modificationDate": "16/Sep/2024 13:15:49",
+    "assignee": "SHIP",
+    "owner": "NA\\wmt1249",
+    "moveType": "Export"
+  },
+  {
+    "id": "trigger-action-3",
+    "actionCode": "TRIDBOL",
+    "event": "ICS_ACTUAL_MATERIAL",
+    "group": "Brazil ROAD/VALE",
+    "dueDate": "1",
+    "sequenceNumber": "70",
+    "modificationUser": "NA\\wmt7611",
+    "modificationDate": "15/Jan/2021 12:33:33",
+    "assignee": "SHIP",
+    "owner": "NA\\wmt7611",
+    "moveType": "Import"
+  }
+]

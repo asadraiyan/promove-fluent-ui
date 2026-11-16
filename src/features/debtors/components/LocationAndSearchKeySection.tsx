@@ -1,28 +1,46 @@
-import { Checkbox, FormInput, TextAreaField } from "@/shared";
 import React from "react";
-import { Control, Controller } from "react-hook-form";
+import { makeStyles, tokens } from "@fluentui/react-components";
+import { Controller, Control } from "react-hook-form";
 import { DebtorsFormData } from "../types";
+import { Checkbox, FormInput, TextAreaField } from "@/shared";
+
+const useStyles = makeStyles({
+  grid: {
+    display: "grid",
+    gap: tokens.spacingVerticalM + " " + tokens.spacingHorizontalM,
+    gridTemplateColumns: "1fr",
+    alignItems: "end",
+    "@media (min-width: 768px)": {
+      gridTemplateColumns: "repeat(2, 1fr)",
+    },
+    "@media (min-width: 1024px)": {
+      gridTemplateColumns: "repeat(4, 1fr)",
+    },
+  },
+  fullWidth: {
+    gridColumn: "1 / -1",
+  },
+});
 
 export const LocationAndSearchKeySection: React.FC<{
   control: Control<DebtorsFormData>;
 }> = ({ control }) => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "16px",
-        marginTop: "16px",
-      }}
-    >
-      <FormInput
-        name="searchKeys"
-        control={control}
-        label="Search keys"
-        labelPosition="left"
-      />
+  const styles = useStyles();
 
-      <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+  return (
+    <div className={styles.grid}>
+      <FormInput name="searchKeys" control={control} label="Search keys" />
+
+      <div
+        className={styles.fullWidth}
+        style={{
+          display: "flex",
+          gap: "24px",
+          alignItems: "center",
+          flexWrap: "wrap",
+          marginTop: "16px",
+        }}
+      >
         <Controller
           name="directDebit"
           control={control}
@@ -34,13 +52,16 @@ export const LocationAndSearchKeySection: React.FC<{
             />
           )}
         />
-        <TextAreaField
-          name="locations"
-          control={control}
-          label="Locations"
-          labelPosition="top"
-          rows={3}
-        />
+
+        <div style={{ flex: "1 1 300px" }}>
+          <TextAreaField
+            name="locations"
+            control={control}
+            label="Locations"
+            rows={3}
+          />
+        </div>
+
         <Controller
           name="allowPriceIncrease"
           control={control}

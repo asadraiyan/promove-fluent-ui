@@ -20,11 +20,13 @@ import SupplierDetails from "./features/companies/SupplierDetails";
 import { InvoicingAddress } from "./features/invoicingAddress";
 import StaffSetup from "./features/staffSetup/StaffSetup";
 import DebtorsUI from "./features/debtors";
+import Triggers from "./features/triggers/Triggers";
 
 function App() {
   return (
     <div>
       <StaffSetup />
+      <Triggers/>
       <DebtorsUI />
       <InvoicingAddress />
       <AddressDetails />

@@ -1,17 +1,33 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { makeStyles, tokens } from "@fluentui/react-components";
+import { Control } from "react-hook-form";
+import { DebtorsFormData } from "../types";
 import constants from "../constants.json";
 import {
   loadCountries,
   loadStates,
 } from "@/features/address/reducers/locationDataSlice";
 import { FormDropdown, FormInput } from "@/shared";
-import { DebtorsFormData } from "../types";
-import { Control } from "react-hook-form";
+
+const useStyles = makeStyles({
+  grid: {
+    display: "grid",
+    gap: tokens.spacingVerticalM + " " + tokens.spacingHorizontalM,
+    gridTemplateColumns: "1fr",
+    "@media (min-width: 768px)": {
+      gridTemplateColumns: "repeat(2, 1fr)",
+    },
+    "@media (min-width: 1024px)": {
+      gridTemplateColumns: "repeat(4, 1fr)",
+    },
+  },
+});
 
 export const NameAndAddressSection: React.FC<{
   control: Control<DebtorsFormData>;
 }> = ({ control }) => {
+  const styles = useStyles();
   const dispatch = useDispatch<any>();
   const { countries, states } = useSelector((state: any) => state.locationData);
 
@@ -34,96 +50,37 @@ export const NameAndAddressSection: React.FC<{
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      <h4>Name and address</h4>
+    <div className={styles.grid}>
       <FormDropdown
         name="title"
         control={control}
         label="Title"
-        labelPosition="left"
         options={constants.dropdownOptions.title}
       />
-      <FormInput
-        name="surname"
-        control={control}
-        label="Surname"
-        labelPosition="left"
-      />
-      <FormInput
-        name="middleName"
-        control={control}
-        label="Middle"
-        labelPosition="left"
-      />
-      <FormInput
-        name="firstName"
-        control={control}
-        label="First Name"
-        labelPosition="left"
-      />
+      <FormInput name="surname" control={control} label="Surname" />
+      <FormInput name="middleName" control={control} label="Middle Name" />
+      <FormInput name="firstName" control={control} label="First Name" />
       <FormDropdown
         name="country"
         control={control}
         label="Country"
-        labelPosition="left"
         options={countryOptions}
         onChange={handleCountryChange}
       />
-      <FormInput
-        name="address1"
-        control={control}
-        label="Address1"
-        labelPosition="left"
-      />
-      <FormInput
-        name="address2"
-        control={control}
-        label="Address2"
-        labelPosition="left"
-      />
-      <FormInput
-        name="address3"
-        control={control}
-        label="Address3"
-        labelPosition="left"
-      />
-      <FormInput
-        name="city"
-        control={control}
-        label="City"
-        labelPosition="left"
-      />
+      <FormInput name="address1" control={control} label="Address 1" />
+      <FormInput name="address2" control={control} label="Address 2" />
+      <FormInput name="address3" control={control} label="Address 3" />
+      <FormInput name="city" control={control} label="City" />
       <FormDropdown
         name="stateCounty"
         control={control}
         label="State/County"
-        labelPosition="left"
         options={stateOptions}
       />
-      <FormInput
-        name="postalCode"
-        control={control}
-        label="Postal code"
-        labelPosition="left"
-      />
-      <FormInput
-        name="telephone"
-        control={control}
-        label="Telephone"
-        labelPosition="left"
-      />
-      <FormInput
-        name="fax"
-        control={control}
-        label="Fax"
-        labelPosition="left"
-      />
-      <FormInput
-        name="email"
-        control={control}
-        label="e-mail"
-        labelPosition="left"
-      />
+      <FormInput name="postalCode" control={control} label="Postal Code" />
+      <FormInput name="telephone" control={control} label="Telephone" />
+      <FormInput name="fax" control={control} label="Fax" />
+      <FormInput name="email" control={control} label="E-mail" />
     </div>
   );
 };

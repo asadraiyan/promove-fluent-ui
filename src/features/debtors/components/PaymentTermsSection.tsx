@@ -1,67 +1,72 @@
 import React from "react";
-import { Control, Controller } from "react-hook-form";
+import { makeStyles, tokens } from "@fluentui/react-components";
+import { Controller, Control } from "react-hook-form";
+import { DebtorsFormData } from "../types";
 import constants from "../constants.json";
 import { Checkbox, FormDropdown, FormInput, TextAreaField } from "@/shared";
-import { DebtorsFormData } from "../types";
+
+const useStyles = makeStyles({
+  grid: {
+    display: "grid",
+    gap: tokens.spacingVerticalM + " " + tokens.spacingHorizontalM,
+    gridTemplateColumns: "1fr",
+    alignItems: "end",
+    "@media (min-width: 768px)": {
+      gridTemplateColumns: "repeat(2, 1fr)",
+    },
+    "@media (min-width: 1024px)": {
+      gridTemplateColumns: "repeat(4, 1fr)",
+    },
+  },
+  fullWidth: {
+    gridColumn: "1 / -1",
+  },
+});
+
 export const PaymentTermsSection: React.FC<{
   control: Control<DebtorsFormData>;
 }> = ({ control }) => {
+  const styles = useStyles();
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+    <div className={styles.grid}>
       <FormDropdown
         name="paymentTerms"
         control={control}
         label="Payment Terms"
-        labelPosition="left"
         options={constants.dropdownOptions.paymentTerms}
       />
       <FormDropdown
         name="accountTypeAnalysisCode"
         control={control}
         label="Account Type Analysis Code"
-        labelPosition="left"
         options={constants.dropdownOptions.accountType}
       />
       <FormDropdown
         name="vendorPaymentStatus"
         control={control}
         label="Vendor Payment Status"
-        labelPosition="left"
         options={constants.dropdownOptions.vendorPaymentStatus}
       />
       <FormDropdown
         name="vendorPaymentMethod"
         control={control}
         label="Vendor Payment Method"
-        labelPosition="left"
         options={constants.dropdownOptions.vendorPaymentMethod}
       />
       <FormDropdown
         name="vendorPaymentCurrency"
         control={control}
         label="Vendor Payment Currency"
-        labelPosition="left"
         options={constants.dropdownOptions.currency}
       />
-      <FormInput
-        name="tinNumber"
-        control={control}
-        label="TIN Number"
-        labelPosition="left"
-      />
-      <FormInput
-        name="ssn"
-        control={control}
-        label="SSN#"
-        labelPosition="left"
-      />
-      <TextAreaField
-        name="notes"
-        control={control}
-        label="Notes"
-        labelPosition="left"
-        rows={4}
-      />
+      <FormInput name="tinNumber" control={control} label="TIN Number" />
+      <FormInput name="ssn" control={control} label="SSN#" />
+
+      <div className={styles.fullWidth}>
+        <TextAreaField name="notes" control={control} label="Notes" rows={4} />
+      </div>
+
       <Controller
         name="withHolding"
         control={control}

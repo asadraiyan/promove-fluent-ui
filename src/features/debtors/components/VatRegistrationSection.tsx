@@ -1,71 +1,75 @@
 import React from "react";
+import { makeStyles, tokens } from "@fluentui/react-components";
+import { Control } from "react-hook-form";
+import { DebtorsFormData } from "../types";
 import constants from "../constants.json";
 import { FormDropdown, FormInput, TextAreaField } from "@/shared";
-import { DebtorsFormData } from "../types";
-import { Control } from "react-hook-form";
+
+const useStyles = makeStyles({
+  grid: {
+    display: "grid",
+    gap: tokens.spacingVerticalM + " " + tokens.spacingHorizontalM,
+    gridTemplateColumns: "1fr",
+    "@media (min-width: 768px)": {
+      gridTemplateColumns: "repeat(2, 1fr)",
+    },
+    "@media (min-width: 1024px)": {
+      gridTemplateColumns: "repeat(4, 1fr)",
+    },
+  },
+  fullWidth: {
+    gridColumn: "1 / -1",
+  },
+});
+
 export const VatRegistrationSection: React.FC<{
   control: Control<DebtorsFormData>;
 }> = ({ control }) => {
+  const styles = useStyles();
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+    <div className={styles.grid}>
       <FormDropdown
         name="vatRegistration"
         control={control}
         label="VAT registration"
-        labelPosition="left"
         options={constants.dropdownOptions.vatRegistration}
       />
-      <FormInput
-        name="vatNumber"
-        control={control}
-        label="VAT number"
-        labelPosition="left"
-      />
+      <FormInput name="vatNumber" control={control} label="VAT number" />
       <FormInput
         name="vatRegistrationNumber"
         control={control}
         label="VAT registration number"
-        labelPosition="left"
       />
-      <FormInput
-        name="dunsNumber"
-        control={control}
-        label="DUNS number"
-        labelPosition="left"
-      />
+      <FormInput name="dunsNumber" control={control} label="DUNS number" />
       <FormDropdown
         name="invoicePrintMode"
         control={control}
         label="Invoice print mode"
-        labelPosition="left"
         options={constants.dropdownOptions.invoicePrintMode}
       />
       <FormDropdown
         name="collectionMode"
         control={control}
         label="Collection mode"
-        labelPosition="left"
         options={constants.dropdownOptions.collectionMode}
       />
       <FormDropdown
         name="termsOfPayment"
         control={control}
         label="Terms of payment"
-        labelPosition="left"
         options={constants.dropdownOptions.termsOfPayment}
       />
       <FormDropdown
         name="defaultCurrency"
         control={control}
         label="Default currency"
-        labelPosition="left"
         options={constants.dropdownOptions.currency}
       />
       <FormDropdown
         name="fxEffectiveDate"
         control={control}
         label="FX effective date"
-        labelPosition="left"
         options={[]}
         placeholder="Select Date"
       />
@@ -73,16 +77,17 @@ export const VatRegistrationSection: React.FC<{
         name="defaultLanguage"
         control={control}
         label="Default language"
-        labelPosition="left"
         options={constants.dropdownOptions.language}
       />
-      <TextAreaField
-        name="invoiceNote"
-        control={control}
-        label="Invoice note"
-        labelPosition="left"
-        rows={3}
-      />
+
+      <div className={styles.fullWidth}>
+        <TextAreaField
+          name="invoiceNote"
+          control={control}
+          label="Invoice note"
+          rows={3}
+        />
+      </div>
     </div>
   );
 };

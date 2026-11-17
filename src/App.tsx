@@ -21,10 +21,12 @@ import { InvoicingAddress } from "./features/invoicingAddress";
 import StaffSetup from "./features/staffSetup/StaffSetup";
 import DebtorsUI from "./features/debtors";
 import Triggers from "./features/triggers/Triggers";
+import { TridentEligibilitySetup } from "./features/Operation/TridentElegibilitySetup";
 
 function App() {
   return (
     <div>
+      <TridentEligibilitySetup/>
       <StaffSetup />
       <Triggers/>
       <DebtorsUI />

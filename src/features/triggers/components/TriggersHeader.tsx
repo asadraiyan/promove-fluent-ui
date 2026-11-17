@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles, Text, tokens } from "@fluentui/react-components";
-import { Controller, useForm } from "react-hook-form";
-
-import { Dropdown, ResponsiveGrid } from "@/shared";
+import { useForm } from "react-hook-form";
+import { FormDropdown, ResponsiveGrid } from "@/shared";
 import { Button } from "@/shared/components/Button/Button";
 
 import {
@@ -94,69 +93,42 @@ export const TriggersHeader: React.FC<TriggersHeaderProps> = ({
           onSubmit={handleSubmit(onFind)}
         >
           <ResponsiveGrid className={styles.filterFields}>
-            <Controller
+            <FormDropdown
               name="actionCode"
               control={control}
-              render={({ field }) => (
-                <Dropdown
-                  label="Action Code:"
-                  labelPosition="left"
-                  ariaLabel="Filter by action code"
-                  options={ACTION_CODE_OPTIONS}
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="All"
-                  className={styles.filterField}
-                />
-              )}
+              label="Action Code:"
+              labelPosition="left"
+              placeholder="All"
+              options={ACTION_CODE_OPTIONS}
+              className={styles.filterField}
             />
-            <Controller
+            <FormDropdown
               name="group"
               control={control}
-              render={({ field }) => (
-                <Dropdown
-                  label="Group:"
-                  labelPosition="left"
-                  ariaLabel="Filter by group"
-                  options={GROUP_OPTIONS}
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="All"
-                  className={styles.filterField}
-                />
-              )}
+              label="Group:"
+              labelPosition="left"
+              placeholder="All"
+              options={GROUP_OPTIONS}
+              className={styles.filterField}
             />
-            <Controller
+            <FormDropdown
               name="owner"
               control={control}
-              render={({ field }) => (
-                <Dropdown
-                  label="Owner:"
-                  labelPosition="left"
-                  ariaLabel="Filter by owner"
-                  options={OWNER_OPTIONS}
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="All"
-                  className={styles.filterField}
-                />
-              )}
+              label="Owner:"
+              labelPosition="left"
+              placeholder="All"
+              options={OWNER_OPTIONS}
+              className={styles.filterField}
             />
-            <Controller
+
+            <FormDropdown
               name="moveType"
               control={control}
-              render={({ field }) => (
-                <Dropdown
-                  label="Move Type:"
-                  labelPosition="left"
-                  ariaLabel="Filter by move type"
-                  options={MOVE_TYPE_OPTIONS}
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="All"
-                  className={styles.filterField}
-                />
-              )}
+              label="Move Type:"
+              labelPosition="left"
+              placeholder="All"
+              options={MOVE_TYPE_OPTIONS}
+              className={styles.filterField}
             />
           </ResponsiveGrid>
           <div className={styles.actions}>

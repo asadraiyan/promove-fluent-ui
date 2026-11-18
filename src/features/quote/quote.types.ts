@@ -1,0 +1,59 @@
+export interface QuoteFormValues {
+  quoteNumber: string;
+  promoveNumber: string;
+  bookingAgentSummary: string;
+  jobSummary: string;
+  status: string;
+  clientName: string;
+  accountName: string;
+  gcNumber: string;
+  summaryWeight: string;
+  summaryVolume: string;
+  originSummary: string;
+  destinationSummary: string;
+  bookingAgent: string;
+  brand: string;
+  surveyType: string;
+  corporateAccount: string;
+  firstName: string;
+  lastName: string;
+  originLocation: string;
+  originState: string;
+  originCountry: string;
+  pickupAddress1: string;
+  pickupAddress2: string;
+  originZipCode: string;
+  originPhoneHome: string;
+  originAgent: string;
+  destinationLocation: string;
+  destinationState: string;
+  destinationCountry: string;
+  deliveryAddress1: string;
+  deliveryAddress2: string;
+  destinationZipCode: string;
+  destinationPhoneHome: string;
+  destinationAgent: string;
+  jobType: string;
+  containerType: string;
+  fclDrayageOptions: string;
+  currency: string;
+  measurementSystem: string;
+  netWeight: string;
+  netVolume: string;
+  imperialDensity: string;
+  metricVolume: string;
+  moveAwardDate: string;
+  weightNetLbs: string;
+  weightGrossLbs: string;
+  weightNetKg: string;
+  weightGrossKg: string;
+  volumeNetCuft: string;
+  volumeGrossCuft: string;
+  volumeNetM3: string;
+  volumeGrossM3: string;
+  totalDensity: string;
+}
+
+export interface QuoteFormSectionProps {
+  control: import("react-hook-form").Control<QuoteFormValues>;
+}

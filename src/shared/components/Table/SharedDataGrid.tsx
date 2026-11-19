@@ -114,7 +114,7 @@ const useStyles = makeStyles({
     },
   },
   cellContent: {
-    whiteSpace: "nowrap",
+    // whiteSpace: "nowrap",
     overflow: "visible",
     width: "100%",
     display: "block",

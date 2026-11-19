@@ -22,13 +22,15 @@ import StaffSetup from "./features/staffSetup/StaffSetup";
 import DebtorsUI from "./features/debtors";
 import Triggers from "./features/triggers/Triggers";
 import { TridentEligibilitySetup } from "./features/Operation/TridentElegibilitySetup";
+import { AccessorialsSection } from "./features/Quote/variation/AccessorialsSection";
 
 function App() {
   return (
     <div>
-      <TridentEligibilitySetup/>
+      <AccessorialsSection />
+      <TridentEligibilitySetup />
       <StaffSetup />
-      <Triggers/>
+      <Triggers />
       <DebtorsUI />
       <InvoicingAddress />
       <AddressDetails />

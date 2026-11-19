@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, Text, tokens } from "@fluentui/react-components";
 import { MoreHorizontalRegular } from "@fluentui/react-icons";
 import { useController } from "react-hook-form";
@@ -9,6 +9,7 @@ import {
   FormRadioGroup,
   ResponsiveGrid,
   SearchableInput,
+  CommonEditDialog,
 } from "@/shared";
 import type { QuoteFormSectionProps } from "../quote.types";
 import {
@@ -19,6 +20,7 @@ import {
   MEASUREMENT_SYSTEM_OPTIONS,
   SURVEY_TYPE_OPTIONS,
 } from "../constants";
+import { JobTypeSearchDialogContent } from "./JobTypeSearchDialogContent";
 
 const useStyles = makeStyles({
   section: {
@@ -126,6 +128,7 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
   control,
 }) => {
   const styles = useStyles();
+  const [isJobTypeDialogOpen, setIsJobTypeDialogOpen] = useState(false);
   const { field: bookingAgent } = useController({ control, name: "bookingAgent" });
   const { field: corporateAccount } = useController({
     control,
@@ -291,6 +294,7 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
                 className={styles.moreButton}
                 aria-label="More job type actions"
                 title="More actions"
+                onClick={() => setIsJobTypeDialogOpen(true)}
               >
                 <MoreHorizontalRegular />
               </Button>
@@ -384,6 +388,21 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
           </div>
         </ResponsiveGrid>
       </div>
+      <CommonEditDialog
+        open={isJobTypeDialogOpen}
+        heading="Search Job Type"
+        content={
+          <JobTypeSearchDialogContent
+            onSelect={(selectedJobType) => {
+              jobType.onChange(selectedJobType);
+              setIsJobTypeDialogOpen(false);
+            }}
+          />
+        }
+        onClose={() => setIsJobTypeDialogOpen(false)}
+        showCloseButton
+        maxWidth="min(1100px, calc(100vw - 32px))"
+      />
     </section>
   );
 };

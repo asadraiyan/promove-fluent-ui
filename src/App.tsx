@@ -23,6 +23,17 @@ const componentRegistry: Array<{
       })),
     ),
   },
+
+   {
+    label: "Quoted Services",
+    value: "quoted-services",
+    component: React.lazy(() =>
+      import("./features/QuoteSection/QuotedServices/QuotedServices").then(({ QuotedServices }) => ({
+        default: QuotedServices,
+      })),
+    ),
+  },
+
   {
     label: "Accessorials",
     value: "accessorials",

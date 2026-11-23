@@ -1,11 +1,7 @@
-import React, { useState } from "react";
-import {
-  Button as FluentButton,
-  makeStyles,
-  Text,
-  tokens,
-} from "@fluentui/react-components";
-import { Dropdown, InputField, ResponsiveGrid } from "@/shared";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { makeStyles, Text, tokens } from "@fluentui/react-components";
+import { Button, FormDropdown, FormInput, ResponsiveGrid } from "@/shared";
 import {
   QUOTE_LEAD_OPTIONS,
   QUOTE_RAISED_BY_OPTIONS,
@@ -62,18 +58,6 @@ const useStyles = makeStyles({
     gap: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
     minWidth: 0,
   },
-  field: {
-    display: "grid",
-    gridTemplateColumns: "minmax(72px, auto) minmax(0, 1fr)",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalXS,
-    minWidth: 0,
-  },
-  fieldLabel: {
-    fontSize: tokens.fontSizeBase200,
-    fontWeight: tokens.fontWeightSemibold,
-    whiteSpace: "nowrap",
-  },
   actions: {
     display: "flex",
     gap: tokens.spacingHorizontalS,
@@ -83,27 +67,9 @@ const useStyles = makeStyles({
 
 export const QuoteHeader: React.FC = () => {
   const styles = useStyles();
-  const [values, setValues] = useState<HeaderValues>(EMPTY_HEADER_VALUES);
-  const update = (key: keyof HeaderValues, value: string) => {
-    setValues((current) => ({ ...current, [key]: value }));
-  };
-
-  const inputField = (
-    key: "quote" | "account" | "lastName" | "promove" | "bookingAgent",
-    label: string,
-  ) => (
-    <div className={styles.field} key={key}>
-      <label className={styles.fieldLabel} htmlFor={`quote-header-${key}`}>
-        {label}
-      </label>
-      <InputField
-        id={`quote-header-${key}`}
-        ariaLabel={label}
-        value={values[key]}
-        onChange={(value) => update(key, value)}
-      />
-    </div>
-  );
+  const { control, reset } = useForm<HeaderValues>({
+    defaultValues: EMPTY_HEADER_VALUES,
+  });
 
   return (
     <header>
@@ -113,47 +79,64 @@ export const QuoteHeader: React.FC = () => {
         </Text>
         <div className={styles.content}>
           <ResponsiveGrid className={styles.fields}>
-            {inputField("quote", "Quote")}
-            {inputField("account", "Account")}
-            {inputField("lastName", "Last Name")}
-            <div className={styles.field}>
-              <label className={styles.fieldLabel} htmlFor="quote-header-lead">
-                Quote/Lead
-              </label>
-              <Dropdown
-                id="quote-header-lead"
-                ariaLabel="Quote or lead filter"
-                options={QUOTE_LEAD_OPTIONS}
-                value={values.quoteLead}
-                onChange={(value) => update("quoteLead", value)}
-              />
-            </div>
-            {inputField("promove", "Promove#")}
-            {inputField("bookingAgent", "Booking Agent")}
-            <div className={styles.field}>
-              <label
-                className={styles.fieldLabel}
-                htmlFor="quote-header-raised-by"
-              >
-                Quote Raised By
-              </label>
-              <Dropdown
-                id="quote-header-raised-by"
-                ariaLabel="Quote raised by"
-                options={QUOTE_RAISED_BY_OPTIONS}
-                value={values.raisedBy}
-                onChange={(value) => update("raisedBy", value)}
-              />
-            </div>
+            <FormInput
+              name="quote"
+              control={control}
+              label="Quote"
+              labelPosition="left"
+              ariaLabel="Quote"
+            />
+            <FormInput
+              name="account"
+              control={control}
+              label="Account"
+              labelPosition="left"
+              ariaLabel="Account"
+            />
+            <FormInput
+              name="lastName"
+              control={control}
+              label="Last Name"
+              labelPosition="left"
+              ariaLabel="Last Name"
+            />
+            <FormDropdown
+              name="quoteLead"
+              control={control}
+              label="Quote/Lead"
+              labelPosition="left"
+              options={QUOTE_LEAD_OPTIONS}
+            />
+            <FormInput
+              name="promove"
+              control={control}
+              label="Promove#"
+              labelPosition="left"
+              ariaLabel="Promove#"
+            />
+            <FormInput
+              name="bookingAgent"
+              control={control}
+              label="Booking Agent"
+              labelPosition="left"
+              ariaLabel="Booking Agent"
+            />
+            <FormDropdown
+              name="raisedBy"
+              control={control}
+              label="Quote Raised By"
+              labelPosition="left"
+              options={QUOTE_RAISED_BY_OPTIONS}
+            />
           </ResponsiveGrid>
           <div className={styles.actions}>
-            <FluentButton type="button">Find</FluentButton>
-            <FluentButton
+            <Button type="button">Find</Button>
+            <Button
               type="button"
-              onClick={() => setValues(EMPTY_HEADER_VALUES)}
+              onClick={() => reset(EMPTY_HEADER_VALUES)}
             >
               Clear
-            </FluentButton>
+            </Button>
           </div>
         </div>
       </ResponsiveGrid>

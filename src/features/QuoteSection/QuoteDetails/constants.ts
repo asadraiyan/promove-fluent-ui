@@ -1,4 +1,4 @@
-import type { QuoteFormValues } from "./quote.types";
+import { QuoteFormValues } from "./quoteDetails.types";
 
 export const EMPTY_QUOTE_FORM: QuoteFormValues = {
   quoteNumber: "20241000004-1",

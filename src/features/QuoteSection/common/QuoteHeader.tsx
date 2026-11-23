@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { Button as FluentButton, makeStyles, Text, tokens } from "@fluentui/react-components";
+import {
+  Button as FluentButton,
+  makeStyles,
+  Text,
+  tokens,
+} from "@fluentui/react-components";
 import { Dropdown, InputField, ResponsiveGrid } from "@/shared";
 import {
   QUOTE_LEAD_OPTIONS,
   QUOTE_RAISED_BY_OPTIONS,
-} from "../constants";
+} from "../QuoteDetails/constants";
 
 interface HeaderValues {
   quote: string;
@@ -126,7 +131,10 @@ export const QuoteHeader: React.FC = () => {
             {inputField("promove", "Promove#")}
             {inputField("bookingAgent", "Booking Agent")}
             <div className={styles.field}>
-              <label className={styles.fieldLabel} htmlFor="quote-header-raised-by">
+              <label
+                className={styles.fieldLabel}
+                htmlFor="quote-header-raised-by"
+              >
                 Quote Raised By
               </label>
               <Dropdown

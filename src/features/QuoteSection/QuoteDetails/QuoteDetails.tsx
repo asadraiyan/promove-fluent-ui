@@ -2,11 +2,11 @@ import React from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { useForm } from "react-hook-form";
 import { QuoteDetailsSection } from "./components/QuoteDetailsSection";
-import { QuoteHeader } from "./components/QuoteHeader";
-import { QuoteOptionsSection } from "./components/QuoteOptionsSection";
+import { QuoteHeader } from "../common/QuoteHeader";
+import { QuoteOptionsSection } from "../common/QuoteOptionsSection";
 import { WeightVolumesSection } from "./components/WeightVolumesSection";
 import { EMPTY_QUOTE_FORM } from "./constants";
-import type { QuoteFormValues } from "./quote.types";
+import type { QuoteFormValues } from "./quoteDetails.types";
 
 const useStyles = makeStyles({
   page: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Quote: React.FC = () => {
+const QuoteDetails: React.FC = () => {
   const styles = useStyles();
   const { control } = useForm<QuoteFormValues>({
     defaultValues: EMPTY_QUOTE_FORM,
@@ -52,4 +52,4 @@ const Quote: React.FC = () => {
   );
 };
 
-export default Quote;
+export default QuoteDetails;

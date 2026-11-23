@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles, Text, tokens } from "@fluentui/react-components";
 import { MoreHorizontalRegular } from "@fluentui/react-icons";
 import { Button, FormInput, ResponsiveGrid } from "@/shared";
-import type { QuoteFormSectionProps } from "../quote.types";
+import type { QuoteFormSectionProps } from "../quoteDetails.types";
 
 const useStyles = makeStyles({
   section: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     minWidth: 0,
   },
   title: {
-   fontWeight: tokens.fontWeightSemibold
+    fontWeight: tokens.fontWeightSemibold,
   },
   collapseButton: {
     minWidth: "28px",
@@ -63,7 +63,9 @@ export const WeightVolumesSection: React.FC<QuoteFormSectionProps> = ({
 
   return (
     <section className={styles.section} aria-labelledby="weight-volumes-title">
-      <Text id="weight-volumes-title" className={styles.title}>Weight Volumes</Text>
+      <Text id="weight-volumes-title" className={styles.title}>
+        Weight Volumes
+      </Text>
       <ResponsiveGrid className={styles.table}>
         <div />
         <div />

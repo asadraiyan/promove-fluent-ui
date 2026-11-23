@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles, Text, tokens } from "@fluentui/react-components";
 import { FormInput, ResponsiveGrid } from "@/shared";
-import type { QuoteFormSectionProps } from "../quote.types";
+import type { QuoteFormSectionProps } from "../QuoteDetails/quoteDetails.types";
 
 const useStyles = makeStyles({
   section: {

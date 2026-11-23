@@ -11,7 +11,7 @@ import {
   SearchableInput,
   CommonEditDialog,
 } from "@/shared";
-import type { QuoteFormSectionProps } from "../quote.types";
+import type { QuoteFormSectionProps } from "../quoteDetails.types";
 import {
   BRAND_OPTIONS,
   CONTAINER_TYPE_OPTIONS,
@@ -83,7 +83,8 @@ const useStyles = makeStyles({
     minWidth: 0,
   },
   measurementRows: {
-    gridTemplateColumns: "minmax(120px, 1fr) minmax(70px, auto) minmax(120px, 170px)",
+    gridTemplateColumns:
+      "minmax(120px, 1fr) minmax(70px, auto) minmax(120px, 170px)",
     alignItems: "center",
     columnGap: tokens.spacingHorizontalS,
     rowGap: tokens.spacingVerticalS,
@@ -129,7 +130,10 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
 }) => {
   const styles = useStyles();
   const [isJobTypeDialogOpen, setIsJobTypeDialogOpen] = useState(false);
-  const { field: bookingAgent } = useController({ control, name: "bookingAgent" });
+  const { field: bookingAgent } = useController({
+    control,
+    name: "bookingAgent",
+  });
   const { field: corporateAccount } = useController({
     control,
     name: "corporateAccount",
@@ -142,7 +146,10 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
     control,
     name: "destinationLocation",
   });
-  const { field: originAgent } = useController({ control, name: "originAgent" });
+  const { field: originAgent } = useController({
+    control,
+    name: "originAgent",
+  });
   const { field: destinationAgent } = useController({
     control,
     name: "destinationAgent",
@@ -217,8 +224,20 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
               onChange={originLocation.onChange}
               onSearch={() => undefined}
             />
-            <FormInput name="originState" control={control} label="State" labelPosition="left" disabled />
-            <FormInput name="originCountry" control={control} label="Country" labelPosition="left" disabled />
+            <FormInput
+              name="originState"
+              control={control}
+              label="State"
+              labelPosition="left"
+              disabled
+            />
+            <FormInput
+              name="originCountry"
+              control={control}
+              label="Country"
+              labelPosition="left"
+              disabled
+            />
             <FormInput
               name="pickupAddress1"
               control={control}
@@ -230,8 +249,18 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
               control={control}
               ariaLabel="Pickup Address line 2"
             />
-            <FormInput name="originZipCode" control={control} label="Zip Code" labelPosition="left" />
-            <FormInput name="originPhoneHome" control={control} label="Phone Home" labelPosition="left" />
+            <FormInput
+              name="originZipCode"
+              control={control}
+              label="Zip Code"
+              labelPosition="left"
+            />
+            <FormInput
+              name="originPhoneHome"
+              control={control}
+              label="Phone Home"
+              labelPosition="left"
+            />
             <SearchableInput
               id="quote-origin-agent"
               label="Origin Agent"
@@ -251,8 +280,20 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
               onChange={destinationLocation.onChange}
               onSearch={() => undefined}
             />
-            <FormInput name="destinationState" control={control} label="State" labelPosition="left" disabled />
-            <FormInput name="destinationCountry" control={control} label="Country" labelPosition="left" disabled />
+            <FormInput
+              name="destinationState"
+              control={control}
+              label="State"
+              labelPosition="left"
+              disabled
+            />
+            <FormInput
+              name="destinationCountry"
+              control={control}
+              label="Country"
+              labelPosition="left"
+              disabled
+            />
             <FormInput
               name="deliveryAddress1"
               control={control}
@@ -264,8 +305,18 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
               control={control}
               ariaLabel="Delivery Address line 2"
             />
-            <FormInput name="destinationZipCode" control={control} label="Zip Code" labelPosition="left" />
-            <FormInput name="destinationPhoneHome" control={control} label="Phone Home" labelPosition="left" />
+            <FormInput
+              name="destinationZipCode"
+              control={control}
+              label="Zip Code"
+              labelPosition="left"
+            />
+            <FormInput
+              name="destinationPhoneHome"
+              control={control}
+              label="Phone Home"
+              labelPosition="left"
+            />
             <SearchableInput
               id="quote-destination-agent"
               label="Destination Agent"
@@ -374,7 +425,11 @@ export const QuoteDetailsSection: React.FC<QuoteFormSectionProps> = ({
           </div>
 
           <div className={styles.measurementRight}>
-            <Button type="button" appearance="primary" className={styles.optimize}>
+            <Button
+              type="button"
+              appearance="primary"
+              className={styles.optimize}
+            >
               Optimize
             </Button>
             <div className={styles.awardDate}>

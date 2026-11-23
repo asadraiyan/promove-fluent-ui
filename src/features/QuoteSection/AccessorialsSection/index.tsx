@@ -18,6 +18,7 @@ import {
   serviceOptions,
 } from "./constants";
 import { AccessorialDetailFormData, AccessorialRow } from "./types";
+import { QuoteHeader } from "../common/QuoteHeader";
 
 const useStyles = makeStyles({
   root: {

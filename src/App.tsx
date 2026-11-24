@@ -9,6 +9,15 @@ const componentRegistry: Array<{
   value: string;
   component: AppComponent;
 }> = [
+    {
+    label: "Quote History",
+    value: "quote-history",
+component: React.lazy(() =>
+      import("./features/QuoteSection/QuoteHistory/QuoteHistorySection").then(({ QuoteHistorySection }) => ({
+        default: QuoteHistorySection,
+      })),
+    ),  },
+
   {
     label: "Quote Details",
     value: "quote-details",

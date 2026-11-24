@@ -9,37 +9,57 @@ const componentRegistry: Array<{
   value: string;
   component: AppComponent;
 }> = [
-    {
+  {
+    label: "Move Notes",
+    value: "move-notes",
+    component: React.lazy(() =>
+      import("./features/QuoteSection/MoveNotes/MoveNotesSection").then(
+        ({ MoveNotesSection }) => ({
+          default: MoveNotesSection,
+        }),
+      ),
+    ),
+  },
+  {
     label: "Quote History",
     value: "quote-history",
-component: React.lazy(() =>
-      import("./features/QuoteSection/QuoteHistory/QuoteHistorySection").then(({ QuoteHistorySection }) => ({
-        default: QuoteHistorySection,
-      })),
-    ),  },
+    component: React.lazy(() =>
+      import("./features/QuoteSection/QuoteHistory/QuoteHistorySection").then(
+        ({ QuoteHistorySection }) => ({
+          default: QuoteHistorySection,
+        }),
+      ),
+    ),
+  },
 
   {
     label: "Quote Details",
     value: "quote-details",
-    component: React.lazy(() => import("./features/QuoteSection/QuoteDetails/QuoteDetails")),
+    component: React.lazy(
+      () => import("./features/QuoteSection/QuoteDetails/QuoteDetails"),
+    ),
   },
   {
     label: "Service Plans",
     value: "service-plans",
     component: React.lazy(() =>
-      import("./features/QuoteSection/ServicePlan").then(({ ServicePlansSection }) => ({
-        default: ServicePlansSection,
-      })),
+      import("./features/QuoteSection/ServicePlan").then(
+        ({ ServicePlansSection }) => ({
+          default: ServicePlansSection,
+        }),
+      ),
     ),
   },
 
-   {
+  {
     label: "Quoted Services",
     value: "quoted-services",
     component: React.lazy(() =>
-      import("./features/QuoteSection/QuotedServices/QuotedServices").then(({ QuotedServices }) => ({
-        default: QuotedServices,
-      })),
+      import("./features/QuoteSection/QuotedServices/QuotedServices").then(
+        ({ QuotedServices }) => ({
+          default: QuotedServices,
+        }),
+      ),
     ),
   },
 
@@ -47,18 +67,22 @@ component: React.lazy(() =>
     label: "Accessorials",
     value: "accessorials",
     component: React.lazy(() =>
-      import("./features/QuoteSection/AccessorialsSection").then(({ AccessorialsSection }) => ({
-        default: AccessorialsSection,
-      })),
+      import("./features/QuoteSection/AccessorialsSection").then(
+        ({ AccessorialsSection }) => ({
+          default: AccessorialsSection,
+        }),
+      ),
     ),
   },
   {
     label: "Trident Eligibility Setup",
     value: "trident-eligibility-setup",
     component: React.lazy(() =>
-      import("./features/Operation/TridentElegibilitySetup").then(({ TridentEligibilitySetup }) => ({
-        default: TridentEligibilitySetup,
-      })),
+      import("./features/Operation/TridentElegibilitySetup").then(
+        ({ TridentEligibilitySetup }) => ({
+          default: TridentEligibilitySetup,
+        }),
+      ),
     ),
   },
   {
@@ -93,36 +117,44 @@ component: React.lazy(() =>
   {
     label: "Sea Container Details",
     value: "sea-container-details",
-    component: React.lazy(() =>
-      import("./features/seaContainerDetails/SeaContainerDetails"),
+    component: React.lazy(
+      () => import("./features/seaContainerDetails/SeaContainerDetails"),
     ),
   },
   {
     label: "Shipment Content",
     value: "shipment-content",
-    component: React.lazy(() => import("./features/shipmentContent/ShipmentContent")),
+    component: React.lazy(
+      () => import("./features/shipmentContent/ShipmentContent"),
+    ),
   },
   {
     label: "Shipment Notes",
     value: "shipment-notes",
-    component: React.lazy(() => import("./features/shipmentNotes/ShipmentNotes")),
+    component: React.lazy(
+      () => import("./features/shipmentNotes/ShipmentNotes"),
+    ),
   },
   {
     label: "Person Dashboard",
     value: "person-dashboard",
     component: React.lazy(() =>
-      import("./shared/components/Table/PersonDashboard").then(({ PersonDashboard }) => ({
-        default: PersonDashboard,
-      })),
+      import("./shared/components/Table/PersonDashboard").then(
+        ({ PersonDashboard }) => ({
+          default: PersonDashboard,
+        }),
+      ),
     ),
   },
   {
     label: "Task Dashboard",
     value: "task-dashboard",
     component: React.lazy(() =>
-      import("./shared/components/Board/TaskDashboard").then(({ TaskDashboard }) => ({
-        default: TaskDashboard,
-      })),
+      import("./shared/components/Board/TaskDashboard").then(
+        ({ TaskDashboard }) => ({
+          default: TaskDashboard,
+        }),
+      ),
     ),
   },
   {
@@ -156,7 +188,9 @@ component: React.lazy(() =>
   {
     label: "Shipping Instructions",
     value: "shipping-instructions",
-    component: React.lazy(() => import("./features/Intrra/ShippingInstructions")),
+    component: React.lazy(
+      () => import("./features/Intrra/ShippingInstructions"),
+    ),
   },
   {
     label: "Shipment Actions",
@@ -166,7 +200,9 @@ component: React.lazy(() =>
   {
     label: "Overseas Summary",
     value: "overseas-summary",
-    component: React.lazy(() => import("./features/FreightInformation/OverseasSummary")),
+    component: React.lazy(
+      () => import("./features/FreightInformation/OverseasSummary"),
+    ),
   },
   {
     label: "Payments",
@@ -198,7 +234,10 @@ component: React.lazy(() =>
   },
 ];
 
-const dropdownOptions = componentRegistry.map(({ label, value }) => ({ label, value }));
+const dropdownOptions = componentRegistry.map(({ label, value }) => ({
+  label,
+  value,
+}));
 
 function App() {
   const { control, watch } = useForm<{ component: string }>({

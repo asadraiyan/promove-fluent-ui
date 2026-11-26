@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "airportCode": "USNYC",
+    "ownerCode": "900",
+    "description": "New York(NY), U",
+    "status": "Active",
+    "modificationUser": "IT",
+    "modificationDate": "16/03/2009",
+    "pqPortTown": "New York",
+    "cityId": "104232717",
+    "stateId": "104201481"
+  },
+  {
+    "id": "2",
+    "airportCode": "BOM",
+    "ownerCode": "001",
+    "description": "MUMBAI",
+    "status": "Active",
+    "modificationUser": "USlvpalve",
+    "modificationDate": "26/11/2026",
+    "pqPortTown": "",
+    "cityId": "",
+    "stateId": ""
+  }
+]

@@ -10,6 +10,17 @@ const componentRegistry: Array<{
   component: AppComponent;
 }> = [
   {
+    label: "Airport Setup",
+    value: "airport-setup",
+    component: React.lazy(() =>
+      import("./features/System/Airport/AirportSetup").then(
+        ({ AirportSetup }) => ({
+          default: AirportSetup,
+        }),
+      ),
+    ),
+  },
+  {
     label: "Move Notes",
     value: "move-notes",
     component: React.lazy(() =>

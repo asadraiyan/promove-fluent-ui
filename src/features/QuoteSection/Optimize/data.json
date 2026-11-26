@@ -1,0 +1,72 @@
+{
+  "reciprocityData": [
+    {
+      "id": "beverly-hills-transfer",
+      "agentName": "Beverly Hills Transfer",
+      "plannedPercent": "0.00",
+      "actualPercent": "2.63"
+    },
+    {
+      "id": "berger-transfer-storage",
+      "agentName": "Berger Transfer & Storage",
+      "plannedPercent": "100.00",
+      "actualPercent": "97.37"
+    }
+  ],
+  "routes": [
+    {
+      "id": "route-1",
+      "label": "Route 1"
+    },
+    {
+      "id": "route-2",
+      "label": "Route 2"
+    },
+    {
+      "id": "route-3",
+      "label": "Route 3"
+    },
+    {
+      "id": "route-4",
+      "label": "Route 4"
+    }
+  ],
+  "routeRows": [
+    {
+      "id": "row-1",
+      "rowNumber": 1,
+      "expenseType": "(DP) Destination Port Services",
+      "from": "OAKLAND",
+      "to": "OAKLAND",
+      "carrier": "Gallagher Transport",
+      "rate": 154,
+      "days": 3,
+      "quality": "",
+      "claims": ""
+    },
+    {
+      "id": "row-2",
+      "rowNumber": 2,
+      "expenseType": "(IN) Inland Trucking (OI or DI)",
+      "from": "OAKLAND",
+      "to": "HAYWARD",
+      "carrier": "Benz Transportation Inc",
+      "rate": 636.8,
+      "days": 2,
+      "quality": "",
+      "claims": ""
+    },
+    {
+      "id": "row-3",
+      "rowNumber": 3,
+      "expenseType": "(DA) Destination Agent",
+      "from": "HAYWARD",
+      "to": "PALO ALTO",
+      "carrier": "Allied Intl Sfo Norcal",
+      "rate": 2860,
+      "days": 3,
+      "quality": "4.61",
+      "claims": ""
+    }
+  ]
+}

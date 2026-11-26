@@ -75,6 +75,15 @@ const componentRegistry: Array<{
     ),
   },
   {
+    label: "Optimize",
+    value: "optimize",
+    component: React.lazy(() =>
+      import("./features/QuoteSection/Optimize/Optimize").then(({ Optimize }) => ({
+        default: Optimize,
+      })),
+    ),
+  },
+  {
     label: "Trident Eligibility Setup",
     value: "trident-eligibility-setup",
     component: React.lazy(() =>
